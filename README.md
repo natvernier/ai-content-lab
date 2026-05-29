@@ -4,16 +4,16 @@ Experiments at the intersection of AI, editorial systems, UX, internal communica
 
 This repository documents prototypes, prompts, workflows and lightweight tools for AI-supported content creation in regulated communication environments.
 
-## Focus areas
+## Applied use cases
 
-- RAG
-- editorial workflows
-- internal communication
-- persona-based content
-- content systems
-- AI-supported drafting
-- regulated communication environments
-- knowledge architecture
+- RAG-supported editorial workflows
+- persona-based content prompts
+- internal communication use cases
+- content review flows
+- AI-supported newsroom logic
+- content system experiments
+- source-to-draft workflows
+- format and audience variation
 
 ## Why this exists
 
@@ -28,6 +28,12 @@ This lab collects practical experiments for the layer between strategy and every
 Early-stage learning and prototyping repository.
 
 ## Role in the portfolio
+
+This is the applied systems repository.
+
+It documents how AI can support editorial workflows, internal communication, RAG-based knowledge use, persona-based drafting, content review and AI-supported newsroom logic.
+
+Where the adoption repository explains the operating model, this repository shows concrete communication and content use cases.
 
 This repository is part of a four-repo portfolio system:
 
