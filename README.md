@@ -6,12 +6,14 @@ This repository documents prototypes, prompts, workflows and lightweight tools f
 
 ## Focus areas
 
-- AI-supported content creation
-- RAG-based editorial workflows
-- human-in-the-loop review
-- prompt systems
-- adoption measurement
-- governance templates
+- RAG
+- editorial workflows
+- internal communication
+- persona-based content
+- content systems
+- AI-supported drafting
+- regulated communication environments
+- knowledge architecture
 
 ## Why this exists
 
