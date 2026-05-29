@@ -26,3 +26,16 @@ This lab collects practical experiments for the layer between strategy and every
 ## Current status
 
 Early-stage learning and prototyping repository.
+
+## Role in the portfolio
+
+This repository is part of a four-repo portfolio system:
+
+- `adoption-operating-system` — strategy, operating models and adoption logic
+- `ai-governance-risk-toolkit` — trust, review, accountability and risk
+- `ai-content-lab` — applied AI workflows for content and knowledge systems
+- `ai-trend-radar-lab` — learning, foresight and early signals
+
+LinkedIn is where ideas are made visible.
+GitHub is where the underlying frameworks, workflows, checklists and experiments are documented.
+The website is where the professional value proposition is packaged.
