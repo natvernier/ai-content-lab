@@ -1,0 +1,372 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Anamorphic arrival · Depth patterns</title>
+<meta name="description" content="Depth pattern P8: scattered fragments line up into one picture on the first scroll, then come apart into the first teasers. A live graybox demo with a calm mode.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --paper: #f4f4f4;
+    --ink: #202627;
+    --ink-soft: #5a6264;
+    --rule: #c9cdce;
+    --signal: #67ff56;      /* fills only, never text on paper */
+    --signal-text: #1d8757; /* green that passes contrast on paper */
+    --glass: rgba(244, 244, 244, 0.72);
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Outfit", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143;
+      --signal-text: #67ff56; --glass: rgba(28, 32, 34, 0.72); color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143;
+    --signal-text: #67ff56; --glass: rgba(28, 32, 34, 0.72); color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: auto; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 300 1.125rem/1.6 var(--sans);
+    -webkit-font-smoothing: antialiased;
+  }
+  a { color: inherit; text-underline-offset: 0.2em; }
+  :focus-visible { outline: 3px solid var(--signal-text); outline-offset: 3px; border-radius: 4px; }
+
+  .skip {
+    position: absolute; left: 16px; top: -60px; z-index: 30;
+    background: var(--ink); color: var(--paper); padding: 0.5rem 0.9rem; border-radius: 6px;
+  }
+  .skip:focus { top: 70px; }
+
+  /* Compass: the one glass bar (convention 2) */
+  .compass {
+    position: fixed; inset: calc(12px + env(safe-area-inset-top, 0px)) 12px auto 12px; z-index: 20;
+    display: flex; align-items: center; gap: 1rem; justify-content: space-between;
+    padding: 0.55rem 0.6rem 0.55rem 1rem;
+    background: var(--glass); backdrop-filter: blur(14px) saturate(1.2); -webkit-backdrop-filter: blur(14px) saturate(1.2);
+    border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+    border-radius: 14px; font-size: 0.95rem;
+  }
+  .crumbs { margin: 0; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+  .crumbs a { text-decoration: none; color: var(--ink-soft); }
+  .crumbs a:hover { color: var(--ink); text-decoration: underline; }
+  .crumbs span { color: var(--ink-soft); margin: 0 0.35rem; }
+  .calm {
+    flex: none; display: inline-flex; align-items: center; gap: 0.55rem;
+    font: 400 0.95rem var(--sans); color: var(--ink);
+    background: transparent; border: 1px solid color-mix(in srgb, var(--ink) 22%, transparent);
+    border-radius: 999px; padding: 0.35rem 0.8rem 0.35rem 0.4rem; cursor: pointer;
+  }
+  .calm .knob {
+    width: 34px; height: 20px; border-radius: 999px; background: var(--rule); position: relative; transition: background .2s;
+  }
+  .calm .knob::after {
+    content: ""; position: absolute; top: 3px; left: 3px; width: 14px; height: 14px; border-radius: 50%;
+    background: var(--paper); transition: transform .2s;
+  }
+  .calm[aria-pressed="true"] .knob { background: var(--ink); }
+  .calm[aria-pressed="true"] .knob::after { transform: translateX(14px); }
+
+  /* The scroll track: 1:1, no hijack (convention 7) */
+  .track { position: relative; height: 380vh; }
+  .stage { position: sticky; top: 0; height: 100vh; height: 100svh; overflow: hidden; }
+  canvas { position: absolute; inset: 0; width: 100%; height: 100%; display: block; }
+
+  .title {
+    position: absolute; left: clamp(16px, 6vw, 96px); top: clamp(92px, 16vh, 150px);
+    max-width: 15ch; margin: 0; pointer-events: none; z-index: 1;
+    text-shadow: 0 0 10px var(--paper), 0 0 18px var(--paper), 0 0 2px var(--paper);
+  }
+  .title h1 {
+    margin: 0; font: 400 clamp(2.6rem, 7vw, 5.4rem)/0.98 var(--serif); letter-spacing: -0.015em;
+  }
+  .title p { margin: 0.9rem 0 0; font-size: 1.05rem; color: var(--ink-soft); max-width: 30ch; }
+
+  .hint {
+    position: absolute; left: 50%; bottom: 76px; transform: translateX(-50%);
+    margin: 0; font-size: 0.95rem; color: var(--ink-soft); transition: opacity .4s;
+  }
+  .hint.gone { opacity: 0; }
+
+  /* Progress: three states of one sequence (system status) */
+  .gauge {
+    position: absolute; left: clamp(16px, 6vw, 96px); right: clamp(16px, 6vw, 96px); bottom: 28px;
+    margin: 0; padding: 0; list-style: none; display: flex; justify-content: space-between;
+    font-size: 0.85rem; color: var(--ink-soft); border-top: 1px solid var(--rule); padding-top: 0.5rem;
+  }
+  .gauge li[aria-current="step"] { color: var(--ink); font-weight: 400; }
+  .gauge::before {
+    content: ""; position: absolute; left: 0; top: -2px; height: 3px;
+    width: calc(var(--p, 0) * 100%); background: var(--ink);
+  }
+  .gauge { position: absolute; }
+
+  /* The first teasers the picture breaks into */
+  .teasers {
+    position: absolute; inset: auto clamp(16px, 6vw, 96px) 92px; display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(10px, 2vw, 24px);
+    margin: 0; padding: 0; list-style: none; pointer-events: none;
+  }
+  .teaser {
+    opacity: 0; transform-origin: 50% 100%;
+    background: var(--paper); border: 1px solid var(--rule); border-radius: 10px; padding: 10px;
+  }
+  .teaser .img {
+    aspect-ratio: 4 / 3; border-radius: 6px;
+    background: repeating-linear-gradient(135deg, color-mix(in srgb, var(--ink) 9%, transparent) 0 8px, transparent 8px 16px);
+  }
+  .teaser h2 { margin: 0.55rem 0 0; font: 400 clamp(1rem, 2vw, 1.35rem)/1.2 var(--serif); }
+  .teaser p { margin: 0.15rem 0 0; font-size: 0.85rem; color: var(--ink-soft); }
+
+  /* Notes after the demo */
+  .notes { padding: 6rem clamp(16px, 6vw, 96px) 7rem; }
+  .notes > * { max-width: 62ch; }
+  .notes h2 { font: 400 clamp(1.8rem, 3.6vw, 2.6rem)/1.1 var(--serif); margin: 0 0 1.2rem; }
+  .notes h3 { font: 600 1.05rem/1.3 var(--sans); margin: 2.4rem 0 0.4rem; }
+  .notes p { margin: 0 0 1rem; }
+  .notes ul { margin: 0 0 1rem; padding-left: 1.1rem; }
+  .notes li { margin: 0.3rem 0; }
+  .facts { display: grid; grid-template-columns: max-content 1fr; gap: 0.35rem 1.5rem; margin: 1.6rem 0 0; }
+  .facts dt { color: var(--ink-soft); }
+  .facts dd { margin: 0; }
+  .marker { display: inline-block; width: 0.7em; height: 0.7em; background: var(--signal); border-radius: 2px; margin-right: 0.4em; vertical-align: 0.02em; }
+  footer { padding: 2rem clamp(16px, 6vw, 96px) 3rem; border-top: 1px solid var(--rule); font-size: 0.95rem; color: var(--ink-soft); }
+
+  @media (max-width: 640px) {
+    .compass { font-size: 0.85rem; gap: 0.5rem; }
+    .crumbs .hub { display: none; }
+    .crumbs .hub + span { display: none; }
+    .teasers { bottom: 84px; }
+    .teaser p { display: none; }
+    .title p { font-size: 0.95rem; max-width: 26ch; }
+  }
+</style>
+</head>
+<body>
+<a class="skip" href="#notes">Skip the demo</a>
+
+<header class="compass">
+  <p class="crumbs"><a class="hub" href="../../index.html">Interactive formats</a><span aria-hidden="true">›</span><a class="hub" href="../index.html">Depth patterns</a><span aria-hidden="true">›</span><strong>P8 Anamorphic arrival</strong></p>
+  <button class="calm" type="button" aria-pressed="false" id="calm">
+    <span class="knob" aria-hidden="true"></span>Calm mode
+  </button>
+</header>
+
+<main>
+  <section class="track" id="track" aria-label="Live demo">
+    <div class="stage">
+      <canvas id="c" aria-hidden="true"></canvas>
+      <div class="title">
+        <h1>Anamorphic arrival</h1>
+        <p>Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.</p>
+      </div>
+      <p class="hint" id="hint">Scroll to bring the pieces into line</p>
+      <ul class="teasers" id="teasers" aria-label="First teasers">
+        <li class="teaser"><div class="img"></div><h2>Pear tart</h2><p>Next up</p></li>
+        <li class="teaser"><div class="img"></div><h2>Poached pears</h2><p>Next up</p></li>
+        <li class="teaser"><div class="img"></div><h2>Pear and chestnut cake</h2><p>Backlog</p></li>
+      </ul>
+      <ol class="gauge" aria-label="Where you are in the demo">
+        <li data-step="0" aria-current="step">Scattered</li>
+        <li data-step="1">One picture</li>
+        <li data-step="2">First teasers</li>
+      </ol>
+    </div>
+  </section>
+
+  <section class="notes" id="notes" tabindex="-1">
+    <h2>What just happened</h2>
+    <p>The fragments were never flat. Each one hangs at its own depth. Scrolling turns the camera, and at one angle, and only at that angle, the depths cancel out and the pieces read as a single pear. Keep scrolling and the picture breaks into what the page is actually for: the first three things to look at.</p>
+    <p>The scroll is never taken from you. One pixel of scroll is one step of the camera, it runs backwards when you scroll back, and nothing plays on a timer.</p>
+
+    <h3>The illusion</h3>
+    <p>Anamorphosis: a picture that only exists from one viewpoint. Motion parallax does the rest. Near fragments move more than far ones, so your eye reads the space before it reads the picture.</p>
+
+    <h3>The rules it follows</h3>
+    <ul>
+      <li>The title is real text, readable before the first scroll and to screen readers.</li>
+      <li>Scroll stays 1:1 and never changes direction.</li>
+      <li>A progress line says where you are: scattered, one picture, first teasers.</li>
+      <li>You can skip it, and calm mode replaces the camera move with a plain crossfade.</li>
+      <li>It is decoration of an arrival, never the only way to reach the content.</li>
+    </ul>
+
+    <h3>Calm mode</h3>
+    <p>Turn it on with the switch at the top, or let your system decide: if your device asks for reduced motion, the page starts calm. Same picture, same teasers, no travel.</p>
+
+    <dl class="facts">
+      <dt>Gesture</dt><dd>The first scroll after arriving</dd>
+      <dt>Illusion</dt><dd>Anamorphosis, motion parallax</dd>
+      <dt>Built with</dt><dd>One canvas, about 200 lines of plain JavaScript, no library</dd>
+      <dt>Effort</dt><dd>Medium</dd>
+      <dt>Wow</dt><dd>3 of 3</dd>
+      <dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: the gray squares stand in for painted fragments</dd>
+    </dl>
+  </section>
+</main>
+
+<footer>
+  Part of <a href="../index.html">Depth patterns</a>, a collection in <a href="https://github.com/natvernier/ai-content-lab">AI Content Lab</a>. Built in the open by Nathalie Vernier.
+</footer>
+
+<script>
+(() => {
+  const canvas = document.getElementById('c');
+  const ctx = canvas.getContext('2d');
+  const track = document.getElementById('track');
+  const hint = document.getElementById('hint');
+  const gauge = document.querySelector('.gauge');
+  const steps = [...document.querySelectorAll('.gauge li')];
+  const teasers = [...document.querySelectorAll('.teaser')];
+  const calmBtn = document.getElementById('calm');
+
+  // ---- calm mode: system preference first, then the visitor's own switch
+  const mq = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let calm = mq.matches;
+  try { const s = localStorage.getItem('depth-calm'); if (s !== null) calm = s === '1'; } catch (e) {}
+  const setCalm = v => { calm = v; calmBtn.setAttribute('aria-pressed', String(v)); draw(true); };
+  calmBtn.addEventListener('click', () => {
+    setCalm(!calm);
+    try { localStorage.setItem('depth-calm', calm ? '1' : '0'); } catch (e) {}
+  });
+  calmBtn.setAttribute('aria-pressed', String(calm));
+
+  // ---- read colours from CSS so the canvas follows light and dark
+  let ink, paper, signal;
+  const readColours = () => {
+    const cs = getComputedStyle(document.documentElement);
+    ink = cs.getPropertyValue('--ink').trim();
+    paper = cs.getPropertyValue('--paper').trim();
+    signal = cs.getPropertyValue('--signal').trim();
+  };
+  const hexToRgb = h => { h = h.replace('#', ''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); };
+  const mix = (a, b, t) => { const A = hexToRgb(a), B = hexToRgb(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',')})`; };
+
+  // ---- the target picture: a pear on a grid, seeded so it is the same every visit
+  let seed = 11;
+  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
+  const R = (a, b) => a + rnd() * (b - a);
+  const inPear = (x, y) =>
+    (x / 0.95) ** 2 + ((y - 0.35) / 0.85) ** 2 <= 1 ||
+    (x / 0.55) ** 2 + ((y + 0.55) / 0.55) ** 2 <= 1;
+
+  const frags = [];
+  for (let gy = -12; gy <= 12; gy++) {
+    for (let gx = -10; gx <= 10; gx++) {
+      const ux = gx / 9.5, uy = gy / 9.5;
+      if (!inPear(ux, uy)) continue;
+      const hi = (ux + 0.45) ** 2 + (uy - 0.25) ** 2 < 0.06;
+      const shade = Math.min(1, Math.max(0, (ux + 1) / 2 + R(-0.15, 0.15)));
+      frags.push({ gx, gy, hi, shade, z: R(-1, 1), jx: R(-1, 1), jy: R(-1, 1), rot: R(-1, 1), out: Math.atan2(gy, gx) + R(-0.4, 0.4) });
+    }
+  }
+  frags.push({ gx: 0, gy: -13, hi: false, shade: 1, z: R(-1, 1), jx: 0.5, jy: -0.4, rot: 0.3, out: -1.6 });
+  frags.push({ gx: 1, gy: -13, hi: true, shade: 0, z: R(-1, 1), jx: -0.7, jy: 0.3, rot: -0.5, out: -1.2 });
+
+  // ---- sizing
+  let W = 0, H = 0, dpr = 1;
+  const resize = () => {
+    dpr = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth; H = canvas.clientHeight;
+    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    readColours(); draw(true);
+  };
+
+  // ---- scroll progress, 1:1
+  const progress = () => {
+    const r = track.getBoundingClientRect();
+    const span = r.height - window.innerHeight;
+    return Math.min(1, Math.max(0, -r.top / span));
+  };
+  const ease = t => 0.5 - 0.5 * Math.cos(Math.PI * Math.min(1, Math.max(0, t)));
+
+  let last = -1, hinted = false;
+  function draw(force) {
+    const p = progress();
+    if (!force && Math.abs(p - last) < 0.0005) return;
+    last = p;
+    if (!hinted && p > 0.01) { hinted = true; hint.classList.add('gone'); }
+
+    // phases: align 0–0.42, hold 0.42–0.6, break apart 0.6–0.95
+    const a = ease(p / 0.42);
+    const b = ease((p - 0.6) / 0.35);
+    const step = p < 0.42 ? 0 : p < 0.62 ? 1 : 2;
+    steps.forEach((li, i) => i === step ? li.setAttribute('aria-current', 'step') : li.removeAttribute('aria-current'));
+    gauge.style.setProperty('--p', p.toFixed(4));
+
+    ctx.clearRect(0, 0, W, H);
+    const small = Math.min(W, H);
+    const cell = small / (W < 640 ? 40 : 30);
+    const cx = W < 900 ? W * 0.5 : W * 0.62;
+    const cy = H * (W < 640 ? 0.66 : 0.5);
+    const spreadX = Math.min(W, 1100) * 0.5, spreadY = H * 0.42;
+    const depth = small * 0.55;
+
+    if (calm) {
+      // calm: no camera, no travel. The picture fades in, holds, fades out.
+      const alpha = a * (1 - b);
+      for (const f of frags) {
+        ctx.globalAlpha = alpha;
+        ctx.fillStyle = f.hi ? signal : mix(ink, paper, 0.15 + f.shade * 0.55);
+        const s = cell - 2;
+        ctx.fillRect(cx + f.gx * cell - s / 2, cy + f.gy * cell - s / 2, s, s);
+      }
+      ctx.globalAlpha = 1;
+    } else {
+      const yaw = (1 - a) * 0.66;               // about 38 degrees at rest
+      const cos = Math.cos(yaw), sin = Math.sin(yaw);
+      const pts = frags.map(f => {
+        let x = f.gx * cell + (1 - a) * f.jx * spreadX;
+        let y = f.gy * cell + (1 - a) * f.jy * spreadY;
+        const z = f.z * depth;
+        // break apart: every fragment leaves along its own direction
+        x += Math.cos(f.out) * b * W * 0.75;
+        y += Math.sin(f.out) * b * H * 0.75;
+        const xr = x * cos + z * sin;
+        const zr = -x * sin + z * cos;
+        const persp = 900 / (900 + zr * (1 - a) * 0.9);
+        return { zr, sx: cx + xr * persp, sy: cy + y * persp, s: (cell - 2) * persp * (0.75 + 0.25 * a), ang: f.rot * (1 - a) * 1.1, f };
+      }).sort((m, n) => n.zr - m.zr);
+      for (const q of pts) {
+        // far is paler (aerial perspective), fading out while breaking apart
+        const far = Math.min(1, Math.max(0, (q.zr / depth + 1) / 2)) * (1 - a);
+        ctx.globalAlpha = 1 - b;
+        ctx.fillStyle = q.f.hi ? signal : mix(ink, paper, Math.min(0.92, 0.15 + q.f.shade * 0.55 + far * 0.35));
+        ctx.save(); ctx.translate(q.sx, q.sy); ctx.rotate(q.ang);
+        ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
+        ctx.restore();
+      }
+      ctx.globalAlpha = 1;
+    }
+
+    // teasers arrive from the depth (calm: they simply fade in)
+    const t = ease((p - 0.66) / 0.3);
+    teasers.forEach((el, i) => {
+      const ti = ease((p - 0.66 - i * 0.04) / 0.28);
+      el.style.opacity = calm ? t.toFixed(3) : ti.toFixed(3);
+      el.style.transform = calm ? 'none' : `scale(${(0.6 + 0.4 * ti).toFixed(3)}) translateY(${((1 - ti) * 40).toFixed(1)}px)`;
+    });
+  }
+
+  let ticking = false;
+  window.addEventListener('scroll', () => {
+    if (ticking) return; ticking = true;
+    requestAnimationFrame(() => { ticking = false; draw(false); });
+  }, { passive: true });
+  window.addEventListener('resize', resize);
+  mq.addEventListener?.('change', e => { try { if (localStorage.getItem('depth-calm') !== null) return; } catch (_) {} setCalm(e.matches); });
+  window.matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', () => { readColours(); draw(true); });
+  resize();
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,135 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Depth Patterns</title>
+<meta name="description" content="Fourteen ways a flat page can feel deep, on an ordinary laptop or phone. Live graybox demos with a calm mode for every pattern.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  /* Layout: one left-aligned reading column; the pattern index is a scannable table grouped by how the depth reaches you. */
+  :root {
+    --paper: #f4f4f4;
+    --ink: #202627;
+    --ink-soft: #5a6264;
+    --rule: #c9cdce;
+    --signal: #67ff56;
+    --signal-text: #1d8757;
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Outfit", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143; --signal-text: #67ff56; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143; --signal-text: #67ff56; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 300 1.125rem/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+  }
+  .wrap { padding-inline: clamp(16px, 6vw, 96px); padding-block: clamp(3rem, 9vh, 6rem) 4rem; }
+  a { color: inherit; text-underline-offset: 0.2em; }
+  :focus-visible { outline: 3px solid var(--signal-text); outline-offset: 3px; border-radius: 4px; }
+
+  .up { margin: 0 0 2rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .up a { text-decoration: none; }
+  .up a:hover { text-decoration: underline; }
+  header { max-width: 40rem; }
+  h1 { margin: 0; font: 400 clamp(3rem, 9vw, 6.5rem)/0.95 var(--serif); letter-spacing: -0.02em; text-wrap: balance; }
+  .lede { margin: 1.4rem 0 0; font-size: 1.25rem; line-height: 1.5; max-width: 34ch; }
+  .rules { margin: 1.4rem 0 0; color: var(--ink-soft); max-width: 58ch; }
+
+  .start {
+    margin: 2.5rem 0 0; display: inline-flex; align-items: center; gap: 0.7rem;
+    font: 400 1.05rem var(--sans); text-decoration: none;
+    padding: 0.7rem 1.1rem 0.7rem 0.8rem; border: 1px solid var(--ink); border-radius: 999px;
+  }
+  .start:hover { background: var(--ink); color: var(--paper); }
+  .start .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; background: var(--signal); border: 1px solid var(--ink); }
+
+  section { margin-top: 4.5rem; }
+  h2 { margin: 0; font: 400 clamp(1.6rem, 3vw, 2.2rem)/1.15 var(--serif); }
+  .family-note { margin: 0.35rem 0 1rem; color: var(--ink-soft); max-width: 60ch; }
+
+  .scroller { overflow-x: auto; }
+  table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 1rem; }
+  th { text-align: left; font: 400 0.85rem var(--sans); color: var(--ink-soft); padding: 0 1rem 0.5rem 0; border-bottom: 1px solid var(--ink); }
+  td { padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+  td.id { color: var(--ink-soft); font-variant-numeric: tabular-nums; width: 3.5rem; }
+  td.name { font: 400 1.2rem/1.3 var(--serif); }
+  td.ew { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .state { display: inline-flex; align-items: center; gap: 0.45rem; white-space: nowrap; }
+  .state::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 1px solid var(--ink-soft); }
+  .state.live { color: var(--ink); font-weight: 400; }
+  .state.live::before { background: var(--signal); border-color: var(--ink); }
+
+  footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.95rem; max-width: 60ch; }
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <p class="up"><a href="../index.html">Interactive formats</a></p>
+  <header>
+    <h1>Depth patterns</h1>
+    <p class="lede">Fourteen ways a flat page can feel deep, on the laptop and phone you already have.</p>
+    <p class="rules">Ordinary gestures only: scroll, swipe, tap, drag, pinch. Every pattern keeps the scroll 1:1, keeps its words as real text, and has a calm mode that replaces the travel with a crossfade. The demos are graybox on purpose: gray shapes stand in for the art, so you judge the motion and nothing else.</p>
+    <a class="start" href="p08-anamorphic-arrival/index.html"><span class="dot" aria-hidden="true"></span>Try the first live demo: Anamorphic arrival</a>
+  </header>
+
+  <section aria-labelledby="travel">
+    <h2 id="travel">Depth you travel through</h2>
+    <p class="family-note">The page becomes a space, and the scroll moves you through it.</p>
+    <div class="scroller"><table>
+      <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td class="id">P1</td><td class="name">Flight through time</td><td>Scroll forward instead of down</td><td class="ew">M · 3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P3</td><td class="name">Semantic zoom</td><td>Pinch or zoom one level deeper</td><td class="ew">L · 3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P7</td><td class="name">Window</td><td>Move the mouse or tilt the phone</td><td class="ew">S–M · 2–3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P8</td><td class="name"><a href="p08-anamorphic-arrival/index.html">Anamorphic arrival</a></td><td>The first scroll after arriving</td><td class="ew">M · 3</td><td><span class="state live">Live</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="hold">
+    <h2 id="hold">Depth you can hold</h2>
+    <p class="family-note">Things unfold, turn or travel when you touch them. Nothing jumps.</p>
+    <div class="scroller"><table>
+      <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td class="id">P2</td><td class="name">Focus and fan</td><td>Tap one thing; its options fan out</td><td class="ew">M · 2–3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P4</td><td class="name">The lazy Susan</td><td>Swipe sideways, one season per gesture</td><td class="ew">M · 2</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P5</td><td class="name">Pop-up book</td><td>Each scroll step opens one spread</td><td class="ew">S–M · 2</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P6</td><td class="name">Assembly</td><td>Scroll; the parts come together</td><td class="ew">L · 3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P10</td><td class="name">Time scrub</td><td>Drag a time line under a picture</td><td class="ew">M · 2</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P11</td><td class="name">Doors that never cut</td><td>Any click that opens something</td><td class="ew">S · 2</td><td><span class="state">Storyboard</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <section aria-labelledby="feel">
+    <h2 id="feel">Depth you only feel</h2>
+    <p class="family-note">Quiet layers. Decoration only, never needed to read anything.</p>
+    <div class="scroller"><table>
+      <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
+      <tbody>
+        <tr><td class="id">P9</td><td class="name">Constellation</td><td>Drag, pinch, hover a star</td><td class="ew">M–L · 3</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P12</td><td class="name">The world remembers</td><td>None; it happens across visits</td><td class="ew">S · 1–2</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P13</td><td class="name">The lamp</td><td>Move the cursor, or touch and hold</td><td class="ew">S–M · 2</td><td><span class="state">Storyboard</span></td></tr>
+        <tr><td class="id">P14</td><td class="name">Glass controls</td><td>None; it is the control layer</td><td class="ew">S · 2</td><td><span class="state">Storyboard</span></td></tr>
+      </tbody>
+    </table></div>
+  </section>
+
+  <footer>
+    A collection in <a href="https://github.com/natvernier/ai-content-lab">AI Content Lab</a>, built in the open by Nathalie Vernier. Effort runs S to L, wow runs 1 to 3. A new pattern goes live about twice a month.
+  </footer>
+</div>
+</body>
+</html>

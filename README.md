@@ -113,6 +113,7 @@ This repository is guided by questions such as:
 * content evaluation loops
 * LinkedIn post and carousel systems
 * governance-aware publication workflows
+* interactive and explorable formats
 
 ## What this repository may contain
 
@@ -135,6 +136,7 @@ This repository is guided by questions such as:
 * fictionalized examples
 * abstracted use cases
 * lightweight prototypes
+* interactive formats with live demo pages
 
 All examples and applied scenarios in this repository are abstracted, generalized or fictionalized. They are designed to show transferable patterns, not to disclose confidential employer, client, team, stakeholder or internal process information.
 
@@ -235,6 +237,14 @@ ai-content-lab/
 │   ├── education-needs.md
 │   ├── governance-notes-for-content.md
 │   └── content-scope-questions.md
+│
+├── 10-interactive-formats/
+│   ├── README.md
+│   └── depth-patterns/
+│
+├── docs/                      ← live pages, published with GitHub Pages
+│   ├── index.html
+│   └── depth/
 │
 ├── agent-instructions/
 │   ├── README.md
@@ -338,6 +348,14 @@ This section connects `adoption-operating-system` to `ai-content-lab`.
 
 Once a workflow, decision model or adoption pattern needs to be explained, this module helps translate it into communication needs, content briefs and education formats.
 
+### `10-interactive-formats/`
+
+The interactive format layer.
+
+Some ideas only land when the reader can act on them. This section documents live, interactive formats: when to choose one, the rules every one follows (reader-driven motion, real text, a full calm mode) and how one live original is rendered for channels that cannot run it.
+
+The first collection is `depth-patterns/`: fourteen ways a flat page can feel deep, on ordinary laptops and phones. The live pages are in `docs/` and published at https://natvernier.github.io/ai-content-lab/
+
 ## Working principles
 
 AI can support content work, but editorial judgment remains necessary.
@@ -349,6 +367,8 @@ Good content is not only clear. It is appropriate to the audience, risk level an
 Review flows should be built into the workflow, not added at the end.
 
 Format variation should preserve meaning, not dilute it.
+
+Interaction should carry meaning. Motion without a reason is cut.
 
 Internal communication is part of adoption, governance and organizational sensemaking.
 
@@ -397,3 +417,5 @@ Adoption handoff
 Early-stage learning, prototyping and workflow documentation repository.
 
 The current focus is building reusable structures for AI-supported content workflows, internal communication, source-to-draft systems, RAG-supported editorial work and content evaluation loops.
+
+First live work: the interactive formats module, with the depth patterns collection at https://natvernier.github.io/ai-content-lab/depth/
