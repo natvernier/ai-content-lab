@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Interactive Formats</title>
+<meta name="description" content="Interactive formats from AI Content Lab: small live pages that let you try an idea instead of reading about it.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>
+  .collections { display: grid; gap: 0; margin: 0; padding: 0; list-style: none; border-top: 1px solid var(--ink); }
+  .collections li { display: grid; grid-template-columns: minmax(0, 1fr) auto; gap: 0.3rem 1.5rem; padding: 1.1rem 0; border-bottom: 1px solid var(--rule); }
+  .collections h3 { margin: 0; font: 400 1.5rem/1.2 var(--serif); }
+  .collections p { margin: 0; grid-column: 1; color: var(--ink-soft); max-width: 56ch; }
+  .collections .state { grid-column: 2; grid-row: 1; align-self: baseline; }
+  .flow { margin: 1rem 0 0; padding: 1rem 1.2rem; border-left: 3px solid var(--signal); background: color-mix(in srgb, var(--ink) 4%, transparent); max-width: 40rem; line-height: 1.9; }
+  /* Layout: one left-aligned reading column; the pattern index is a scannable table grouped by how the depth reaches you. */
+  :root {
+    --paper: #f4f4f4;
+    --ink: #202627;
+    --ink-soft: #5a6264;
+    --rule: #c9cdce;
+    --signal: #67ff56;
+    --signal-text: #1d8757;
+    --serif: "Newsreader", Georgia, serif;
+    --sans: "Outfit", system-ui, sans-serif;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143; --signal-text: #67ff56; color-scheme: dark;
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #1c2022; --ink: #eef0f0; --ink-soft: #a7aeb0; --rule: #3a4143; --signal-text: #67ff56; color-scheme: dark;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--paper); color: var(--ink);
+    font: 300 1.125rem/1.6 var(--sans); -webkit-font-smoothing: antialiased;
+  }
+  .wrap { padding-inline: clamp(16px, 6vw, 96px); padding-block: clamp(3rem, 9vh, 6rem) 4rem; }
+  a { color: inherit; text-underline-offset: 0.2em; }
+  :focus-visible { outline: 3px solid var(--signal-text); outline-offset: 3px; border-radius: 4px; }
+
+  .up { margin: 0 0 2rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .up a { text-decoration: none; }
+  .up a:hover { text-decoration: underline; }
+  .up { margin: 0 0 2rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .up a { text-decoration: none; }
+  .up a:hover { text-decoration: underline; }
+  header { max-width: 40rem; }
+  h1 { margin: 0; font: 400 clamp(3rem, 9vw, 6.5rem)/0.95 var(--serif); letter-spacing: -0.02em; text-wrap: balance; }
+  .lede { margin: 1.4rem 0 0; font-size: 1.25rem; line-height: 1.5; max-width: 34ch; }
+  .rules { margin: 1.4rem 0 0; color: var(--ink-soft); max-width: 58ch; }
+
+  .start {
+    margin: 2.5rem 0 0; display: inline-flex; align-items: center; gap: 0.7rem;
+    font: 400 1.05rem var(--sans); text-decoration: none;
+    padding: 0.7rem 1.1rem 0.7rem 0.8rem; border: 1px solid var(--ink); border-radius: 999px;
+  }
+  .start:hover { background: var(--ink); color: var(--paper); }
+  .start .dot { width: 0.75rem; height: 0.75rem; border-radius: 50%; background: var(--signal); border: 1px solid var(--ink); }
+
+  section { margin-top: 4.5rem; }
+  h2 { margin: 0; font: 400 clamp(1.6rem, 3vw, 2.2rem)/1.15 var(--serif); }
+  .family-note { margin: 0.35rem 0 1rem; color: var(--ink-soft); max-width: 60ch; }
+
+  .scroller { overflow-x: auto; }
+  table { width: 100%; min-width: 640px; border-collapse: collapse; font-size: 1rem; }
+  th { text-align: left; font: 400 0.85rem var(--sans); color: var(--ink-soft); padding: 0 1rem 0.5rem 0; border-bottom: 1px solid var(--ink); }
+  td { padding: 0.75rem 1rem 0.75rem 0; border-bottom: 1px solid var(--rule); vertical-align: baseline; }
+  td.id { color: var(--ink-soft); font-variant-numeric: tabular-nums; width: 3.5rem; }
+  td.name { font: 400 1.2rem/1.3 var(--serif); }
+  td.ew { font-variant-numeric: tabular-nums; white-space: nowrap; }
+  .state { display: inline-flex; align-items: center; gap: 0.45rem; white-space: nowrap; }
+  .state::before { content: ""; width: 0.6rem; height: 0.6rem; border-radius: 50%; border: 1px solid var(--ink-soft); }
+  .state.live { color: var(--ink); font-weight: 400; }
+  .state.live::before { background: var(--signal); border-color: var(--ink); }
+
+  footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.95rem; max-width: 60ch; }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <p class="up"><a href="https://github.com/natvernier/ai-content-lab">AI Content Lab on GitHub</a></p>
+  <header>
+    <h1>Interactive formats</h1>
+    <p class="lede">Content you can operate, not just read.</p>
+    <p class="rules">Some ideas only land when you can act on them. These are small, live pages that let you try an idea instead of reading about it. They follow the same rules as every format in the lab: a clear purpose, real text, an accessible calm mode, and a reviewable build.</p>
+  </header>
+
+  <section aria-labelledby="collections">
+    <h2 id="collections">Collections</h2>
+    <p class="family-note">Each collection grows over time. A live page is the original; posts and essays carry recordings of it.</p>
+    <ul class="collections">
+      <li>
+        <h3><a href="depth/index.html">Depth patterns</a></h3>
+        <span class="state live">1 of 14 live</span>
+        <p>Fourteen ways a flat page can feel deep, on the laptop and phone you already have. Depth as information, not decoration.</p>
+      </li>
+      <li>
+        <h3>Explorable AI literacy</h3>
+        <span class="state">Planned</span>
+        <p>Interactive versions of AI literacy explainers, starting with how one ordinary task becomes a permission chain.</p>
+      </li>
+    </ul>
+  </section>
+
+  <section aria-labelledby="renderings">
+    <h2 id="renderings">One original, many renderings</h2>
+    <p class="family-note">Feeds and newsletters cannot run interactive pages, so each format is published once and rendered for every channel.</p>
+    <p class="flow">Live page, the original<br>Short screen recording for LinkedIn and Substack<br>Three-keyframe strip for carousels and calm readers<br>A link back to the live page</p>
+  </section>
+
+  <footer>
+    Part of <a href="https://github.com/natvernier/ai-content-lab">AI Content Lab</a>, built in the open by Nathalie Vernier. Examples are generic or fictionalized.
+  </footer>
+</div>
+</body>
+</html>
