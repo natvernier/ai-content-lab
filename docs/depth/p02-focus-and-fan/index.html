@@ -1,0 +1,327 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Focus and fan · Depth patterns</title>
+<meta name="description" content="Pick an ingredient: the view dives onto it, the rest steps back, and its recipes fan out like a hand of cards. A live graybox demo with keyboard support and a calm mode.">
+<meta property="og:title" content="Focus and fan · Depth patterns">
+<meta property="og:description" content="Pick an ingredient: the view dives onto it, the rest steps back, and its recipes fan out like a hand of cards. A live graybox demo with keyboard support and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p02-focus-and-fan/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>#nvd{--paper:#f4f4f4;--ink:#202627;--ink-soft:#5a6264;--rule:#c9cdce;--signal:#67ff56;--signal-text:#1d8757;--glass:rgba(244,244,244,.72);--card:#fbfbfb;--serif:"TT Barrels",Georgia,serif;--sans:"Neue Hans Kendrick",system-ui,sans-serif;--gut:clamp(16px,6vw,96px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #nvd{--paper:#1c2022;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--signal-text:#67ff56;--glass:rgba(28,32,34,.72);--card:#23292b;color-scheme:dark}}
+:root[data-theme="dark"] #nvd{--paper:#1c2022;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--signal-text:#67ff56;--glass:rgba(28,32,34,.72);--card:#23292b;color-scheme:dark}
+#nvd,#nvd *{box-sizing:border-box}
+#nvd [hidden]{display:none!important}
+#nvd{position:relative;margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+#nvd h1,#nvd h2,#nvd h3{letter-spacing:normal;text-transform:none}
+#nvd a{color:inherit;text-underline-offset:.2em}
+#nvd button{font:inherit;color:inherit}
+#nvd :focus-visible{outline:3px solid var(--signal-text);outline-offset:3px;border-radius:4px}
+#nvd .skip{position:absolute;left:16px;top:-60px;z-index:30;background:var(--ink);color:var(--paper);padding:.5rem .9rem;border-radius:6px}
+#nvd .skip:focus{top:70px}
+#nvd .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#nvd .calm{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:152px;z-index:9990;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px 0 8px;border-radius:999px;background:rgba(244,244,244,.86);border:1px solid #b4c4c5;box-shadow:0 4px 14px rgba(32,38,39,.10);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#2b3234;font:600 13px/1 var(--sans);cursor:pointer}
+html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#585e5e;color:#f4f4f4;box-shadow:0 4px 14px rgba(0,0,0,.30)}
+#nvd .calm .knob{width:34px;height:20px;border-radius:999px;background:var(--rule);position:relative;transition:background .2s}
+#nvd .calm .knob::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--paper);transition:transform .2s}
+#nvd .calm[aria-pressed="true"] .knob{background:#67ff56}
+#nvd .calm[aria-pressed="true"] .knob::after{transform:translateX(14px);background:#2b3234}
+#nvd .track{position:relative}
+#nvd .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#nvd .stage.solo{position:relative}
+#nvd canvas.full{position:absolute;inset:0;width:100%;height:100%;display:block}
+#nvd .title{position:absolute;left:var(--gut);top:clamp(92px,16vh,150px);max-width:15ch;margin:0;pointer-events:none;z-index:4;text-shadow:0 0 10px var(--paper),0 0 18px var(--paper),0 0 2px var(--paper)}
+#nvd .title h1{margin:0;font:400 clamp(2.6rem,7vw,5.4rem)/.98 var(--serif);letter-spacing:-.015em}
+#nvd .title p{margin:.9rem 0 0;font-size:1.05rem;color:var(--ink-soft);max-width:30ch}
+#nvd .title .crumbs{margin:0 0 1rem;width:max-content;max-width:80vw;font-size:14px;color:var(--ink-soft);pointer-events:auto;display:flex;flex-wrap:wrap;gap:4px 10px}
+#nvd .title .crumbs a{text-decoration:none;color:inherit}
+#nvd .title .crumbs a:hover{text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .title .crumbs span{opacity:.6;font-size:13px}
+#nvd .title p{transition:opacity .3s}
+#nvd .title .origin{margin:1.1rem 0 0;font-size:.9rem;line-height:1.45;color:var(--ink-soft);max-width:34ch;pointer-events:auto}
+#nvd .title .origin a,#nvd .notes a,#nvd .nvd-foot a,#nvd .by-links a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .hint{position:absolute;left:50%;bottom:76px;transform:translateX(-50%);margin:0;font-size:.95rem;color:var(--ink-soft);transition:opacity .4s;z-index:3;white-space:nowrap;pointer-events:none;text-shadow:0 0 8px var(--paper),0 0 2px var(--paper)}
+#nvd .hint.gone{opacity:0}
+#nvd .gauge{position:absolute;left:var(--gut);right:var(--gut);bottom:28px;margin:0;padding:.5rem 0 0;list-style:none;display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--ink-soft);border-top:1px solid var(--rule);z-index:3}
+#nvd .gauge li[aria-current="step"]{color:var(--ink)}
+#nvd .gauge::before{content:"";position:absolute;left:0;top:-2px;height:3px;width:calc(var(--p,0)*100%);background:var(--ink)}
+#nvd .stage.split{display:grid;grid-template-columns:minmax(300px,36%) 1fr}
+#nvd .stage.split .title{position:relative;left:auto;top:auto;max-width:none;padding:clamp(110px,18vh,170px) 24px 0 var(--gut)}
+#nvd .stage.split .title h1{font-size:clamp(2.4rem,4.6vw,4.4rem);max-width:12ch}
+#nvd .stage.split .scene{position:relative;min-width:0;min-height:0;margin:clamp(92px,13vh,120px) var(--gut) 96px 0}
+#nvd .stage.split .gauge{left:calc(36% + 0px)}
+#nvd .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px;color:var(--ink)}
+#nvd .card .img{aspect-ratio:4/3;border-radius:6px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 9%,transparent) 0 8px,transparent 8px 16px)}
+#nvd .card .img.real{background:linear-gradient(160deg,color-mix(in srgb,var(--ink) 38%,var(--paper)),color-mix(in srgb,var(--ink) 62%,var(--paper)))}
+#nvd .card h3{margin:.55rem 0 0;font:400 clamp(1rem,1.6vw,1.3rem)/1.2 var(--serif)}
+#nvd .card p{margin:.15rem 0 0;font-size:.85rem;color:var(--ink-soft)}
+#nvd .pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--rule);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:.9rem;cursor:pointer}
+#nvd .pill:hover{border-color:var(--ink)}
+#nvd .pill[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#nvd .glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid color-mix(in srgb,var(--ink) 18%,transparent);border-radius:14px;box-shadow:0 6px 24px rgba(32,38,39,.12)}
+#nvd .notes{padding:6rem var(--gut) 5rem}
+#nvd .notes>*{max-width:62ch}
+#nvd .notes h2{font:400 clamp(1.8rem,3.6vw,2.6rem)/1.1 var(--serif);margin:0 0 1.2rem}
+#nvd .notes h3{font:600 1.05rem/1.3 var(--sans);margin:2.4rem 0 .4rem}
+#nvd .notes p{margin:0 0 1rem}
+#nvd .notes ul{margin:0 0 1rem;padding-left:1.1rem}
+#nvd .notes li{margin:.3rem 0}
+#nvd .facts{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.5rem;margin:1.6rem 0 0}
+#nvd .facts dt{color:var(--ink-soft)}
+#nvd .facts dd{margin:0}
+#nvd.is-calm *{transition-property:opacity!important}
+#nvd .marker{display:inline-block;width:.7em;height:.7em;background:var(--signal);border-radius:2px;margin-right:.4em;vertical-align:.02em}
+#nvd .byline{display:flex;align-items:center;gap:20px;margin:0 0 3rem}
+#nvd .byline img{width:100px;height:100px;border-radius:50%;object-fit:cover;flex:none}
+#nvd .by-name{font:400 1.5rem/1.1 var(--serif)}
+#nvd .by-role{margin-top:4px;font-size:14px;color:var(--ink-soft)}
+#nvd .by-links{display:flex;gap:10px;margin-top:8px;font-size:14px}
+#nvd .by-links span{opacity:.5}
+#nvd .pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:3.5rem 0 0;padding-top:1.2rem;border-top:1px solid var(--rule);font-size:.95rem;max-width:62ch}
+#nvd .pager a{text-decoration:none}
+#nvd .pager a:hover{text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .pager small{display:block;color:var(--ink-soft);font-size:.8rem}
+#nvd .nvd-foot{padding:2rem var(--gut) 3rem;color:var(--ink-soft);font-size:.95rem;border-top:1px solid var(--rule)}
+.section._100vh.game:has(#nvd){padding:0!important;min-height:0!important;height:auto!important;overflow:visible!important;background:transparent!important}
+.w-embed:has(#nvd){width:100%}
+@media screen and (max-width:767px){
+#nvd .calm{position:absolute;top:calc(64px + env(safe-area-inset-top,0px));right:12px}
+#nvd .title{top:clamp(110px,16vh,150px);padding-top:48px}
+#nvd .title .origin{font-size:.82rem}
+#nvd .title.dim p:not(.crumbs){opacity:0;pointer-events:none}
+#nvd .title p{font-size:.95rem;max-width:26ch}
+#nvd .stage.split{display:flex;flex-direction:column;height:auto;min-height:100svh}
+#nvd .stage.split .title{padding:150px 16px 0}
+#nvd .stage.split .title h1{font-size:clamp(2.3rem,10vw,3rem)}
+#nvd .stage.split .scene{flex:1;min-height:440px;margin:20px 16px 92px}
+#nvd .stage.split .gauge{left:16px;right:16px}
+#nvd .hint{bottom:70px;font-size:.85rem}
+}
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden}
+#nvd .table{position:absolute;inset:0;transform-origin:0 0;transition:transform .4s cubic-bezier(.3,.7,.2,1)}
+#nvd .ing{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:8px;background:none;border:0;padding:6px;cursor:pointer;transition:filter .4s,opacity .4s,transform .4s cubic-bezier(.3,.7,.2,1)}
+#nvd .ing .dot{display:block;width:calc(96px*var(--s));height:calc(96px*var(--s));border-radius:50%;background:color-mix(in srgb,var(--ink) calc(var(--t)*100%),var(--paper));box-shadow:0 10px 16px -8px rgba(0,0,0,.35);transition:transform .25s}
+#nvd .ing .dot.pear{border-radius:50% 50% 46% 46%/60% 60% 40% 40%}
+#nvd .ing .lab{font-size:.95rem;background:var(--paper);padding:0 8px;border-radius:999px}
+#nvd .ing:hover .dot{transform:translateY(-4px)}
+#nvd .scene.open .ing{filter:blur(3px);opacity:.3;pointer-events:none}
+#nvd .scene.open .ing.on{filter:none;opacity:1}
+#nvd .scene.open .ing.on .lab{opacity:0}
+#nvd .fanhead{position:absolute;left:12px;top:12px;right:12px;z-index:5;display:flex;align-items:center;gap:14px;padding:8px;flex-wrap:wrap}
+#nvd .fanhead span{font:400 1.25rem/1.1 var(--serif)}
+#nvd .fan{position:absolute;left:50%;top:74%;margin:0;padding:0;list-style:none;z-index:4;width:0;height:0}
+#nvd .fan li{position:absolute;left:0;top:0}
+#nvd .fan .card{display:block;width:var(--fw,120px);text-align:left;cursor:pointer;
+transform:translate(-50%,-50%) translate(var(--fx),var(--fy)) rotate(var(--a));
+box-shadow:0 2px 4px rgba(0,0,0,.08);transition:transform .32s cubic-bezier(.34,1.56,.64,1),opacity .25s,box-shadow .2s;transition-delay:calc(var(--i)*25ms)}
+#nvd .fan.closed .card{transform:translate(-50%,-50%) scale(.4);opacity:0}
+#nvd .fan .card .img{display:block;aspect-ratio:4/3;border-radius:6px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 9%,transparent) 0 8px,transparent 8px 16px)}
+#nvd .fan .card h3{font-size:1rem}
+#nvd .fan .card:hover,#nvd .fan .card:focus-visible,#nvd .fan .card[aria-pressed="true"]{transform:translate(-50%,-50%) translate(var(--fx),calc(var(--fy) - 14px)) rotate(var(--a));box-shadow:0 22px 30px -10px rgba(0,0,0,.35);transition-delay:0s}
+#nvd .picked{position:absolute;left:12px;right:12px;bottom:10px;margin:0;text-align:center;font-size:.9rem;color:var(--ink-soft);z-index:5}
+#nvd.is-calm .table,#nvd.is-calm .ing,#nvd.is-calm .fan .card{transition:opacity .3s!important}
+#nvd.is-calm .scene.open .ing{filter:none;opacity:.15}
+#nvd.is-calm .fan.closed .card{transform:translate(-50%,-50%) translate(var(--fx),var(--fy)) rotate(var(--a))}
+@media (max-width:767px){#nvd .fan .card{--fw:84px;padding:5px}#nvd .fan .card h3{font-size:.8rem}#nvd .ing .dot{width:calc(70px*var(--s));height:calc(70px*var(--s))}#nvd .ing .lab{font-size:.85rem}#nvd .fanhead{flex-wrap:nowrap;gap:8px}#nvd .fanhead span{font-size:1rem}#nvd .fanhead .pill{font-size:.8rem;padding:0 10px}}
+#nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
+</head>
+<body>
+<div id="nvd" data-pattern="p02"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="stage solo split" id="demo" aria-label="Live demo"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Focus and fan</h1><p>Ingredients lie on the table. Pick one and the view dives onto it while its recipes fan out around it like a hand of cards.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the things on the table are ingredients.</p></div><div class="scene" id="scene">
+<div class="table" id="table">
+<button class="ing" type="button" data-id="pumpkin" style="--x:30%;--y:58%;--s:1.15;--t:.42"><span class="dot"></span><span class="lab">Pumpkin</span></button>
+<button class="ing" type="button" data-id="pear" style="--x:62%;--y:30%;--s:.9;--t:.3"><span class="dot pear"></span><span class="lab">Pear</span></button>
+<button class="ing" type="button" data-id="chestnut" style="--x:78%;--y:66%;--s:.75;--t:.62"><span class="dot"></span><span class="lab">Chestnut</span></button>
+<button class="ing" type="button" data-id="apple" style="--x:20%;--y:22%;--s:.85;--t:.5"><span class="dot"></span><span class="lab">Apple</span></button>
+<button class="ing" type="button" data-id="lemon" style="--x:48%;--y:80%;--s:.8;--t:.22"><span class="dot"></span><span class="lab">Lemon</span></button>
+<button class="ing" type="button" data-id="fig" style="--x:86%;--y:20%;--s:.7;--t:.7"><span class="dot"></span><span class="lab">Fig</span></button>
+</div>
+<div class="fanhead glass" id="fanhead" hidden><button class="pill" type="button" id="back">← All ingredients</button><span id="fanname" aria-live="polite"></span></div>
+<ul class="fan" data-for="pumpkin" hidden aria-label="Pumpkin recipes"><li><button class="card" type="button"><span class="img"></span><h3>Pumpkin pie</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Pumpkin soup for St Martin</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Tortelli di zucca</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Kabocha no nimono</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Horchata de pepita</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Hobak sikhye</h3></button></li></ul>
+<ul class="fan" data-for="pear" hidden aria-label="Pear recipes"><li><button class="card" type="button"><span class="img"></span><h3>Pear tart</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Poached pears</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Pear and chestnut cake</h3></button></li></ul>
+<ul class="fan" data-for="chestnut" hidden aria-label="Chestnut recipes"><li><button class="card" type="button"><span class="img"></span><h3>Castagnaccio</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Monte Bianco</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Chestnut soup</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Marrons glacés</h3></button></li></ul>
+<ul class="fan" data-for="apple" hidden aria-label="Apple recipes"><li><button class="card" type="button"><span class="img"></span><h3>Tarte Tatin</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Apple pie</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Apfelstrudel</h3></button></li></ul>
+<ul class="fan" data-for="lemon" hidden aria-label="Lemon recipes"><li><button class="card" type="button"><span class="img"></span><h3>Lemon tart</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Lemon curd</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Preserved lemons</h3></button></li></ul>
+<ul class="fan" data-for="fig" hidden aria-label="Fig recipes"><li><button class="card" type="button"><span class="img"></span><h3>Fig and walnut bread</h3></button></li><li><button class="card" type="button"><span class="img"></span><h3>Roasted figs</h3></button></li></ul>
+<p class="picked" id="picked" aria-live="polite"></p>
+</div>
+<p class="hint" id="hint">Pick an ingredient</p></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Nothing jumped. The ingredient you picked travelled to the centre, everything else blurred, paled and drifted outwards, and the recipes came out of it in an arc. The step back works the same way in reverse, with the button, the Esc key or the browser back button.</p><p>The fan is a list in disguise. Tab through it and the cards come in reading order, each one a real button with a real name. Hover or focus lifts a card, and its shadow drifts away from it, the way a card leaves a table.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are pumpkins, pears and chestnuts. The patterns themselves are general: any set of things with children works, a shelf of topics and their articles, a team and its projects.</p><h3>The illusion</h3><p>Depth of field: only the plane you chose stays sharp, so the eye reads everything blurred as further away. Shadow separation: when something lifts, its shadow drifts, grows and softens. A small overshoot when the cards land gives them weight.</p><h3>The rules it follows</h3><ul><li>One gesture, one meaning: a click on an ingredient always means look closer.</li><li>There is always a way back: a labelled button, Esc and the browser back button.</li><li>Every place has its own address. The URL ends in the ingredient, so a shared link opens the same fan.</li><li>The fan keeps keyboard order and readable names.</li><li>Motion lasts under half a second and is never needed to read anything.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the focus but drops the travel. The other ingredients fade, the cards appear in place, nothing flies. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P2 of 14, depth you can hold</dd><dt>Gesture</dt><dd>Click or tap one ingredient, Esc or Back to step out</dd><dt>Illusion</dt><dd>Focus and depth of field, shadow separation, inertia</dd><dt>Built with</dt><dd>Plain HTML buttons and CSS transforms, about 120 lines of JavaScript</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>2–3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: gray circles stand in for the painted ingredient cut-outs</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p01-flight-through-time/index.html" rel="prev"><small>Previous, P1</small>Flight through time</a><a href="../p03-semantic-zoom/index.html" rel="next" style="text-align:right"><small>Next, P3</small>Semantic zoom</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p02-focus-and-fan">GitHub</a>.</footer><script>
+(() => {
+/* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
+const NVD = (() => {
+  const root = document.getElementById('nvd');
+  const btn = document.getElementById('calm');
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let calm = mq.matches;
+  try { const s = localStorage.getItem('depth-calm'); if (s !== null) calm = s === '1'; } catch (e) {}
+  const calmFns = [], themeFns = [];
+  const col = {};
+  const apply = () => {
+    btn.setAttribute('aria-pressed', String(calm));
+    root.classList.toggle('is-calm', calm);
+    calmFns.forEach(f => f(calm));
+  };
+  btn.addEventListener('click', () => {
+    calm = !calm;
+    try { localStorage.setItem('depth-calm', calm ? '1' : '0'); } catch (e) {}
+    apply();
+  });
+  mq.addEventListener?.('change', e => {
+    try { if (localStorage.getItem('depth-calm') !== null) return; } catch (_) {}
+    calm = e.matches; apply();
+  });
+  const read = () => {
+    const s = getComputedStyle(root);
+    for (const k of ['ink', 'paper', 'ink-soft', 'rule', 'signal', 'signal-text', 'card']) col[k] = s.getPropertyValue('--' + k).trim();
+    themeFns.forEach(f => f(col));
+  };
+  addEventListener('nv:theme', read);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', read);
+  new MutationObserver(read).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-nv'] });
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = t => 0.5 - 0.5 * Math.cos(Math.PI * clamp(t));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const hex = h => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map(c => c + c).join(''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); };
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',')})`; };
+  const seeded = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+  /* scroll progress through a tall section, always 1:1 with the scroll */
+  const progress = el => { const r = el.getBoundingClientRect(); const span = r.height - innerHeight; return span > 0 ? clamp(-r.top / span) : 0; };
+  const onScroll = fn => {
+    let busy = false;
+    addEventListener('scroll', () => { if (busy) return; busy = true; requestAnimationFrame(() => { busy = false; fn(); }); }, { passive: true });
+    addEventListener('resize', fn);
+  };
+  /* scroll the page so a track sits at progress p (used by skip buttons and scrubbers) */
+  const scrollToProgress = (el, p, smooth) => {
+    const top = el.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + (el.offsetHeight - innerHeight) * clamp(p), behavior: smooth && !calm ? 'smooth' : 'auto' });
+  };
+  const hint = document.getElementById('hint');
+  const hintGone = () => hint && hint.classList.add('gone');
+  const gauge = root.querySelector('.gauge');
+  const step = (i, p) => {
+    if (!gauge) return;
+    gauge.querySelectorAll('li').forEach((li, k) => k === i ? li.setAttribute('aria-current', 'step') : li.removeAttribute('aria-current'));
+    if (p !== undefined) gauge.style.setProperty('--p', clamp(p).toFixed(4));
+  };
+  /* a crisp canvas that redraws on resize, theme and calm changes */
+  const canvas = (el, draw) => {
+    const ctx = el.getContext('2d'); const c = { ctx, W: 0, H: 0 };
+    c.redraw = () => draw(ctx, c.W, c.H);
+    c.size = () => {
+      const d = Math.min(devicePixelRatio || 1, 2);
+      c.W = el.clientWidth; c.H = el.clientHeight;
+      el.width = Math.round(c.W * d); el.height = Math.round(c.H * d);
+      ctx.setTransform(d, 0, 0, d, 0, 0); c.redraw();
+    };
+    addEventListener('resize', c.size); themeFns.push(c.redraw); calmFns.push(c.redraw);
+    return c;
+  };
+  /* the site hides the native cursor; make sure the custom one exists on this page */
+  setTimeout(() => {
+    if (document.getElementById('nv-cursor') || matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    const c = document.createElement('div'); c.id = 'nv-cursor'; c.innerHTML = '<div class="nv-cursor-core"></div>'; document.body.appendChild(c);
+    document.addEventListener('mousemove', ev => { c.style.transform = 'translate3d(' + ev.clientX + 'px,' + ev.clientY + 'px,0)'; }, { passive: true });
+    document.addEventListener('mouseover', ev => { if (ev.target.closest('a,button,input,[data-cursor="link"]')) c.classList.add('is-link'); });
+    document.addEventListener('mouseout', ev => { const t = ev.relatedTarget; if (!(t && t.closest && t.closest('a,button,input,[data-cursor="link"]'))) c.classList.remove('is-link'); });
+  }, 600);
+  /* on phones a full-bleed stage needs the room: the lede steps aside once the visitor is travelling */
+  const titleEl = root.querySelector('.stage:not(.split) .title');
+  const dim = on => titleEl && titleEl.classList.toggle('dim', !!on);
+  const ready = () => { read(); apply(); };
+  return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
+})();
+
+  const scene = document.getElementById('scene'), table = document.getElementById('table');
+  const ings = [...scene.querySelectorAll('.ing')];
+  const head = document.getElementById('fanhead'), nameEl = document.getElementById('fanname'), picked = document.getElementById('picked');
+  const fans = Object.fromEntries([...scene.querySelectorAll('.fan')].map(f => [f.dataset.for, f]));
+  let open = null;
+
+  const layoutFan = fan => {
+    const cards = [...fan.querySelectorAll('.card')], n = cards.length;
+    const mobile = scene.clientWidth < 520;
+    const R = mobile ? 132 : 215, cw = mobile ? 84 : 120;
+    // spread the cards along an arc above the ingredient, wide enough that no title is covered
+    const need = (cw + 22) / R, spread = Math.min(Math.PI * 1.04, need * (n - 1));
+    if (mobile && n > 3) {
+      // small screens: two rows of three instead of one crowded arc
+      cards.forEach((c, i) => {
+        const col = i % 3, row = Math.floor(i / 3);
+        c.style.setProperty('--fx', ((col - 1) * (cw + 8)).toFixed(1) + 'px');
+        c.style.setProperty('--fy', (-(row ? 58 : 172)).toFixed(1) + 'px');
+        c.style.setProperty('--a', ((col - 1) * 3) + 'deg'); c.style.setProperty('--i', i);
+      });
+      return;
+    }
+    cards.forEach((c, i) => {
+      const a = n === 1 ? 0 : -spread / 2 + spread * i / (n - 1);
+      c.style.setProperty('--fx', (Math.sin(a) * R).toFixed(1) + 'px');
+      c.style.setProperty('--fy', (-Math.cos(a) * R * 0.92 - (mobile ? 20 : 30)).toFixed(1) + 'px');
+      c.style.setProperty('--a', (a * 180 / Math.PI * 0.12).toFixed(2) + 'deg'); c.style.setProperty('--i', i);
+    });
+  };
+
+  function show(id, push) {
+    const ing = ings.find(b => b.dataset.id === id); if (!ing) return;
+    if (open) close(false, true);
+    open = id; NVD.hintGone();
+    ings.forEach(b => b.classList.toggle('on', b === ing));
+    scene.classList.add('open');
+    const W = scene.clientWidth, H = scene.clientHeight, s = 1.5, fy = W < 520 ? 0.84 : 0.74;
+    const ix = ing.offsetLeft, iy = ing.offsetTop - 6;
+    if (!NVD.calm) table.style.transform = `translate(${W * 0.5 - ix * s}px,${H * fy - iy * s}px) scale(${s})`;
+    else ing.style.transform = `translate(${W * 0.5 - ix}px,${H * fy - iy}px) translate(-50%,-50%)`;
+    ings.forEach(b => {
+      if (b === ing || NVD.calm) return;
+      const dx = b.offsetLeft - ix, dy = b.offsetTop - iy, m = Math.hypot(dx, dy) || 1;
+      b.style.transform = `translate(-50%,-50%) translate(${dx / m * 50}px,${dy / m * 50}px)`;
+    });
+    const fan = fans[id]; layoutFan(fan); fan.style.top = (fy * 100) + '%';
+    fan.hidden = false; fan.classList.add('closed');
+    requestAnimationFrame(() => requestAnimationFrame(() => fan.classList.remove('closed')));
+    head.hidden = false;
+    nameEl.textContent = `${ing.querySelector('.lab').textContent} · ${fan.children.length} recipes`;
+    picked.textContent = '';
+    if (push) history.pushState({ nvdFan: id }, '', '#' + id);
+    setTimeout(() => fan.querySelector('.card').focus({ preventScroll: true }), NVD.calm ? 50 : 420);
+  }
+  function close(push, quick) {
+    if (!open) return;
+    const id = open, fan = fans[id], ing = ings.find(b => b.dataset.id === id);
+    open = null;
+    fan.classList.add('closed');
+    fan.querySelectorAll('[aria-pressed]').forEach(c => c.removeAttribute('aria-pressed'));
+    setTimeout(() => { if (open !== id) fan.hidden = true; }, quick ? 0 : 350);
+    table.style.transform = '';
+    ings.forEach(b => { b.style.transform = ''; b.classList.remove('on'); });
+    scene.classList.remove('open'); head.hidden = true; picked.textContent = '';
+    if (push && location.hash === '#' + id) { if (history.state && history.state.nvdFan) history.back(); else history.replaceState(null, '', location.pathname + location.search); }
+    if (!quick) ing.focus({ preventScroll: true });
+  }
+  ings.forEach(b => b.addEventListener('click', () => show(b.dataset.id, true)));
+  document.getElementById('back').addEventListener('click', () => close(true));
+  scene.addEventListener('keydown', e => { if (e.key === 'Escape' && open) { e.preventDefault(); close(true); } });
+  scene.querySelectorAll('.fan .card').forEach(c => c.addEventListener('click', () => {
+    const was = c.getAttribute('aria-pressed') === 'true';
+    c.closest('.fan').querySelectorAll('[aria-pressed]').forEach(x => x.removeAttribute('aria-pressed'));
+    if (!was) { c.setAttribute('aria-pressed', 'true'); picked.textContent = `In the library a second click opens ${c.textContent.trim()}.`; }
+    else picked.textContent = '';
+  }));
+  addEventListener('popstate', () => {
+    const id = location.hash.slice(1);
+    if (fans[id]) { if (open !== id) show(id, false); } else if (open) close(false);
+  });
+  addEventListener('resize', () => { if (open) { const id = open; close(false, true); show(id, false); } });
+  NVD.ready();
+  const start = location.hash.slice(1);
+  if (fans[start]) show(start, false);
+
+})();
+</script></div>
+</body>
+</html>

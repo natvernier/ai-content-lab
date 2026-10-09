@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constellation · Depth patterns</title>
+<meta name="description" content="Every recipe is a star, placed by similarity, and clusters form by themselves. Drag the sky, hover a star to see its nearest neighbours, open a cluster, or search. A live graybox demo with a list view and a calm mode.">
+<meta property="og:title" content="Constellation · Depth patterns">
+<meta property="og:description" content="Every recipe is a star, placed by similarity, and clusters form by themselves. Drag the sky, hover a star to see its nearest neighbours, open a cluster, or search. A live graybox demo with a list view and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p09-constellation/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<style>#nvd{--paper:#f4f4f4;--ink:#202627;--ink-soft:#5a6264;--rule:#c9cdce;--signal:#67ff56;--signal-text:#1d8757;--glass:rgba(244,244,244,.72);--card:#fbfbfb;--serif:"TT Barrels",Georgia,serif;--sans:"Neue Hans Kendrick",system-ui,sans-serif;--gut:clamp(16px,6vw,96px)}
+@media (prefers-color-scheme:dark){:root:not([data-theme="light"]) #nvd{--paper:#1c2022;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--signal-text:#67ff56;--glass:rgba(28,32,34,.72);--card:#23292b;color-scheme:dark}}
+:root[data-theme="dark"] #nvd{--paper:#1c2022;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--signal-text:#67ff56;--glass:rgba(28,32,34,.72);--card:#23292b;color-scheme:dark}
+#nvd,#nvd *{box-sizing:border-box}
+#nvd [hidden]{display:none!important}
+#nvd{position:relative;margin:0;background:var(--paper);color:var(--ink);font:400 1.125rem/1.6 var(--sans);-webkit-font-smoothing:antialiased}
+#nvd h1,#nvd h2,#nvd h3{letter-spacing:normal;text-transform:none}
+#nvd a{color:inherit;text-underline-offset:.2em}
+#nvd button{font:inherit;color:inherit}
+#nvd :focus-visible{outline:3px solid var(--signal-text);outline-offset:3px;border-radius:4px}
+#nvd .skip{position:absolute;left:16px;top:-60px;z-index:30;background:var(--ink);color:var(--paper);padding:.5rem .9rem;border-radius:6px}
+#nvd .skip:focus{top:70px}
+#nvd .sr{position:absolute!important;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap}
+#nvd .calm{position:fixed;top:calc(12px + env(safe-area-inset-top,0px));right:152px;z-index:9990;display:inline-flex;align-items:center;gap:8px;height:44px;padding:0 14px 0 8px;border-radius:999px;background:rgba(244,244,244,.86);border:1px solid #b4c4c5;box-shadow:0 4px 14px rgba(32,38,39,.10);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);color:#2b3234;font:600 13px/1 var(--sans);cursor:pointer}
+html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#585e5e;color:#f4f4f4;box-shadow:0 4px 14px rgba(0,0,0,.30)}
+#nvd .calm .knob{width:34px;height:20px;border-radius:999px;background:var(--rule);position:relative;transition:background .2s}
+#nvd .calm .knob::after{content:"";position:absolute;top:3px;left:3px;width:14px;height:14px;border-radius:50%;background:var(--paper);transition:transform .2s}
+#nvd .calm[aria-pressed="true"] .knob{background:#67ff56}
+#nvd .calm[aria-pressed="true"] .knob::after{transform:translateX(14px);background:#2b3234}
+#nvd .track{position:relative}
+#nvd .stage{position:sticky;top:0;height:100vh;height:100svh;overflow:hidden}
+#nvd .stage.solo{position:relative}
+#nvd canvas.full{position:absolute;inset:0;width:100%;height:100%;display:block}
+#nvd .title{position:absolute;left:var(--gut);top:clamp(92px,16vh,150px);max-width:15ch;margin:0;pointer-events:none;z-index:4;text-shadow:0 0 10px var(--paper),0 0 18px var(--paper),0 0 2px var(--paper)}
+#nvd .title h1{margin:0;font:400 clamp(2.6rem,7vw,5.4rem)/.98 var(--serif);letter-spacing:-.015em}
+#nvd .title p{margin:.9rem 0 0;font-size:1.05rem;color:var(--ink-soft);max-width:30ch}
+#nvd .title .crumbs{margin:0 0 1rem;width:max-content;max-width:80vw;font-size:14px;color:var(--ink-soft);pointer-events:auto;display:flex;flex-wrap:wrap;gap:4px 10px}
+#nvd .title .crumbs a{text-decoration:none;color:inherit}
+#nvd .title .crumbs a:hover{text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .title .crumbs span{opacity:.6;font-size:13px}
+#nvd .title p{transition:opacity .3s}
+#nvd .title .origin{margin:1.1rem 0 0;font-size:.9rem;line-height:1.45;color:var(--ink-soft);max-width:34ch;pointer-events:auto}
+#nvd .title .origin a,#nvd .notes a,#nvd .nvd-foot a,#nvd .by-links a{color:var(--ink);text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .hint{position:absolute;left:50%;bottom:76px;transform:translateX(-50%);margin:0;font-size:.95rem;color:var(--ink-soft);transition:opacity .4s;z-index:3;white-space:nowrap;pointer-events:none;text-shadow:0 0 8px var(--paper),0 0 2px var(--paper)}
+#nvd .hint.gone{opacity:0}
+#nvd .gauge{position:absolute;left:var(--gut);right:var(--gut);bottom:28px;margin:0;padding:.5rem 0 0;list-style:none;display:flex;justify-content:space-between;gap:8px;font-size:.85rem;color:var(--ink-soft);border-top:1px solid var(--rule);z-index:3}
+#nvd .gauge li[aria-current="step"]{color:var(--ink)}
+#nvd .gauge::before{content:"";position:absolute;left:0;top:-2px;height:3px;width:calc(var(--p,0)*100%);background:var(--ink)}
+#nvd .stage.split{display:grid;grid-template-columns:minmax(300px,36%) 1fr}
+#nvd .stage.split .title{position:relative;left:auto;top:auto;max-width:none;padding:clamp(110px,18vh,170px) 24px 0 var(--gut)}
+#nvd .stage.split .title h1{font-size:clamp(2.4rem,4.6vw,4.4rem);max-width:12ch}
+#nvd .stage.split .scene{position:relative;min-width:0;min-height:0;margin:clamp(92px,13vh,120px) var(--gut) 96px 0}
+#nvd .stage.split .gauge{left:calc(36% + 0px)}
+#nvd .card{background:var(--card);border:1px solid var(--rule);border-radius:10px;padding:10px;color:var(--ink)}
+#nvd .card .img{aspect-ratio:4/3;border-radius:6px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 9%,transparent) 0 8px,transparent 8px 16px)}
+#nvd .card .img.real{background:linear-gradient(160deg,color-mix(in srgb,var(--ink) 38%,var(--paper)),color-mix(in srgb,var(--ink) 62%,var(--paper)))}
+#nvd .card h3{margin:.55rem 0 0;font:400 clamp(1rem,1.6vw,1.3rem)/1.2 var(--serif)}
+#nvd .card p{margin:.15rem 0 0;font-size:.85rem;color:var(--ink-soft)}
+#nvd .pill{display:inline-flex;align-items:center;gap:8px;min-height:40px;padding:0 14px;border-radius:999px;border:1px solid var(--rule);background:var(--glass);backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);font-size:.9rem;cursor:pointer}
+#nvd .pill:hover{border-color:var(--ink)}
+#nvd .pill[aria-pressed="true"]{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+#nvd .glass{background:var(--glass);backdrop-filter:blur(14px) saturate(1.2);-webkit-backdrop-filter:blur(14px) saturate(1.2);border:1px solid color-mix(in srgb,var(--ink) 18%,transparent);border-radius:14px;box-shadow:0 6px 24px rgba(32,38,39,.12)}
+#nvd .notes{padding:6rem var(--gut) 5rem}
+#nvd .notes>*{max-width:62ch}
+#nvd .notes h2{font:400 clamp(1.8rem,3.6vw,2.6rem)/1.1 var(--serif);margin:0 0 1.2rem}
+#nvd .notes h3{font:600 1.05rem/1.3 var(--sans);margin:2.4rem 0 .4rem}
+#nvd .notes p{margin:0 0 1rem}
+#nvd .notes ul{margin:0 0 1rem;padding-left:1.1rem}
+#nvd .notes li{margin:.3rem 0}
+#nvd .facts{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.5rem;margin:1.6rem 0 0}
+#nvd .facts dt{color:var(--ink-soft)}
+#nvd .facts dd{margin:0}
+#nvd.is-calm *{transition-property:opacity!important}
+#nvd .marker{display:inline-block;width:.7em;height:.7em;background:var(--signal);border-radius:2px;margin-right:.4em;vertical-align:.02em}
+#nvd .byline{display:flex;align-items:center;gap:20px;margin:0 0 3rem}
+#nvd .byline img{width:100px;height:100px;border-radius:50%;object-fit:cover;flex:none}
+#nvd .by-name{font:400 1.5rem/1.1 var(--serif)}
+#nvd .by-role{margin-top:4px;font-size:14px;color:var(--ink-soft)}
+#nvd .by-links{display:flex;gap:10px;margin-top:8px;font-size:14px}
+#nvd .by-links span{opacity:.5}
+#nvd .pager{display:flex;justify-content:space-between;gap:1rem;flex-wrap:wrap;margin:3.5rem 0 0;padding-top:1.2rem;border-top:1px solid var(--rule);font-size:.95rem;max-width:62ch}
+#nvd .pager a{text-decoration:none}
+#nvd .pager a:hover{text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px}
+#nvd .pager small{display:block;color:var(--ink-soft);font-size:.8rem}
+#nvd .nvd-foot{padding:2rem var(--gut) 3rem;color:var(--ink-soft);font-size:.95rem;border-top:1px solid var(--rule)}
+.section._100vh.game:has(#nvd){padding:0!important;min-height:0!important;height:auto!important;overflow:visible!important;background:transparent!important}
+.w-embed:has(#nvd){width:100%}
+@media screen and (max-width:767px){
+#nvd .calm{position:absolute;top:calc(64px + env(safe-area-inset-top,0px));right:12px}
+#nvd .title{top:clamp(110px,16vh,150px);padding-top:48px}
+#nvd .title .origin{font-size:.82rem}
+#nvd .title.dim p:not(.crumbs){opacity:0;pointer-events:none}
+#nvd .title p{font-size:.95rem;max-width:26ch}
+#nvd .stage.split{display:flex;flex-direction:column;height:auto;min-height:100svh}
+#nvd .stage.split .title{padding:150px 16px 0}
+#nvd .stage.split .title h1{font-size:clamp(2.3rem,10vw,3rem)}
+#nvd .stage.split .scene{flex:1;min-height:440px;margin:20px 16px 92px}
+#nvd .stage.split .gauge{left:16px;right:16px}
+#nvd .hint{bottom:70px;font-size:.85rem}
+}
+#nvd .scene.night{--paper:#14181a;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--card:#1f2527;--glass:rgba(28,32,34,.72);background:#14181a;color:#eef0f0;border-radius:18px;overflow:hidden;touch-action:pan-y;color-scheme:dark}
+#nvd #sky{cursor:grab}
+#nvd #sky:active{cursor:grabbing}
+#nvd .clabels button{position:absolute;transform:translate(-50%,-50%);background:rgba(20,24,26,.55);border:1px solid #3a4143;color:#eef0f0;border-radius:999px;padding:4px 12px;font-size:.85rem;cursor:pointer;white-space:nowrap}
+#nvd .clabels button:hover{border-color:#67ff56}
+#nvd .tip{position:absolute;z-index:6;padding:10px 12px;max-width:240px;pointer-events:none;font-size:.85rem;line-height:1.35}
+#nvd .tip b{display:block;font:400 1.15rem/1.15 var(--serif)}
+#nvd .tip small{color:var(--ink-soft)}
+#nvd .sbar{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:6px;padding:6px;z-index:7}
+#nvd .sbar input{flex:1;min-width:0;height:40px;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);padding:0 14px;font:inherit;font-size:.95rem}
+#nvd .sbar .pill{flex:none}
+#nvd #zi,#nvd #zo{width:40px;justify-content:center;padding:0;font-size:1.2rem}
+#nvd .cpanel,#nvd .slist{position:absolute;z-index:7;right:12px;top:70px;bottom:12px;width:min(300px,calc(100% - 24px));padding:14px;overflow:auto}
+#nvd .cpanel h3{margin:12px 0 6px;font:400 1.6rem/1.1 var(--serif)}
+#nvd .cpanel ul,#nvd .slist ul{list-style:none;margin:0 0 10px;padding:0}
+#nvd .cpanel li,#nvd .slist li{padding:6px 0;border-bottom:1px solid var(--rule);font-size:.95rem;display:flex;justify-content:space-between;gap:8px}
+#nvd .cpanel li small,#nvd .slist li small{color:var(--ink-soft)}
+#nvd .slist h4{margin:10px 0 2px;font:600 .85rem/1.2 var(--sans);color:var(--ink-soft)}
+@media (max-width:767px){#nvd .cpanel,#nvd .slist{left:12px;width:auto;top:auto;max-height:55%}#nvd .clabels button{font-size:.75rem;padding:3px 9px}}
+#nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
+</head>
+<body>
+<div id="nvd" data-pattern="p09"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="stage solo split" id="demo" aria-label="Live demo"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Constellation</h1><p>Every recipe is a star, placed by how close it is to the others. Clusters form by themselves: chestnuts, citrus, warm drinks.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the stars are recipes.</p></div><div class="scene night" id="scene">
+<canvas id="sky" class="full" tabindex="0" aria-label="Star map of recipes. Arrow keys move the sky, Enter steps from star to star, plus and minus zoom."></canvas>
+<div class="clabels" id="clabels"></div>
+<div class="tip glass" id="tip" hidden></div>
+<div class="sbar glass"><label class="sr" for="find">Search recipes</label><input id="find" type="search" placeholder="Search" autocomplete="off"><button class="pill" type="button" id="listbtn" aria-pressed="false" aria-controls="slist">List</button><button class="pill" type="button" id="zo" aria-label="Zoom out">−</button><button class="pill" type="button" id="zi" aria-label="Zoom in">+</button></div>
+<div class="cpanel glass" id="cpanel" hidden><button class="pill" type="button" id="cback">← Whole sky</button><h3 id="cname"></h3><ul id="clist"></ul></div>
+<div class="slist glass" id="slist" hidden></div>
+<p class="sr" id="live" aria-live="polite"></p>
+</div>
+<p class="hint" id="hint">Drag the sky, hover a star, open a cluster</p></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Each star is a recipe. Recipes that share taste, ingredients and season sit close together, so clusters appear without anyone drawing them. Hover a star and fine lines reach to its nearest neighbours, so you see why it sits where it sits.</p><p>Brightness carries meaning: what was already cooked shines, what comes next glows faintly, the backlog is just visible. Drag the sky and the stars move at three different speeds, which is all it takes for a flat sky to look deep.</p><p>The map is never the only way in. The search field and the list show the same recipes as plain text.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are recipes grouped by taste and season. The patterns themselves are general: any collection with a notion of similarity works, articles, songs, products, people with skills. In a real build the positions come from embeddings, computed once when a new item is added.</p><h3>The illusion</h3><p>Depth through brightness and size: bright and large reads as near, faint and small as far. Parallax between three star layers turns the flat sky into a volume as soon as it moves.</p><h3>The rules it follows</h3><ul><li>Search and a list view are always there. The map is an extra, never the only way.</li><li>Every cluster has a readable label, and every label is a button.</li><li>A plain scroll still scrolls the page. Zoom needs a pinch, Ctrl with scroll, or the buttons.</li><li>Brightness has one meaning: how close a recipe is to being cooked.</li><li>Everything is reachable with the keyboard: arrow keys move the sky, Enter steps from star to star.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the sky still. Panning and zooming jump straight to the new view instead of gliding, and the stars stop drifting with the layers. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P9 of 14, depth you only feel</dd><dt>Gesture</dt><dd>Drag to move the sky, hover or tap a star, open a cluster, pinch or the plus and minus buttons to zoom</dd><dt>Illusion</dt><dd>Depth through brightness and size, parallax between star layers</dd><dt>Built with</dt><dd>One canvas, HTML labels, search and list, about 200 lines of plain JavaScript</dd><dt>Effort</dt><dd>Medium to large</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: hand-placed positions stand in for positions computed from embeddings</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p08-anamorphic-arrival/index.html" rel="prev"><small>Previous, P8</small>Anamorphic arrival</a><a href="../p10-time-scrub/index.html" rel="next" style="text-align:right"><small>Next, P10</small>Time scrub</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p09-constellation">GitHub</a>.</footer><script>
+(() => {
+/* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
+const NVD = (() => {
+  const root = document.getElementById('nvd');
+  const btn = document.getElementById('calm');
+  const mq = matchMedia('(prefers-reduced-motion: reduce)');
+  let calm = mq.matches;
+  try { const s = localStorage.getItem('depth-calm'); if (s !== null) calm = s === '1'; } catch (e) {}
+  const calmFns = [], themeFns = [];
+  const col = {};
+  const apply = () => {
+    btn.setAttribute('aria-pressed', String(calm));
+    root.classList.toggle('is-calm', calm);
+    calmFns.forEach(f => f(calm));
+  };
+  btn.addEventListener('click', () => {
+    calm = !calm;
+    try { localStorage.setItem('depth-calm', calm ? '1' : '0'); } catch (e) {}
+    apply();
+  });
+  mq.addEventListener?.('change', e => {
+    try { if (localStorage.getItem('depth-calm') !== null) return; } catch (_) {}
+    calm = e.matches; apply();
+  });
+  const read = () => {
+    const s = getComputedStyle(root);
+    for (const k of ['ink', 'paper', 'ink-soft', 'rule', 'signal', 'signal-text', 'card']) col[k] = s.getPropertyValue('--' + k).trim();
+    themeFns.forEach(f => f(col));
+  };
+  addEventListener('nv:theme', read);
+  matchMedia('(prefers-color-scheme: dark)').addEventListener?.('change', read);
+  new MutationObserver(read).observe(document.documentElement, { attributes: true, attributeFilter: ['data-theme', 'data-nv'] });
+
+  const clamp = (v, a = 0, b = 1) => Math.min(b, Math.max(a, v));
+  const ease = t => 0.5 - 0.5 * Math.cos(Math.PI * clamp(t));
+  const lerp = (a, b, t) => a + (b - a) * t;
+  const hex = h => { h = h.replace('#', ''); if (h.length === 3) h = [...h].map(c => c + c).join(''); return [0, 2, 4].map(i => parseInt(h.slice(i, i + 2), 16)); };
+  const mix = (a, b, t) => { const A = hex(a), B = hex(b); return `rgb(${A.map((v, i) => Math.round(v + (B[i] - v) * t)).join(',')})`; };
+  const seeded = s => () => (s = (s * 16807) % 2147483647) / 2147483647;
+  /* scroll progress through a tall section, always 1:1 with the scroll */
+  const progress = el => { const r = el.getBoundingClientRect(); const span = r.height - innerHeight; return span > 0 ? clamp(-r.top / span) : 0; };
+  const onScroll = fn => {
+    let busy = false;
+    addEventListener('scroll', () => { if (busy) return; busy = true; requestAnimationFrame(() => { busy = false; fn(); }); }, { passive: true });
+    addEventListener('resize', fn);
+  };
+  /* scroll the page so a track sits at progress p (used by skip buttons and scrubbers) */
+  const scrollToProgress = (el, p, smooth) => {
+    const top = el.getBoundingClientRect().top + scrollY;
+    scrollTo({ top: top + (el.offsetHeight - innerHeight) * clamp(p), behavior: smooth && !calm ? 'smooth' : 'auto' });
+  };
+  const hint = document.getElementById('hint');
+  const hintGone = () => hint && hint.classList.add('gone');
+  const gauge = root.querySelector('.gauge');
+  const step = (i, p) => {
+    if (!gauge) return;
+    gauge.querySelectorAll('li').forEach((li, k) => k === i ? li.setAttribute('aria-current', 'step') : li.removeAttribute('aria-current'));
+    if (p !== undefined) gauge.style.setProperty('--p', clamp(p).toFixed(4));
+  };
+  /* a crisp canvas that redraws on resize, theme and calm changes */
+  const canvas = (el, draw) => {
+    const ctx = el.getContext('2d'); const c = { ctx, W: 0, H: 0 };
+    c.redraw = () => draw(ctx, c.W, c.H);
+    c.size = () => {
+      const d = Math.min(devicePixelRatio || 1, 2);
+      c.W = el.clientWidth; c.H = el.clientHeight;
+      el.width = Math.round(c.W * d); el.height = Math.round(c.H * d);
+      ctx.setTransform(d, 0, 0, d, 0, 0); c.redraw();
+    };
+    addEventListener('resize', c.size); themeFns.push(c.redraw); calmFns.push(c.redraw);
+    return c;
+  };
+  /* the site hides the native cursor; make sure the custom one exists on this page */
+  setTimeout(() => {
+    if (document.getElementById('nv-cursor') || matchMedia('(hover: none), (pointer: coarse)').matches) return;
+    const c = document.createElement('div'); c.id = 'nv-cursor'; c.innerHTML = '<div class="nv-cursor-core"></div>'; document.body.appendChild(c);
+    document.addEventListener('mousemove', ev => { c.style.transform = 'translate3d(' + ev.clientX + 'px,' + ev.clientY + 'px,0)'; }, { passive: true });
+    document.addEventListener('mouseover', ev => { if (ev.target.closest('a,button,input,[data-cursor="link"]')) c.classList.add('is-link'); });
+    document.addEventListener('mouseout', ev => { const t = ev.relatedTarget; if (!(t && t.closest && t.closest('a,button,input,[data-cursor="link"]'))) c.classList.remove('is-link'); });
+  }, 600);
+  /* on phones a full-bleed stage needs the room: the lede steps aside once the visitor is travelling */
+  const titleEl = root.querySelector('.stage:not(.split) .title');
+  const dim = on => titleEl && titleEl.classList.toggle('dim', !!on);
+  const ready = () => { read(); apply(); };
+  return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
+})();
+
+  const scene = document.getElementById('scene'), canvasEl = document.getElementById('sky');
+  const tip = document.getElementById('tip'), live = document.getElementById('live');
+  const C = { chestnut: ['Chestnut', -0.5, -0.2], pumpkin: ['Pumpkin', 0.05, -0.5], citrus: ['Citrus', 0.6, -0.25], shellfish: ['Shellfish', 0.4, 0.5], drinks: ['Warm drinks', -0.42, 0.48] };
+  const R = { chestnut: [['Castagnaccio', 's'], ['Monte Bianco', 'n'], ['Chestnut soup', 's'], ['Marrons glacés', 'b'], ['Chestnut gnocchi', 'b']],
+    pumpkin: [['Pumpkin pie', 's'], ['Tortelli di zucca', 'n'], ['Kabocha no nimono', 'b'], ['Pumpkin soup', 's'], ['Hobak sikhye', 'b']],
+    citrus: [['Lemon tart', 's'], ['Lemon curd', 'n'], ['Blood orange salad', 'b'], ['Preserved lemons', 'b'], ['Yuzu posset', 'b']],
+    shellfish: [['Moules marinières', 's'], ['Clam linguine', 'n'], ['Prawn bisque', 'b'], ['Crab cakes', 'b']],
+    drinks: [['Hot chocolate', 's'], ['Mulled wine', 'n'], ['Masala chai', 'b'], ['Horchata de pepita', 'b']] };
+  const STATE = { s: 'Served', n: 'Next up', b: 'Backlog' };
+  const rnd = NVD.seeded(23);
+  const stars = [];
+  for (const [c, list] of Object.entries(R)) list.forEach(([name, st], i) => {
+    const a = i / list.length * Math.PI * 2 + rnd(), r = 0.07 + rnd() * 0.11;
+    stars.push({ name, st, c, x: C[c][1] + Math.cos(a) * r, y: C[c][2] + Math.sin(a) * r * 0.8, d: 1 });
+  });
+  stars.forEach(s => { s.near = stars.filter(o => o !== s).sort((a, b) => Math.hypot(a.x - s.x, a.y - s.y) - Math.hypot(b.x - s.x, b.y - s.y)).slice(0, 2); });
+  const dust = Array.from({ length: 220 }, () => ({ x: rnd() * 3 - 1.5, y: rnd() * 3 - 1.5, d: [0.55, 0.8, 1.35][Math.floor(rnd() * 3)], r: 0.4 + rnd() * 0.9 }));
+
+  // labels and list are real text
+  const lab = document.getElementById('clabels');
+  lab.innerHTML = Object.entries(C).map(([k, v]) => `<button type="button" data-c="${k}">${v[0]}</button>`).join('');
+  document.getElementById('slist').innerHTML = '<h3 class="sr">All recipes</h3>' + Object.entries(R).map(([k, l]) => `<h4>${C[k][0]}</h4><ul>${l.map(([n, s]) => `<li>${n}<small>${STATE[s]}</small></li>`).join('')}</ul>`).join('');
+
+  let cam = { x: 0, y: 0, z: 1 }, tgt = { x: 0, y: 0, z: 1 }, hover = null, query = '', openC = null, raf = 0;
+  const S = () => Math.min(sky.W, sky.H) * 0.62;
+  const toScreen = (s, d = 1) => ({ x: sky.W / 2 + (s.x - cam.x * d) * S() * cam.z, y: sky.H * 0.55 + (s.y - cam.y * d) * S() * cam.z });
+  const sky = NVD.canvas(canvasEl, (ctx, W, H) => {
+    ctx.clearRect(0, 0, W, H);
+    for (const p of dust) { const q = toScreen(p, NVD.calm ? 1 : p.d); if (q.x < -5 || q.y < -5 || q.x > W + 5 || q.y > H + 5) continue; ctx.globalAlpha = 0.18 + 0.25 * (p.d - 0.5); ctx.fillStyle = '#eef0f0'; ctx.beginPath(); ctx.arc(q.x, q.y, p.r * p.d, 0, 6.283); ctx.fill(); }
+    if (hover) {
+      const a = toScreen(hover); ctx.strokeStyle = 'rgba(238,240,240,.45)'; ctx.lineWidth = 1;
+      hover.near.forEach(n => { const b = toScreen(n); ctx.globalAlpha = 1; ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke(); });
+    }
+    for (const s of stars) {
+      const q = toScreen(s), match = query && s.name.toLowerCase().includes(query);
+      const r = (s.st === 's' ? 3.4 : s.st === 'n' ? 2.4 : 1.6) * Math.sqrt(cam.z);
+      ctx.globalAlpha = query && !match ? 0.18 : s.st === 's' ? 1 : s.st === 'n' ? 0.75 : 0.45;
+      if (s.st !== 'b') { const g = ctx.createRadialGradient(q.x, q.y, 0, q.x, q.y, r * 4); g.addColorStop(0, 'rgba(238,240,240,.5)'); g.addColorStop(1, 'rgba(238,240,240,0)'); ctx.fillStyle = g; ctx.beginPath(); ctx.arc(q.x, q.y, r * 4, 0, 6.283); ctx.fill(); }
+      ctx.fillStyle = '#eef0f0'; ctx.beginPath(); ctx.arc(q.x, q.y, r, 0, 6.283); ctx.fill();
+      if (match || s === hover) { ctx.globalAlpha = 1; ctx.strokeStyle = '#67ff56'; ctx.lineWidth = 2; ctx.beginPath(); ctx.arc(q.x, q.y, r + 5, 0, 6.283); ctx.stroke(); }
+    }
+    ctx.globalAlpha = 1;
+    lab.querySelectorAll('button').forEach(b => { const c = C[b.dataset.c]; const q = toScreen({ x: c[1], y: c[2] - 0.2 }); b.style.left = q.x + 'px'; b.style.top = q.y + 'px'; b.style.visibility = q.x < 0 || q.x > W || q.y < 60 || q.y > H ? 'hidden' : 'visible'; });
+    if (hover) {
+      const q = toScreen(hover);
+      tip.hidden = false;
+      tip.innerHTML = `<b>${hover.name}</b><small>${STATE[hover.st]} · ${C[hover.c][0]}</small><br>Nearest: ${hover.near.map(n => n.name).join(', ')}`;
+      const tw = tip.offsetWidth, left = q.x + 14 + tw > W ? q.x - 14 - tw : q.x + 14;
+      tip.style.left = Math.max(8, left) + 'px'; tip.style.top = Math.min(H - tip.offsetHeight - 8, Math.max(64, q.y - 20)) + 'px';
+    } else tip.hidden = true;
+  });
+  const glide = () => {
+    const k = NVD.calm ? 1 : 0.16;
+    cam.x += (tgt.x - cam.x) * k; cam.y += (tgt.y - cam.y) * k; cam.z += (tgt.z - cam.z) * k;
+    sky.redraw();
+    if (Math.abs(tgt.x - cam.x) + Math.abs(tgt.y - cam.y) + Math.abs(tgt.z - cam.z) > 0.0005) raf = requestAnimationFrame(glide); else { cam = { ...tgt }; sky.redraw(); raf = 0; }
+  };
+  const go = (x, y, z) => { tgt = { x, y, z: NVD.clamp(z, 0.7, 3.2) }; NVD.hintGone(); if (!raf) raf = requestAnimationFrame(glide); };
+
+  const pick = (mx, my) => { let best = null, bd = 16; for (const s of stars) { const q = toScreen(s), d = Math.hypot(q.x - mx, q.y - my); if (d < bd) { bd = d; best = s; } } return best; };
+  let drag = null;
+  canvasEl.addEventListener('pointerdown', e => { drag = { x: e.clientX, y: e.clientY, cx: tgt.x, cy: tgt.y, moved: false }; canvasEl.setPointerCapture(e.pointerId); });
+  canvasEl.addEventListener('pointermove', e => {
+    const r = canvasEl.getBoundingClientRect();
+    if (drag) {
+      const dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+      if (Math.hypot(dx, dy) > 4) drag.moved = true;
+      if (drag.moved) { go(drag.cx - dx / (S() * cam.z), drag.cy - dy / (S() * cam.z), tgt.z); return; }
+    }
+    const h = pick(e.clientX - r.left, e.clientY - r.top);
+    if (h !== hover) { hover = h; sky.redraw(); if (h) NVD.hintGone(); }
+  });
+  canvasEl.addEventListener('pointerup', e => {
+    const r = canvasEl.getBoundingClientRect();
+    if (drag && !drag.moved) { hover = pick(e.clientX - r.left, e.clientY - r.top); sky.redraw(); if (hover) live.textContent = `${hover.name}, ${STATE[hover.st]}. Nearest: ${hover.near.map(n => n.name).join(', ')}`; }
+    drag = null;
+  });
+  canvasEl.addEventListener('pointerleave', () => { if (!drag && hover) { hover = null; sky.redraw(); } });
+  canvasEl.addEventListener('keydown', e => {
+    const m = { ArrowLeft: [-0.1, 0], ArrowRight: [0.1, 0], ArrowUp: [0, -0.1], ArrowDown: [0, 0.1] }[e.key];
+    if (m) { e.preventDefault(); go(tgt.x + m[0] / tgt.z, tgt.y + m[1] / tgt.z, tgt.z); }
+    if (e.key === 'Enter' || e.key === ' ') {
+      // step from star to star, so the neighbour lines work without a mouse
+      e.preventDefault(); const i = (stars.indexOf(hover) + 1) % stars.length; hover = stars[i];
+      go(hover.x, hover.y, Math.max(tgt.z, 1.4));
+      live.textContent = `${hover.name}, ${STATE[hover.st]}. Nearest: ${hover.near.map(n => n.name).join(', ')}`;
+    }
+    if (e.key === '+' || e.key === '=') go(tgt.x, tgt.y, tgt.z * 1.4);
+    if (e.key === '-') go(tgt.x, tgt.y, tgt.z / 1.4);
+  });
+  canvasEl.addEventListener('wheel', e => { if (!e.ctrlKey) return; e.preventDefault(); go(tgt.x, tgt.y, tgt.z * (e.deltaY < 0 ? 1.12 : 1 / 1.12)); }, { passive: false });
+  let pd = 0; const td = t => Math.hypot(t[0].clientX - t[1].clientX, t[0].clientY - t[1].clientY);
+  canvasEl.addEventListener('touchstart', e => { if (e.touches.length === 2) pd = td(e.touches); }, { passive: true });
+  canvasEl.addEventListener('touchmove', e => { if (e.touches.length === 2 && pd) { const d = td(e.touches); go(tgt.x, tgt.y, tgt.z * d / pd); pd = d; } }, { passive: true });
+  document.getElementById('zi').addEventListener('click', () => go(tgt.x, tgt.y, tgt.z * 1.4));
+  document.getElementById('zo').addEventListener('click', () => go(tgt.x, tgt.y, tgt.z / 1.4));
+
+  const cpanel = document.getElementById('cpanel'), slist = document.getElementById('slist'), listBtn = document.getElementById('listbtn');
+  const openCluster = k => {
+    openC = k; const c = C[k];
+    document.getElementById('cname').textContent = c[0];
+    document.getElementById('clist').innerHTML = R[k].map(([n, s]) => `<li>${n}<small>${STATE[s]}</small></li>`).join('');
+    slist.hidden = true; listBtn.setAttribute('aria-pressed', 'false');
+    cpanel.hidden = false; go(c[1] + (sky.W > 700 ? 0.18 : 0), c[2] + (sky.W > 700 ? 0 : 0.2), 2.4);
+    document.getElementById('cback').focus({ preventScroll: true });
+  };
+  lab.addEventListener('click', e => { const b = e.target.closest('button'); if (b) openCluster(b.dataset.c); });
+  document.getElementById('cback').addEventListener('click', () => { cpanel.hidden = true; go(0, 0, 1); lab.querySelector(`[data-c="${openC}"]`)?.focus({ preventScroll: true }); openC = null; });
+  listBtn.addEventListener('click', () => { const on = slist.hidden; slist.hidden = !on; cpanel.hidden = true; listBtn.setAttribute('aria-pressed', String(on)); NVD.hintGone(); });
+  document.getElementById('find').addEventListener('input', e => {
+    query = e.target.value.trim().toLowerCase(); NVD.hintGone();
+    const m = query ? stars.filter(s => s.name.toLowerCase().includes(query)) : [];
+    live.textContent = query ? (m.length ? `${m.length} found: ${m.map(s => s.name).join(', ')}` : 'Nothing found. Clear the search to see the whole sky.') : '';
+    hover = m.length === 1 ? m[0] : null;
+    if (m.length === 1) go(m[0].x, m[0].y, Math.max(tgt.z, 1.6)); else sky.redraw();
+  });
+  NVD.ready();
+  sky.size();
+
+})();
+</script></div>
+</body>
+</html>

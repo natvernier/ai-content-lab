@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anamorphic arrival · Depth patterns</title>
-<meta name="description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:title" content="Anamorphic arrival · Depth patterns">
-<meta property="og:description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/frames/2.jpg">
+<title>Assembly · Depth patterns</title>
+<meta name="description" content="The parts of a dish float apart and come together as you scroll, and come apart again when you scroll back. A live graybox demo with a skip button, labels and a calm mode.">
+<meta property="og:title" content="Assembly · Depth patterns">
+<meta property="og:description" content="The parts of a dish float apart and come together as you scroll, and come apart again when you scroll back. A live graybox demo with a skip button, labels and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p06-assembly/frames/2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -101,21 +101,42 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .stage.split .gauge{left:16px;right:16px}
 #nvd .hint{bottom:70px;font-size:.85rem}
 }
-#nvd .teasers{position:absolute;inset:auto var(--gut) 92px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);margin:0;padding:0;list-style:none;pointer-events:none;z-index:2}
-@media (min-width:768px){#nvd .teasers{left:max(var(--gut),40%)}}
-#nvd .teaser{opacity:0;transform-origin:50% 100%;background:var(--paper)}
-#nvd .teaser h3{font-size:clamp(1rem,2vw,1.35rem)}
-@media (max-width:640px){#nvd .teasers{bottom:84px}#nvd .teaser p{display:none}}
+#nvd .title{max-width:min(36vw,520px)}
+#nvd .skipdish{position:absolute;right:var(--gut);top:120px;z-index:5}
+#nvd .dish{position:absolute;left:62%;top:58%;width:0;height:0;z-index:2}
+#nvd .plate{position:absolute;width:300px;left:-150px;top:70px;opacity:0}
+#nvd .plate ellipse{fill:color-mix(in srgb,var(--ink) 8%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .part{position:absolute;left:0;top:0;margin:0;will-change:transform}
+#nvd .part svg{display:block;position:absolute;transform:translate(-50%,-50%);overflow:visible}
+#nvd .part[data-i="0"] svg{width:240px}#nvd .part[data-i="1"] svg{width:200px}#nvd .part[data-i="2"] svg{width:170px}#nvd .part[data-i="3"] svg{width:50px}#nvd .part[data-i="4"] svg{width:160px}
+#nvd .part figcaption{position:absolute;left:0;top:0;transform:translate(-50%,calc(-50% + var(--cy,60px)));white-space:nowrap;font-size:.9rem;background:var(--paper);padding:0 8px;border-radius:999px;transition:opacity .25s}
+#nvd .mer{fill:color-mix(in srgb,var(--ink) 12%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .pur path{fill:none;stroke:color-mix(in srgb,var(--ink) 55%,var(--paper));stroke-width:5;stroke-linecap:round}
+#nvd .cre{fill:var(--card);stroke:color-mix(in srgb,var(--ink) 25%,var(--paper));stroke-width:1.5}
+#nvd .mar{fill:color-mix(in srgb,var(--ink) 70%,var(--paper))}
+#nvd .stem{stroke:color-mix(in srgb,var(--ink) 70%,var(--paper));stroke-width:3;fill:none}
+#nvd .coc circle{fill:color-mix(in srgb,var(--ink) 80%,var(--paper))}
+#nvd .part[data-i="4"] svg{z-index:3}
+#nvd .dname{position:absolute;left:0;top:130px;transform:translateX(-50%) scale(.7);transform-origin:50% 0;margin:0;text-align:center;white-space:nowrap;transition:transform .3s}
+#nvd .dname.done{transform:translateX(-50%)}
+#nvd .dname b{display:block;font:400 clamp(1.8rem,3vw,2.6rem)/1 var(--serif)}
+#nvd .dname span{font-size:.9rem;color:var(--ink-soft)}
+@media (max-width:767px){#nvd .title{max-width:none}#nvd .dish{left:50%;top:70%;transform:scale(.72)}#nvd .skipdish{top:auto;bottom:64px;right:12px}#nvd .hint{left:16px;transform:none}}
+@media (max-width:767px) and (max-height:700px){#nvd .dish{top:72%;transform:scale(.6)}#nvd .dname{top:112px}}
 #nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
 </head>
 <body>
-<div id="nvd" data-pattern="p08"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:380vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Anamorphic arrival</h1><p>Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the pieces become a pear.</p></div><canvas id="c" class="full" aria-hidden="true"></canvas>
-<ul class="teasers" id="teasers" aria-label="First teasers">
-<li class="teaser card"><div class="img"></div><h3>Pear tart</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Poached pears</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Pear and chestnut cake</h3><p>Backlog</p></li>
-</ul>
-<p class="hint" id="hint">Scroll to bring the pieces into line</p><ol class="gauge" aria-label="Where you are in the demo"><li data-step="0" aria-current="step">Scattered</li><li data-step="1">One picture</li><li data-step="2">First teasers</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>The fragments were never flat. Each one hangs at its own depth. Scrolling turns the camera, and at one angle, and only at that angle, the depths cancel out and the pieces read as a single pear. Keep scrolling and the picture breaks into what the page is actually for: the first three things to look at.</p><p>The scroll is never taken from you. One pixel of scroll is one step of the camera, it runs backwards when you scroll back, and nothing plays on a timer.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are pears, tarts and seasons. The patterns themselves are general: swap the pear for your own picture and the teasers for your own first three things.</p><h3>The illusion</h3><p>Anamorphosis: a picture that only exists from one viewpoint. Motion parallax does the rest. Near fragments move more than far ones, so your eye reads the space before it reads the picture.</p><h3>The rules it follows</h3><ul><li>The title is real text, readable before the first scroll and to screen readers.</li><li>Scroll stays 1:1 and never changes direction.</li><li>A progress line says where you are: scattered, one picture, first teasers.</li><li>You can skip it, and calm mode replaces the camera move with a plain crossfade.</li><li>It is decoration of an arrival, never the only way to reach the content.</li></ul><h3>Calm mode</h3><p>Turn it on with the switch at the top, or let your system decide: if your device asks for reduced motion, the page starts calm. Same picture, same teasers, no travel.</p><dl class="facts"><dt>Pattern</dt><dd>P8 of 14, depth you travel through</dd><dt>Gesture</dt><dd>The first scroll after arriving</dd><dt>Illusion</dt><dd>Anamorphosis, motion parallax</dd><dt>Built with</dt><dd>One canvas, about 200 lines of plain JavaScript, no library</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: the gray squares stand in for painted fragments</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p07-window/index.html" rel="prev"><small>Previous, P7</small>Window</a><a href="../p09-constellation/index.html" rel="next" style="text-align:right"><small>Next, P9</small>Constellation</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival">GitHub</a>.</footer><script>
+<div id="nvd" data-pattern="p06"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:460vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Assembly</h1><p>The parts of a dish float apart in empty space. Scroll and they come together into the dish. Scroll back and it comes apart again.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the parts are meringue, chestnut and cream.</p></div><button class="pill skipdish" type="button" id="skipdish">Skip to the dish</button>
+<div class="dish" id="dish">
+<svg class="plate" viewBox="0 0 300 60" aria-hidden="true"><ellipse cx="150" cy="30" rx="148" ry="28"/></svg>
+<figure class="part" data-i="0" data-sx="-0.55" data-sy="-0.25" data-z="0.4" data-ty="62"><svg viewBox="0 0 240 70" aria-hidden="true"><path class="mer" d="M10 40c0-14 10-22 22-22 6-8 16-10 24-6 8-8 22-8 30 0 8-6 22-6 30 0 8-6 22-6 30 0 10-4 20 0 24 6 12 0 22 8 22 22 0 12-10 20-24 20H34C20 60 10 52 10 40z"/></svg><figcaption>Meringue</figcaption></figure>
+<figure class="part" data-i="1" data-sx="0.6" data-sy="0.3" data-z="1" data-ty="10"><svg viewBox="0 0 200 90" aria-hidden="true"><g class="pur"></g></svg><figcaption>Chestnut purée</figcaption></figure>
+<figure class="part" data-i="2" data-sx="0.45" data-sy="-0.42" data-z="0.2" data-ty="-38"><svg viewBox="0 0 170 90" aria-hidden="true"><path class="cre" d="M6 86C6 40 40 8 85 8s79 32 79 78z"/></svg><figcaption>Whipped cream</figcaption></figure>
+<figure class="part" data-i="3" data-sx="-0.62" data-sy="0.32" data-z="1.3" data-ty="-90"><svg viewBox="0 0 50 50" aria-hidden="true"><path class="mar" d="M25 4C14 4 5 16 5 29c0 10 9 17 20 17s20-7 20-17C45 16 36 4 25 4z"/><path d="M25 4c2-3 5-4 8-3" class="stem"/></svg><figcaption>Marron glacé</figcaption></figure>
+<figure class="part" data-i="4" data-sx="0.05" data-sy="-0.5" data-z="0.7" data-ty="-58"><svg viewBox="0 0 160 40" aria-hidden="true"><g class="coc"></g></svg><figcaption>Cocoa</figcaption></figure>
+<p class="dname" id="dname"><b>Monte Bianco</b><span>meringue, chestnut, cream</span></p>
+</div>
+<p class="hint" id="hint">Scroll to put the dish together</p><ol class="gauge" aria-label="How far the dish is assembled"><li data-step="0" aria-current="step">Apart</li><li data-step="1">Coming together</li><li data-step="2">The dish</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Five parts were floating in the paper space, each at its own depth and each with its name next to it. Scrolling pulled them in one after the other, base first and the dusting last, until they stacked into a Monte Bianco. Every part kept its identity all the way, nothing was swapped for a finished picture.</p><p>The name of the dish and the skip button were there from the start. You never had to sit through the assembly to learn what it was.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are a Monte Bianco and its five parts. The patterns themselves are general: anything with components works, a product and its parts, a team and its roles, an argument and its premises.</p><h3>The illusion</h3><p>Motion parallax: while the parts float, the near ones drift faster than the far ones, so the empty space reads as deep. Object constancy: each part travels to its place instead of appearing there, so you can follow every one of them.</p><h3>The rules it follows</h3><ul><li>The name of the dish and a skip button are visible from the start.</li><li>Scroll stays 1:1 and runs backwards: scroll up and the dish comes apart.</li><li>Every part keeps a real text label while it travels.</li><li>A progress line says how far the dish is assembled.</li><li>Nothing plays by itself.</li></ul><h3>Calm mode</h3><p>Calm mode drops the travel. The parts appear in their final places one after the other as you scroll, so the dish still builds up, it just does not fly. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P6 of 14, depth you can hold</dd><dt>Gesture</dt><dd>Scroll, as on any page</dd><dt>Illusion</dt><dd>Motion parallax, object constancy</dd><dt>Built with</dt><dd>Inline SVG parts moved by plain JavaScript, about 80 lines</dd><dt>Effort</dt><dd>Large</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: gray shapes stand in for painted ingredient cut-outs</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p05-pop-up-book/index.html" rel="prev"><small>Previous, P5</small>Pop-up book</a><a href="../p07-window/index.html" rel="next" style="text-align:right"><small>Next, P7</small>Window</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p06-assembly">GitHub</a>.</footer><script>
 (() => {
 /* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
 const NVD = (() => {
@@ -203,126 +224,56 @@ const NVD = (() => {
   return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
 })();
 
-
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
   const track = document.getElementById('track');
-  const teasers = [...document.querySelectorAll('.teaser')];
-
-
-
-  let ink, paper, signal;
-  const readColours = () => { ink = NVD.col.ink; paper = NVD.col.paper; signal = NVD.col.signal; };
-  const mix = NVD.mix;
-
-  // ---- the target picture: a pear on a grid, seeded so it is the same every visit
-  let seed = 11;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const R = (a, b) => a + rnd() * (b - a);
-  const inPear = (x, y) =>
-    (x / 0.95) ** 2 + ((y - 0.35) / 0.85) ** 2 <= 1 ||
-    (x / 0.55) ** 2 + ((y + 0.55) / 0.55) ** 2 <= 1;
-
-  const frags = [];
-  for (let gy = -12; gy <= 12; gy++) {
-    for (let gx = -10; gx <= 10; gx++) {
-      const ux = gx / 9.5, uy = gy / 9.5;
-      if (!inPear(ux, uy)) continue;
-      const hi = (ux + 0.45) ** 2 + (uy - 0.25) ** 2 < 0.06;
-      const shade = Math.min(1, Math.max(0, (ux + 1) / 2 + R(-0.15, 0.15)));
-      frags.push({ gx, gy, hi, shade, z: R(-1, 1), jx: R(-1, 1), jy: R(-1, 1), rot: R(-1, 1), out: Math.atan2(gy, gx) + R(-0.4, 0.4) });
-    }
+  const parts = [...document.querySelectorAll('#dish .part')].map(el => ({ el, i: +el.dataset.i, sx: +el.dataset.sx, sy: +el.dataset.sy, z: +el.dataset.z, ty: +el.dataset.ty, cap: el.querySelector('figcaption') }));
+  const plate = document.querySelector('#dish .plate'), dname = document.getElementById('dname');
+  // the purée nest and the cocoa dust, drawn once
+  const rnd = NVD.seeded(5);
+  const pur = document.querySelector('#dish .pur');
+  for (let k = 0; k < 22; k++) {
+    const y = 80 - k * 3.1, w = 92 - k * 2.6, x0 = 100 - w, ph = rnd() * 6;
+    let d = `M${x0} ${y}`;
+    for (let x = x0; x <= 100 + w; x += 8) d += ` Q${x + 4} ${y + Math.sin(x / 9 + ph) * 6} ${x + 8} ${y}`;
+    pur.insertAdjacentHTML('beforeend', `<path d="${d}"/>`);
   }
-  frags.push({ gx: 0, gy: -13, hi: false, shade: 1, z: R(-1, 1), jx: 0.5, jy: -0.4, rot: 0.3, out: -1.6 });
-  frags.push({ gx: 1, gy: -13, hi: true, shade: 0, z: R(-1, 1), jx: -0.7, jy: 0.3, rot: -0.5, out: -1.2 });
+  const coc = document.querySelector('#dish .coc');
+  for (let k = 0; k < 70; k++) coc.insertAdjacentHTML('beforeend', `<circle cx="${(20 + rnd() * 120).toFixed(1)}" cy="${(8 + rnd() * 26).toFixed(1)}" r="${(0.8 + rnd() * 1.4).toFixed(1)}"/>`);
+  document.getElementById('skipdish').addEventListener('click', () => { NVD.scrollToProgress(track, 1, true); NVD.hintGone(); });
 
-  // ---- sizing
-  let W = 0, H = 0, dpr = 1;
-  const resize = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    readColours(); draw(true);
-  };
-
-  const progress = () => NVD.progress(track);
-  const ease = NVD.ease;
-
-  let last = -1;
-  function draw(force) {
-    const p = progress();
-    if (!force && Math.abs(p - last) < 0.0005) return;
-    last = p;
-    if (p > 0.01) NVD.hintGone();
-    NVD.dim(p > 0.06);
-
-    // phases: align 0–0.42, hold 0.42–0.6, break apart 0.6–0.95
-    const a = ease(p / 0.42);
-    const b = ease((p - 0.6) / 0.35);
-    const step = p < 0.42 ? 0 : p < 0.62 ? 1 : 2;
-    NVD.step(step, p);
-
-    ctx.clearRect(0, 0, W, H);
-    const small = Math.min(W, H);
-    const cell = small / (W < 640 ? 40 : 30);
-    const cx = W < 900 ? W * 0.5 : W * 0.62;
-    const cy = H * (W < 640 ? 0.6 : 0.5);
-    const spreadX = Math.min(W, 1100) * 0.5, spreadY = H * 0.42;
-    const depth = small * 0.55;
-
-    if (NVD.calm) {
-      // calm: no camera, no travel. The picture fades in, holds, fades out.
-      const alpha = a * (1 - b);
-      for (const f of frags) {
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = f.hi ? signal : mix(ink, paper, 0.15 + f.shade * 0.55);
-        const s = cell - 2;
-        ctx.fillRect(cx + f.gx * cell - s / 2, cy + f.gy * cell - s / 2, s, s);
+  function frame() {
+    const p = NVD.progress(track);
+    if (p > 0.005) NVD.hintGone();
+    NVD.dim(p > 0.04);
+    NVD.step(p < 0.12 ? 0 : p < 0.82 ? 1 : 2, p);
+    const W = innerWidth, H = innerHeight, mobile = W < 768;
+    const spreadX = mobile ? W * 0.42 : Math.min(W * 0.32, 420), spreadY = H * (mobile ? 0.28 : 0.42);
+    parts.forEach(q => {
+      // each part has its own window of the scroll: base first, dusting last
+      const a = NVD.ease((p - 0.1 - q.i * 0.11) / 0.32);
+      const drift = (1 - a) * (p * 2 - 1) * 60 * q.z;  // parallax while floating: near parts drift more
+      if (NVD.calm) {
+        q.el.style.transform = `translate(0px,${q.ty}px)`;
+        q.el.style.opacity = a > 0.5 ? '1' : '0';
+        q.el.style.transition = 'opacity .35s';
+      } else {
+        const x = q.sx * spreadX * (1 - a) + drift, y = q.sy * spreadY * (1 - a) + q.ty * a;
+        const s = 1 + (q.z - 0.6) * 0.35 * (1 - a);
+        q.el.style.transform = `translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${s.toFixed(3)})`;
+        q.el.style.opacity = '1'; q.el.style.transition = '';
       }
-      ctx.globalAlpha = 1;
-    } else {
-      const yaw = (1 - a) * 0.66;               // about 38 degrees at rest
-      const cos = Math.cos(yaw), sin = Math.sin(yaw);
-      const pts = frags.map(f => {
-        let x = f.gx * cell + (1 - a) * f.jx * spreadX;
-        let y = f.gy * cell + (1 - a) * f.jy * spreadY;
-        const z = f.z * depth;
-        // break apart: every fragment leaves along its own direction
-        x += Math.cos(f.out) * b * W * 0.75;
-        y += Math.sin(f.out) * b * H * 0.75;
-        const xr = x * cos + z * sin;
-        const zr = -x * sin + z * cos;
-        const persp = 900 / (900 + zr * (1 - a) * 0.9);
-        return { zr, sx: cx + xr * persp, sy: cy + y * persp, s: (cell - 2) * persp * (0.75 + 0.25 * a), ang: f.rot * (1 - a) * 1.1, f };
-      }).sort((m, n) => n.zr - m.zr);
-      for (const q of pts) {
-        // far is paler (aerial perspective), fading out while breaking apart
-        const far = Math.min(1, Math.max(0, (q.zr / depth + 1) / 2)) * (1 - a);
-        ctx.globalAlpha = 1 - b;
-        ctx.fillStyle = q.f.hi ? signal : mix(ink, paper, Math.min(0.92, 0.15 + q.f.shade * 0.55 + far * 0.35));
-        ctx.save(); ctx.translate(q.sx, q.sy); ctx.rotate(q.ang);
-        ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    // teasers arrive from the depth (calm: they simply fade in)
-    const t = ease((p - 0.66) / 0.3);
-    teasers.forEach((el, i) => {
-      const ti = ease((p - 0.66 - i * 0.04) / 0.28);
-      el.style.opacity = NVD.calm ? t.toFixed(3) : ti.toFixed(3);
-      el.style.transform = NVD.calm ? 'none' : `scale(${(0.6 + 0.4 * ti).toFixed(3)}) translateY(${((1 - ti) * 40).toFixed(1)}px)`;
+      q.cap.style.opacity = a > 0.85 ? '0' : '1';
+      q.el.style.zIndex = q.i === 2 ? 2 : q.i === 4 ? 4 : q.i === 3 ? 5 : 1;
     });
+    const done = NVD.ease((p - 0.78) / 0.14);
+    plate.style.opacity = NVD.ease((p - 0.05) / 0.2).toFixed(3);
+    dname.style.opacity = (0.55 + 0.45 * done).toFixed(3);
+    dname.classList.toggle('done', done > 0.5);
+    document.getElementById('skipdish').hidden = p > 0.9;
   }
-
-  NVD.onScroll(() => draw(false));
-  addEventListener('resize', resize);
-  NVD.onTheme(() => { readColours(); draw(true); });
-  NVD.onCalm(() => draw(true));
+  NVD.onScroll(frame);
+  NVD.onCalm(frame);
   NVD.ready();
-  resize();
+  frame();
 
 })();
 </script></div>
