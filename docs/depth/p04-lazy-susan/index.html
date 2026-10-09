@@ -73,6 +73,7 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .facts{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.5rem;margin:1.6rem 0 0}
 #nvd .facts dt{color:var(--ink-soft)}
 #nvd .facts dd{margin:0}
+#nvd.is-calm *{transition-property:opacity!important}
 #nvd .marker{display:inline-block;width:.7em;height:.7em;background:var(--signal);border-radius:2px;margin-right:.4em;vertical-align:.02em}
 #nvd .byline{display:flex;align-items:center;gap:20px;margin:0 0 3rem}
 #nvd .byline img{width:100px;height:100px;border-radius:50%;object-fit:cover;flex:none}
@@ -88,7 +89,7 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 .section._100vh.game:has(#nvd){padding:0!important;min-height:0!important;height:auto!important;overflow:visible!important;background:transparent!important}
 .w-embed:has(#nvd){width:100%}
 @media screen and (max-width:767px){
-#nvd .calm{top:calc(64px + env(safe-area-inset-top,0px));right:12px}
+#nvd .calm{position:absolute;top:calc(64px + env(safe-area-inset-top,0px));right:12px}
 #nvd .title{top:clamp(110px,16vh,150px);padding-top:48px}
 #nvd .title .origin{font-size:.82rem}
 #nvd .title.dim p:not(.crumbs){opacity:0;pointer-events:none}
@@ -250,7 +251,7 @@ const NVD = (() => {
         c.style.opacity = i === cur ? '1' : '0'; c.style.zIndex = i === cur ? 2 : 1; c.style.filter = 'none';
         return;
       }
-      c.style.transform = `translate(-50%,-100%) translate3d(${x.toFixed(1)}px,0,${z.toFixed(1)}px)`;
+      c.style.transform = `translate(-50%,-100%) translate3d(${x.toFixed(1)}px,0,${z.toFixed(1)}px) rotateY(${(-Math.sin(th) * 35).toFixed(1)}deg)`;
       c.style.opacity = (0.28 + 0.72 * Math.pow((depth + 1) / 2, 1.4)).toFixed(3);
       c.style.filter = depth < 0.9 ? `blur(${((1 - depth) * 0.9).toFixed(2)}px)` : 'none';
       c.style.zIndex = String(Math.round(100 + depth * 50));

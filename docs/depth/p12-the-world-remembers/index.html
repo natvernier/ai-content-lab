@@ -73,6 +73,7 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .facts{display:grid;grid-template-columns:max-content 1fr;gap:.35rem 1.5rem;margin:1.6rem 0 0}
 #nvd .facts dt{color:var(--ink-soft)}
 #nvd .facts dd{margin:0}
+#nvd.is-calm *{transition-property:opacity!important}
 #nvd .marker{display:inline-block;width:.7em;height:.7em;background:var(--signal);border-radius:2px;margin-right:.4em;vertical-align:.02em}
 #nvd .byline{display:flex;align-items:center;gap:20px;margin:0 0 3rem}
 #nvd .byline img{width:100px;height:100px;border-radius:50%;object-fit:cover;flex:none}
@@ -88,7 +89,7 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 .section._100vh.game:has(#nvd){padding:0!important;min-height:0!important;height:auto!important;overflow:visible!important;background:transparent!important}
 .w-embed:has(#nvd){width:100%}
 @media screen and (max-width:767px){
-#nvd .calm{top:calc(64px + env(safe-area-inset-top,0px));right:12px}
+#nvd .calm{position:absolute;top:calc(64px + env(safe-area-inset-top,0px));right:12px}
 #nvd .title{top:clamp(110px,16vh,150px);padding-top:48px}
 #nvd .title .origin{font-size:.82rem}
 #nvd .title.dim p:not(.crumbs){opacity:0;pointer-events:none}
@@ -104,7 +105,11 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .places{position:absolute;inset:56px 0 64px}
 #nvd .place{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;cursor:pointer;font-size:.95rem;padding:4px}
 #nvd .place i{width:46px;height:46px;border-radius:50%;background:color-mix(in srgb,var(--ink) 30%,var(--paper));border:2px solid transparent;transition:transform .2s}
+#nvd .place{font-size:.95rem}
+#nvd .place{color:var(--ink)}
 #nvd .place:hover i{transform:scale(1.08)}
+#nvd .place{z-index:1}
+#nvd .place::after{content:none}
 #nvd .place.seen i{border-color:var(--ink)}
 #nvd .place.here i{background:var(--signal);border-color:var(--ink)}
 #nvd .badges{position:absolute;left:12px;right:12px;top:10px;margin:0;padding:0;list-style:none;display:flex;gap:10px;flex-wrap:wrap;min-height:36px}
@@ -116,6 +121,7 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .welcome div{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
 #nvd .tbar{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft)}
 @media (max-width:767px){#nvd .place i{width:34px;height:34px}#nvd .place{font-size:.8rem}#nvd .places{bottom:110px}}
+#nvd .place .pl{background:var(--paper);padding:0 8px;border-radius:999px}
 #nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
 </head>
 <body>
@@ -123,14 +129,14 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 <canvas id="trail" class="full" aria-hidden="true"></canvas>
 <ul class="badges" id="badges" aria-label="Your sky"></ul>
 <div class="places" id="places">
-<button class="place" type="button" data-id="lemon" style="--x:16%;--y:30%"><i></i>Lemon</button>
-<button class="place" type="button" data-id="pear" style="--x:40%;--y:48%"><i></i>Pear</button>
-<button class="place" type="button" data-id="apple" style="--x:22%;--y:68%"><i></i>Apple</button>
-<button class="place" type="button" data-id="pumpkin" style="--x:62%;--y:36%"><i></i>Pumpkin</button>
-<button class="place" type="button" data-id="fig" style="--x:56%;--y:72%"><i></i>Fig</button>
-<button class="place" type="button" data-id="chestnut" style="--x:82%;--y:56%"><i></i>Chestnut</button>
+<button class="place" type="button" data-id="lemon" style="--x:16%;--y:30%"><i></i><span class="pl">Lemon</span></button>
+<button class="place" type="button" data-id="pear" style="--x:40%;--y:48%"><i></i><span class="pl">Pear</span></button>
+<button class="place" type="button" data-id="apple" style="--x:22%;--y:68%"><i></i><span class="pl">Apple</span></button>
+<button class="place" type="button" data-id="pumpkin" style="--x:62%;--y:36%"><i></i><span class="pl">Pumpkin</span></button>
+<button class="place" type="button" data-id="fig" style="--x:56%;--y:72%"><i></i><span class="pl">Fig</span></button>
+<button class="place" type="button" data-id="chestnut" style="--x:82%;--y:56%"><i></i><span class="pl">Chestnut</span></button>
 </div>
-<div class="welcome glass" id="welcome" hidden role="status"><p id="wtext"></p><div><button class="pill" type="button" id="wcont">Continue</button><button class="pill" type="button" id="wnow">Start at Now</button></div></div>
+<div class="welcome glass" id="welcome" hidden role="status"><p id="wtext"></p><div><button class="pill" type="button" id="wcont">Continue</button><button class="pill" type="button" id="wnow">Start fresh</button></div></div>
 <div class="tbar"><button class="pill" type="button" id="week">Come back a week later</button><button class="pill" type="button" id="forget">Forget my trail</button><span id="tnote">Stored only on this device.</span></div>
 </div>
 <p class="hint" id="hint">Visit a few places, then fast-forward a week</p></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Each place you open leaves a faint mark, and the marks join into a trail. Close the page and come back, or press the button that skips a week, and the page greets you where you left off. Every place you visited also hangs as a small badge in your sky.</p><p>This is the quietest pattern of the fourteen. It is not spectacular, it is personal: the space feels deep because it holds your own history.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are lemons, pears, pumpkins and chestnuts. The patterns themselves are general: anything people return to works, a course, a long read, a documentation site, a shop.</p><h3>The illusion</h3><p>Memory: a place that changes because you were there feels more real than one that resets every time. The trail is a second layer of depth, made of time instead of space.</p><h3>The rules it follows</h3><ul><li>Stored only on this device, never sent anywhere.</li><li>A visible forget button removes everything at once.</li><li>The greeting offers both ways: continue where you were, or start fresh.</li><li>Nothing depends on it. Without a trail the page simply starts at the beginning.</li><li>The trail is decoration and never covers a word.</li></ul><h3>Calm mode</h3><p>Calm mode draws the trail at once instead of letting it grow. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P12 of 14, depth you only feel</dd><dt>Gesture</dt><dd>None. It happens across visits. Here you can visit places and fast-forward a week</dd><dt>Illusion</dt><dd>Memory: a world that changes because you were there</dd><dt>Built with</dt><dd>Local storage, one canvas and about 110 lines of plain JavaScript</dd><dt>Effort</dt><dd>Small</dd><dt>Wow</dt><dd>1–2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: a soft gray line stands in for a watercolour trail</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p11-doors-that-never-cut/index.html" rel="prev"><small>Previous, P11</small>Doors that never cut</a><a href="../p13-the-lamp/index.html" rel="next" style="text-align:right"><small>Next, P13</small>The lamp</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p12-the-world-remembers">GitHub</a>.</footer><script>
