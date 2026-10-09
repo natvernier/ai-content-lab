@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anamorphic arrival · Depth patterns</title>
-<meta name="description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:title" content="Anamorphic arrival · Depth patterns">
-<meta property="og:description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/frames/2.jpg">
+<title>Time scrub · Depth patterns</title>
+<meta name="description" content="Scroll or drag a thin time line and a dish changes under your hand: whole, halved, poached, on the tart. A live graybox demo with a keyboard scrubber and a calm mode.">
+<meta property="og:title" content="Time scrub · Depth patterns">
+<meta property="og:description" content="Scroll or drag a thin time line and a dish changes under your hand: whole, halved, poached, on the tart. A live graybox demo with a keyboard scrubber and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p10-time-scrub/frames/2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -100,21 +100,23 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .stage.split .gauge{left:16px;right:16px}
 #nvd .hint{bottom:70px;font-size:.85rem}
 }
-#nvd .teasers{position:absolute;inset:auto var(--gut) 92px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);margin:0;padding:0;list-style:none;pointer-events:none;z-index:2}
-@media (min-width:768px){#nvd .teasers{left:max(var(--gut),40%)}}
-#nvd .teaser{opacity:0;transform-origin:50% 100%;background:var(--paper)}
-#nvd .teaser h3{font-size:clamp(1rem,2vw,1.35rem)}
-@media (max-width:640px){#nvd .teasers{bottom:84px}#nvd .teaser p{display:none}}
+#nvd .title{max-width:min(36vw,520px)}
+#nvd .scrub{position:absolute;left:var(--gut);right:var(--gut);bottom:30px;width:calc(100% - 2*var(--gut));margin:0;height:28px;transform:translateY(-12px);background:transparent;-webkit-appearance:none;appearance:none;z-index:4;cursor:pointer}
+#nvd .scrub::-webkit-slider-runnable-track{height:3px;background:transparent}
+#nvd .scrub::-moz-range-track{height:3px;background:transparent}
+#nvd .scrub::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border-radius:50%;background:var(--signal);border:2px solid var(--ink);box-shadow:0 2px 6px rgba(0,0,0,.25)}
+#nvd .scrub::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--signal);border:2px solid var(--ink)}
+#nvd .scrub:focus-visible{outline:none}
+#nvd .scrub:focus-visible::-webkit-slider-thumb{outline:3px solid var(--signal-text);outline-offset:3px}
+#nvd .gauge li{cursor:default}
 #nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
 </head>
 <body>
-<div id="nvd" data-pattern="p08"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:380vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Anamorphic arrival</h1><p>Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the pieces become a pear.</p></div><canvas id="c" class="full" aria-hidden="true"></canvas>
-<ul class="teasers" id="teasers" aria-label="First teasers">
-<li class="teaser card"><div class="img"></div><h3>Pear tart</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Poached pears</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Pear and chestnut cake</h3><p>Backlog</p></li>
-</ul>
-<p class="hint" id="hint">Scroll to bring the pieces into line</p><ol class="gauge" aria-label="Where you are in the demo"><li data-step="0" aria-current="step">Scattered</li><li data-step="1">One picture</li><li data-step="2">First teasers</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>The fragments were never flat. Each one hangs at its own depth. Scrolling turns the camera, and at one angle, and only at that angle, the depths cancel out and the pieces read as a single pear. Keep scrolling and the picture breaks into what the page is actually for: the first three things to look at.</p><p>The scroll is never taken from you. One pixel of scroll is one step of the camera, it runs backwards when you scroll back, and nothing plays on a timer.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are pears, tarts and seasons. The patterns themselves are general: swap the pear for your own picture and the teasers for your own first three things.</p><h3>The illusion</h3><p>Anamorphosis: a picture that only exists from one viewpoint. Motion parallax does the rest. Near fragments move more than far ones, so your eye reads the space before it reads the picture.</p><h3>The rules it follows</h3><ul><li>The title is real text, readable before the first scroll and to screen readers.</li><li>Scroll stays 1:1 and never changes direction.</li><li>A progress line says where you are: scattered, one picture, first teasers.</li><li>You can skip it, and calm mode replaces the camera move with a plain crossfade.</li><li>It is decoration of an arrival, never the only way to reach the content.</li></ul><h3>Calm mode</h3><p>Turn it on with the switch at the top, or let your system decide: if your device asks for reduced motion, the page starts calm. Same picture, same teasers, no travel.</p><dl class="facts"><dt>Pattern</dt><dd>P8 of 14, depth you travel through</dd><dt>Gesture</dt><dd>The first scroll after arriving</dd><dt>Illusion</dt><dd>Anamorphosis, motion parallax</dd><dt>Built with</dt><dd>One canvas, about 200 lines of plain JavaScript, no library</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: the gray squares stand in for painted fragments</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p07-window/index.html" rel="prev"><small>Previous, P7</small>Window</a><a href="../p09-constellation/index.html" rel="next" style="text-align:right"><small>Next, P9</small>Constellation</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival">GitHub</a>.</footer><script>
+<div id="nvd" data-pattern="p10"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:420vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Time scrub</h1><p>Scroll, or drag the thin time line, and a pear goes from whole to halved to poached to fanned out on a tart.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the thing that changes is a pear.</p></div><canvas id="pear" class="full" aria-hidden="true"></canvas>
+<p class="sr" id="pearstate" aria-live="polite"></p>
+<label class="sr" for="scrub">Time line: whole, halved, poached, on the tart</label>
+<input class="scrub" id="scrub" type="range" min="0" max="300" step="1" value="0" aria-valuetext="Whole">
+<p class="hint" id="hint">Scroll or drag the time line</p><ol class="gauge" aria-label="Where the pear is in its preparation"><li data-step="0" aria-current="step">Whole</li><li data-step="1">Halved</li><li data-step="2">Poached</li><li data-step="3">On the tart</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>This is the same pear all the way through. It splits, darkens in the syrup, and its halves become the slices fanned on top of the tart. Because nothing is swapped for a new picture, you can follow one object through time.</p><p>The time line under the picture is a real control. Drag it, or tab to it and use the arrow keys to step from one stage to the next. Moving it scrolls the page, so the scroll position and the time line never disagree.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are a pear on its way into a tart. The patterns themselves are general: any process with a few clear stages works, a building going up, a product being assembled, a day passing from morning light to night.</p><h3>The illusion</h3><p>Object constancy: the pear never disappears and reappears, it changes. Your eye stays on it the whole time, and that continuity is what makes a few drawings feel like time passing.</p><h3>The rules it follows</h3><ul><li>A visible time line that also works with the arrow keys.</li><li>Scroll and the time line are the same thing: moving one moves the other.</li><li>Every stage has a name, and the current one is always marked.</li><li>Scroll stays 1:1 and runs backwards.</li><li>In a real build each stage is a painted frame, kept consistent with image edits.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the stages but drops the in-between motion. Each stage crossfades into the next instead of moving. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P10 of 14, depth you can hold</dd><dt>Gesture</dt><dd>Scroll, drag the time line, or use the arrow keys on it</dd><dt>Illusion</dt><dd>Object constancy, light</dd><dt>Built with</dt><dd>One canvas and a range input, about 130 lines of plain JavaScript</dd><dt>Effort</dt><dd>Medium per dish</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: drawn shapes stand in for three to five painted frames per dish</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p09-constellation/index.html" rel="prev"><small>Previous, P9</small>Constellation</a><a href="../p11-doors-that-never-cut/index.html" rel="next" style="text-align:right"><small>Next, P11</small>Doors that never cut</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p10-time-scrub">GitHub</a>.</footer><script>
 (() => {
 /* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
 const NVD = (() => {
@@ -202,126 +204,89 @@ const NVD = (() => {
   return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
 })();
 
-
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
   const track = document.getElementById('track');
-  const teasers = [...document.querySelectorAll('.teaser')];
-
-
-
-  let ink, paper, signal;
-  const readColours = () => { ink = NVD.col.ink; paper = NVD.col.paper; signal = NVD.col.signal; };
-  const mix = NVD.mix;
-
-  // ---- the target picture: a pear on a grid, seeded so it is the same every visit
-  let seed = 11;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const R = (a, b) => a + rnd() * (b - a);
-  const inPear = (x, y) =>
-    (x / 0.95) ** 2 + ((y - 0.35) / 0.85) ** 2 <= 1 ||
-    (x / 0.55) ** 2 + ((y + 0.55) / 0.55) ** 2 <= 1;
-
-  const frags = [];
-  for (let gy = -12; gy <= 12; gy++) {
-    for (let gx = -10; gx <= 10; gx++) {
-      const ux = gx / 9.5, uy = gy / 9.5;
-      if (!inPear(ux, uy)) continue;
-      const hi = (ux + 0.45) ** 2 + (uy - 0.25) ** 2 < 0.06;
-      const shade = Math.min(1, Math.max(0, (ux + 1) / 2 + R(-0.15, 0.15)));
-      frags.push({ gx, gy, hi, shade, z: R(-1, 1), jx: R(-1, 1), jy: R(-1, 1), rot: R(-1, 1), out: Math.atan2(gy, gx) + R(-0.4, 0.4) });
-    }
-  }
-  frags.push({ gx: 0, gy: -13, hi: false, shade: 1, z: R(-1, 1), jx: 0.5, jy: -0.4, rot: 0.3, out: -1.6 });
-  frags.push({ gx: 1, gy: -13, hi: true, shade: 0, z: R(-1, 1), jx: -0.7, jy: 0.3, rot: -0.5, out: -1.2 });
-
-  // ---- sizing
-  let W = 0, H = 0, dpr = 1;
-  const resize = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    readColours(); draw(true);
+  const scrub = document.getElementById('scrub'), stateEl = document.getElementById('pearstate');
+  const names = ['Whole', 'Halved', 'Poached', 'On the tart'];
+  let T = 0, P = 0;
+  const pearHalf = (ctx, side) => {
+    // one half of the pear outline, closed along the middle
+    ctx.beginPath(); ctx.moveTo(0, -1.5);
+    ctx.bezierCurveTo(0.32 * side, -1.5, 0.42 * side, -0.9, 0.48 * side, -0.5);
+    ctx.bezierCurveTo(0.58 * side, -0.14, 1.0 * side, 0.06, 1.0 * side, 0.52);
+    ctx.bezierCurveTo(1.0 * side, 1.02, 0.56 * side, 1.16, 0, 1.16);
+    ctx.closePath();
   };
-
-  const progress = () => NVD.progress(track);
-  const ease = NVD.ease;
-
-  let last = -1;
-  function draw(force) {
-    const p = progress();
-    if (!force && Math.abs(p - last) < 0.0005) return;
-    last = p;
-    if (p > 0.01) NVD.hintGone();
-    NVD.dim(p > 0.06);
-
-    // phases: align 0–0.42, hold 0.42–0.6, break apart 0.6–0.95
-    const a = ease(p / 0.42);
-    const b = ease((p - 0.6) / 0.35);
-    const step = p < 0.42 ? 0 : p < 0.62 ? 1 : 2;
-    NVD.step(step, p);
-
+  const slice = ctx => { ctx.beginPath(); ctx.moveTo(0, 0); ctx.bezierCurveTo(0.34, -0.2, 0.36, -0.8, 0, -1); ctx.bezierCurveTo(-0.36, -0.8, -0.34, -0.2, 0, 0); ctx.fill(); ctx.stroke(); };
+  const cv = NVD.canvas(document.getElementById('pear'), (ctx, W, H) => {
+    const { ink, paper, signal } = NVD.col; const mix = NVD.mix, ease = NVD.ease, clamp = NVD.clamp;
     ctx.clearRect(0, 0, W, H);
-    const small = Math.min(W, H);
-    const cell = small / (W < 640 ? 40 : 30);
-    const cx = W < 900 ? W * 0.5 : W * 0.62;
-    const cy = H * (W < 640 ? 0.6 : 0.5);
-    const spreadX = Math.min(W, 1100) * 0.5, spreadY = H * 0.42;
-    const depth = small * 0.55;
-
-    if (NVD.calm) {
-      // calm: no camera, no travel. The picture fades in, holds, fades out.
-      const alpha = a * (1 - b);
-      for (const f of frags) {
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = f.hi ? signal : mix(ink, paper, 0.15 + f.shade * 0.55);
-        const s = cell - 2;
-        ctx.fillRect(cx + f.gx * cell - s / 2, cy + f.gy * cell - s / 2, s, s);
-      }
-      ctx.globalAlpha = 1;
-    } else {
-      const yaw = (1 - a) * 0.66;               // about 38 degrees at rest
-      const cos = Math.cos(yaw), sin = Math.sin(yaw);
-      const pts = frags.map(f => {
-        let x = f.gx * cell + (1 - a) * f.jx * spreadX;
-        let y = f.gy * cell + (1 - a) * f.jy * spreadY;
-        const z = f.z * depth;
-        // break apart: every fragment leaves along its own direction
-        x += Math.cos(f.out) * b * W * 0.75;
-        y += Math.sin(f.out) * b * H * 0.75;
-        const xr = x * cos + z * sin;
-        const zr = -x * sin + z * cos;
-        const persp = 900 / (900 + zr * (1 - a) * 0.9);
-        return { zr, sx: cx + xr * persp, sy: cy + y * persp, s: (cell - 2) * persp * (0.75 + 0.25 * a), ang: f.rot * (1 - a) * 1.1, f };
-      }).sort((m, n) => n.zr - m.zr);
-      for (const q of pts) {
-        // far is paler (aerial perspective), fading out while breaking apart
-        const far = Math.min(1, Math.max(0, (q.zr / depth + 1) / 2)) * (1 - a);
-        ctx.globalAlpha = 1 - b;
-        ctx.fillStyle = q.f.hi ? signal : mix(ink, paper, Math.min(0.92, 0.15 + q.f.shade * 0.55 + far * 0.35));
-        ctx.save(); ctx.translate(q.sx, q.sy); ctx.rotate(q.ang);
-        ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
+    let t = T;
+    if (NVD.calm) t = Math.round(T);  // calm: whole stages only, the canvas crossfade is done by CSS
+    const a = ease(clamp(t)), b = ease(clamp(t - 1)), c = ease(clamp(t - 2));
+    const mobile = W < 768, arr = mobile ? clamp(P / 0.04) : 1;
+    const cx = mobile ? W / 2 : W * 0.64, cy = H * (mobile ? 0.82 - 0.2 * arr : 0.5), s = Math.min(W, H) * (mobile ? 0.09 + 0.08 * arr : 0.2);
+    // tart base and pot, behind everything
+    if (b > 0 && c < 1) { ctx.globalAlpha = b * (1 - c); ctx.strokeStyle = mix(ink, paper, 0.55); ctx.lineWidth = 3; ctx.fillStyle = mix(ink, paper, 0.9); ctx.beginPath(); ctx.ellipse(cx, cy + s * 0.95, s * 2.2, s * 0.55, 0, 0, 6.283); ctx.fill(); ctx.stroke(); }
+    if (c > 0) {
+      ctx.globalAlpha = c; ctx.save(); ctx.translate(cx, cy + s * 0.1); const R = s * 1.9 * (0.85 + 0.15 * c);
+      ctx.fillStyle = mix(ink, paper, 0.62); ctx.beginPath(); for (let i = 0; i <= 48; i++) { const an = i / 48 * 6.283, r = R * (1 + (i % 2 ? 0.035 : 0)); ctx.lineTo(Math.cos(an) * r, Math.sin(an) * r); } ctx.fill();
+      ctx.fillStyle = mix(ink, paper, 0.8); ctx.beginPath(); ctx.arc(0, 0, R * 0.86, 0, 6.283); ctx.fill(); ctx.restore();
     }
-
-    // teasers arrive from the depth (calm: they simply fade in)
-    const t = ease((p - 0.66) / 0.3);
-    teasers.forEach((el, i) => {
-      const ti = ease((p - 0.66 - i * 0.04) / 0.28);
-      el.style.opacity = NVD.calm ? t.toFixed(3) : ti.toFixed(3);
-      el.style.transform = NVD.calm ? 'none' : `scale(${(0.6 + 0.4 * ti).toFixed(3)}) translateY(${((1 - ti) * 40).toFixed(1)}px)`;
-    });
+    ctx.globalAlpha = 1;
+    // shadow under the fruit
+    ctx.fillStyle = 'rgba(0,0,0,.10)'; ctx.beginPath(); ctx.ellipse(cx, cy + s * 1.25, s * (1.1 + a * 0.9) * (1 - c), s * 0.22 * (1 - c), 0, 0, 6.283); ctx.fill();
+    // the two halves
+    const skin = mix(ink, paper, 0.5 - b * 0.18), flesh = mix(mix(ink, paper, 0.68), mix(ink, paper, 0.42), b);
+    for (const side of [-1, 1]) {
+      const ox = side * a * s * 0.55 + side * c * s * 0.2, rot = side * a * 0.08;
+      ctx.save(); ctx.globalAlpha = 1 - c; ctx.translate(cx + ox, cy - c * s * 0.2); ctx.rotate(rot); ctx.scale(s * (1 - c * 0.4), s * (1 - c * 0.4));
+      pearHalf(ctx, side); ctx.fillStyle = a > 0.02 ? mix(skin.replace(/rgb\((\d+),(\d+),(\d+)\)/, (m, r, g, bb) => '#' + [r, g, bb].map(v => (+v).toString(16).padStart(2, '0')).join('')), flesh.replace(/rgb\((\d+),(\d+),(\d+)\)/, (m, r, g, bb) => '#' + [r, g, bb].map(v => (+v).toString(16).padStart(2, '0')).join('')), a) : skin; ctx.fill();
+      if (a > 0.05) { // the core and the glossy syrup
+        ctx.globalAlpha = (1 - c) * a; ctx.fillStyle = mix(ink, paper, 0.4 - b * 0.1); ctx.beginPath(); ctx.ellipse(side * 0.14, 0.42, 0.13, 0.26, 0, 0, 6.283); ctx.fill();
+        if (b > 0) { ctx.globalAlpha = (1 - c) * b * 0.5; ctx.fillStyle = paper; ctx.beginPath(); ctx.ellipse(side * 0.5, 0.2, 0.12, 0.35, side * 0.4, 0, 6.283); ctx.fill(); }
+      }
+      if (side === 1 && a < 0.5) { ctx.globalAlpha = (1 - a * 2) * (1 - c); ctx.strokeStyle = mix(ink, paper, 0.3); ctx.lineWidth = 0.06; ctx.beginPath(); ctx.moveTo(0, -1.5); ctx.quadraticCurveTo(0.05, -1.75, 0.25, -1.85); ctx.stroke(); }
+      ctx.restore();
+    }
+    // the fanned slices on the tart
+    if (c > 0) {
+      const R = s * 1.55;
+      for (let i = 0; i < 12; i++) {
+        const an = i / 12 * 6.283, from = { x: cx + (i < 6 ? -1 : 1) * s * 0.9, y: cy };
+        const x = from.x + (cx + Math.cos(an) * R * 0.08 - from.x) * c, y = from.y + (cy + s * 0.1 + Math.sin(an) * R * 0.08 - from.y) * c;
+        ctx.save(); ctx.globalAlpha = c; ctx.translate(x, y); ctx.rotate(an + Math.PI / 2); ctx.scale(s * 0.6, s * 0.78);
+        ctx.fillStyle = mix(ink, paper, 0.38); ctx.strokeStyle = mix(ink, paper, 0.8); ctx.lineWidth = 0.05; slice(ctx); ctx.restore();
+      }
+      ctx.globalAlpha = c; ctx.fillStyle = signal; ctx.beginPath(); ctx.arc(cx, cy + s * 0.1, s * 0.12, 0, 6.283); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  });
+  let fromScrub = false;
+  function frame() {
+    const p = NVD.progress(track);
+    if (p > 0.005) NVD.hintGone();
+    NVD.dim(p > 0.04);
+    T = p * 3; P = p;
+    const k = Math.min(3, Math.round(T));
+    NVD.step(k, p);
+    if (!fromScrub) scrub.value = Math.round(p * 300);
+    scrub.setAttribute('aria-valuetext', names[k]);
+    if (stateEl.textContent !== names[k]) stateEl.textContent = names[k];
+    cv.redraw();
   }
-
-  NVD.onScroll(() => draw(false));
-  addEventListener('resize', resize);
-  NVD.onTheme(() => { readColours(); draw(true); });
-  NVD.onCalm(() => draw(true));
+  scrub.addEventListener('input', () => { fromScrub = true; NVD.scrollToProgress(track, scrub.value / 300); NVD.hintGone(); requestAnimationFrame(() => { fromScrub = false; }); });
+  scrub.addEventListener('keydown', e => {
+    // arrow keys step from one named stage to the next
+    const d = { ArrowRight: 1, ArrowUp: 1, ArrowLeft: -1, ArrowDown: -1 }[e.key]; if (!d) return;
+    e.preventDefault();
+    const cur = scrub.value / 100, next = d > 0 ? Math.floor(cur + 1e-6) + 1 : Math.ceil(cur - 1e-6) - 1;
+    NVD.scrollToProgress(track, NVD.clamp(next / 3));
+  });
+  NVD.onScroll(frame);
+  NVD.onCalm(frame);
   NVD.ready();
-  resize();
+  cv.size();
+  frame();
 
 })();
 </script></div>

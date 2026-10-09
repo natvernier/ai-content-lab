@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Depth Patterns</title>
 <meta name="description" content="Fourteen ways a flat page can feel deep, on an ordinary laptop or phone. Live graybox demos with a calm mode for every pattern.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -37,9 +37,6 @@
   a { color: inherit; text-underline-offset: 0.2em; }
   :focus-visible { outline: 3px solid var(--signal-text); outline-offset: 3px; border-radius: 4px; }
 
-  .up { margin: 0 0 2rem; font-size: 0.95rem; color: var(--ink-soft); }
-  .up a { text-decoration: none; }
-  .up a:hover { text-decoration: underline; }
   header { max-width: 40rem; }
   h1 { margin: 0; font: 400 clamp(3rem, 9vw, 6.5rem)/0.95 var(--serif); letter-spacing: -0.02em; text-wrap: balance; }
   .lede { margin: 1.4rem 0 0; font-size: 1.25rem; line-height: 1.5; max-width: 34ch; }
@@ -70,17 +67,22 @@
   .state.live::before { background: var(--signal); border-color: var(--ink); }
 
   footer { margin-top: 5rem; padding-top: 1.5rem; border-top: 1px solid var(--rule); color: var(--ink-soft); font-size: 0.95rem; max-width: 60ch; }
+  .up { margin: 0 0 2rem; font-size: 0.95rem; color: var(--ink-soft); }
+  .up a { text-decoration: none; }
+  .up a:hover { text-decoration: underline; }
+  .origin { margin: 1rem 0 0; color: var(--ink-soft); max-width: 58ch; }
+  .origin a { color: var(--ink); text-decoration-color: var(--signal); text-decoration-thickness: 2px; }
 </style>
 </head>
 <body>
-
 <div class="wrap">
   <p class="up"><a href="../index.html">Interactive formats</a></p>
   <header>
     <h1>Depth patterns</h1>
     <p class="lede">Fourteen ways a flat page can feel deep, on the laptop and phone you already have.</p>
     <p class="rules">Ordinary gestures only: scroll, swipe, tap, drag, pinch. Every pattern keeps the scroll 1:1, keeps its words as real text, and has a calm mode that replaces the travel with a crossfade. The demos are graybox on purpose: gray shapes stand in for the art, so you judge the motion and nothing else.</p>
-    <a class="start" href="p08-anamorphic-arrival/index.html"><span class="dot" aria-hidden="true"></span>Try the first live demo: Anamorphic arrival</a>
+    <p class="origin">I built the series while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the examples are pears, pumpkins and seasons. The patterns themselves work for any content.</p>
+    <a class="start" href="p01-flight-through-time/index.html"><span class="dot" aria-hidden="true"></span>Start with the first one: Flight through time</a>
   </header>
 
   <section aria-labelledby="travel">
@@ -88,47 +90,28 @@
     <p class="family-note">The page becomes a space, and the scroll moves you through it.</p>
     <div class="scroller"><table>
       <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
-      <tbody>
-        <tr><td class="id">P1</td><td class="name">Flight through time</td><td>Scroll forward instead of down</td><td class="ew">M · 3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P3</td><td class="name">Semantic zoom</td><td>Pinch or zoom one level deeper</td><td class="ew">L · 3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P7</td><td class="name">Window</td><td>Move the mouse or tilt the phone</td><td class="ew">S–M · 2–3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P8</td><td class="name"><a href="p08-anamorphic-arrival/index.html">Anamorphic arrival</a></td><td>The first scroll after arriving</td><td class="ew">M · 3</td><td><span class="state live">Live</span></td></tr>
-      </tbody>
+      <tbody><tr><td class="id">P1</td><td class="name"><a href="p01-flight-through-time/index.html">Flight through time</a></td><td>Scroll forward instead of down</td><td class="ew">M · 3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P3</td><td class="name"><a href="p03-semantic-zoom/index.html">Semantic zoom</a></td><td>Pinch or zoom one level deeper</td><td class="ew">L · 3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P7</td><td class="name"><a href="p07-window/index.html">Window</a></td><td>Move the mouse or tilt the phone</td><td class="ew">S–M · 2–3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P8</td><td class="name"><a href="p08-anamorphic-arrival/index.html">Anamorphic arrival</a></td><td>The first scroll after arriving</td><td class="ew">M · 3</td><td><span class="state live">Live</span></td></tr></tbody>
     </table></div>
   </section>
-
   <section aria-labelledby="hold">
     <h2 id="hold">Depth you can hold</h2>
     <p class="family-note">Things unfold, turn or travel when you touch them. Nothing jumps.</p>
     <div class="scroller"><table>
       <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
-      <tbody>
-        <tr><td class="id">P2</td><td class="name">Focus and fan</td><td>Tap one thing; its options fan out</td><td class="ew">M · 2–3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P4</td><td class="name">The lazy Susan</td><td>Swipe sideways, one season per gesture</td><td class="ew">M · 2</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P5</td><td class="name">Pop-up book</td><td>Each scroll step opens one spread</td><td class="ew">S–M · 2</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P6</td><td class="name">Assembly</td><td>Scroll; the parts come together</td><td class="ew">L · 3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P10</td><td class="name">Time scrub</td><td>Drag a time line under a picture</td><td class="ew">M · 2</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P11</td><td class="name">Doors that never cut</td><td>Any click that opens something</td><td class="ew">S · 2</td><td><span class="state">Storyboard</span></td></tr>
-      </tbody>
+      <tbody><tr><td class="id">P2</td><td class="name"><a href="p02-focus-and-fan/index.html">Focus and fan</a></td><td>Tap one thing; its options fan out</td><td class="ew">M · 2–3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P4</td><td class="name"><a href="p04-lazy-susan/index.html">The lazy Susan</a></td><td>Swipe sideways, one season per gesture</td><td class="ew">M · 2</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P5</td><td class="name"><a href="p05-pop-up-book/index.html">Pop-up book</a></td><td>Each scroll step opens one spread</td><td class="ew">S–M · 2</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P6</td><td class="name"><a href="p06-assembly/index.html">Assembly</a></td><td>Scroll; the parts come together</td><td class="ew">L · 3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P10</td><td class="name"><a href="p10-time-scrub/index.html">Time scrub</a></td><td>Drag a time line under a picture</td><td class="ew">M · 2</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P11</td><td class="name"><a href="p11-doors-that-never-cut/index.html">Doors that never cut</a></td><td>Any click that opens something</td><td class="ew">S · 2</td><td><span class="state live">Live</span></td></tr></tbody>
     </table></div>
   </section>
-
   <section aria-labelledby="feel">
     <h2 id="feel">Depth you only feel</h2>
     <p class="family-note">Quiet layers. Decoration only, never needed to read anything.</p>
     <div class="scroller"><table>
       <thead><tr><th>Pattern</th><th>Name</th><th>Gesture</th><th>Effort · wow</th><th>State</th></tr></thead>
-      <tbody>
-        <tr><td class="id">P9</td><td class="name">Constellation</td><td>Drag, pinch, hover a star</td><td class="ew">M–L · 3</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P12</td><td class="name">The world remembers</td><td>None; it happens across visits</td><td class="ew">S · 1–2</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P13</td><td class="name">The lamp</td><td>Move the cursor, or touch and hold</td><td class="ew">S–M · 2</td><td><span class="state">Storyboard</span></td></tr>
-        <tr><td class="id">P14</td><td class="name">Glass controls</td><td>None; it is the control layer</td><td class="ew">S · 2</td><td><span class="state">Storyboard</span></td></tr>
-      </tbody>
+      <tbody><tr><td class="id">P9</td><td class="name"><a href="p09-constellation/index.html">Constellation</a></td><td>Drag, pinch, hover a star</td><td class="ew">M–L · 3</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P12</td><td class="name"><a href="p12-the-world-remembers/index.html">The world remembers</a></td><td>None; it happens across visits</td><td class="ew">S · 1–2</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P13</td><td class="name"><a href="p13-the-lamp/index.html">The lamp</a></td><td>Move the cursor, or touch and hold</td><td class="ew">S–M · 2</td><td><span class="state live">Live</span></td></tr><tr><td class="id">P14</td><td class="name"><a href="p14-glass-controls/index.html">Glass controls</a></td><td>None; it is the control layer</td><td class="ew">S · 2</td><td><span class="state live">Live</span></td></tr></tbody>
     </table></div>
   </section>
 
   <footer>
-    A collection in <a href="https://github.com/natvernier/ai-content-lab">AI Content Lab</a>, built in the open by Nathalie Vernier. Effort runs S to L, wow runs 1 to 3. A new pattern goes live about twice a month.
+    A collection in <a href="https://github.com/natvernier/ai-content-lab">AI Content Lab</a>, built in the open by Nathalie Vernier. Effort runs S to L, wow runs 1 to 3. All fourteen are live as graybox demos.
   </footer>
 </div>
 </body>

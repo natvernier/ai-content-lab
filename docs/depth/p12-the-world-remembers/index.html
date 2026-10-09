@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anamorphic arrival · Depth patterns</title>
-<meta name="description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:title" content="Anamorphic arrival · Depth patterns">
-<meta property="og:description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/frames/2.jpg">
+<title>The world remembers · Depth patterns</title>
+<meta name="description" content="A faint trail remembers where you went, and a return visit starts where you left. Stored only on your device, with a visible forget button. A live graybox demo with a calm mode.">
+<meta property="og:title" content="The world remembers · Depth patterns">
+<meta property="og:description" content="A faint trail remembers where you went, and a return visit starts where you left. Stored only on your device, with a visible forget button. A live graybox demo with a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p12-the-world-remembers/frames/2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -100,21 +100,40 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .stage.split .gauge{left:16px;right:16px}
 #nvd .hint{bottom:70px;font-size:.85rem}
 }
-#nvd .teasers{position:absolute;inset:auto var(--gut) 92px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);margin:0;padding:0;list-style:none;pointer-events:none;z-index:2}
-@media (min-width:768px){#nvd .teasers{left:max(var(--gut),40%)}}
-#nvd .teaser{opacity:0;transform-origin:50% 100%;background:var(--paper)}
-#nvd .teaser h3{font-size:clamp(1rem,2vw,1.35rem)}
-@media (max-width:640px){#nvd .teasers{bottom:84px}#nvd .teaser p{display:none}}
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden}
+#nvd .places{position:absolute;inset:56px 0 64px}
+#nvd .place{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;cursor:pointer;font-size:.95rem;padding:4px}
+#nvd .place i{width:46px;height:46px;border-radius:50%;background:color-mix(in srgb,var(--ink) 30%,var(--paper));border:2px solid transparent;transition:transform .2s}
+#nvd .place:hover i{transform:scale(1.08)}
+#nvd .place.seen i{border-color:var(--ink)}
+#nvd .place.here i{background:var(--signal);border-color:var(--ink)}
+#nvd .badges{position:absolute;left:12px;right:12px;top:10px;margin:0;padding:0;list-style:none;display:flex;gap:10px;flex-wrap:wrap;min-height:36px}
+#nvd .badges li{display:flex;flex-direction:column;align-items:center;font-size:.7rem;color:var(--ink-soft)}
+#nvd .badges li::before{content:"";width:1px;height:10px;background:var(--rule)}
+#nvd .badges li span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--ink);background:var(--card);font:400 .8rem/1 var(--serif);color:var(--ink)}
+#nvd .welcome{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;padding:18px;width:min(360px,calc(100% - 24px));text-align:center}
+#nvd .welcome p{margin:0 0 12px;font:400 1.35rem/1.2 var(--serif)}
+#nvd .welcome div{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#nvd .tbar{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft)}
+@media (max-width:767px){#nvd .place i{width:34px;height:34px}#nvd .place{font-size:.8rem}#nvd .places{bottom:110px}}
 #nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
 </head>
 <body>
-<div id="nvd" data-pattern="p08"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:380vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Anamorphic arrival</h1><p>Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the pieces become a pear.</p></div><canvas id="c" class="full" aria-hidden="true"></canvas>
-<ul class="teasers" id="teasers" aria-label="First teasers">
-<li class="teaser card"><div class="img"></div><h3>Pear tart</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Poached pears</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Pear and chestnut cake</h3><p>Backlog</p></li>
-</ul>
-<p class="hint" id="hint">Scroll to bring the pieces into line</p><ol class="gauge" aria-label="Where you are in the demo"><li data-step="0" aria-current="step">Scattered</li><li data-step="1">One picture</li><li data-step="2">First teasers</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>The fragments were never flat. Each one hangs at its own depth. Scrolling turns the camera, and at one angle, and only at that angle, the depths cancel out and the pieces read as a single pear. Keep scrolling and the picture breaks into what the page is actually for: the first three things to look at.</p><p>The scroll is never taken from you. One pixel of scroll is one step of the camera, it runs backwards when you scroll back, and nothing plays on a timer.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are pears, tarts and seasons. The patterns themselves are general: swap the pear for your own picture and the teasers for your own first three things.</p><h3>The illusion</h3><p>Anamorphosis: a picture that only exists from one viewpoint. Motion parallax does the rest. Near fragments move more than far ones, so your eye reads the space before it reads the picture.</p><h3>The rules it follows</h3><ul><li>The title is real text, readable before the first scroll and to screen readers.</li><li>Scroll stays 1:1 and never changes direction.</li><li>A progress line says where you are: scattered, one picture, first teasers.</li><li>You can skip it, and calm mode replaces the camera move with a plain crossfade.</li><li>It is decoration of an arrival, never the only way to reach the content.</li></ul><h3>Calm mode</h3><p>Turn it on with the switch at the top, or let your system decide: if your device asks for reduced motion, the page starts calm. Same picture, same teasers, no travel.</p><dl class="facts"><dt>Pattern</dt><dd>P8 of 14, depth you travel through</dd><dt>Gesture</dt><dd>The first scroll after arriving</dd><dt>Illusion</dt><dd>Anamorphosis, motion parallax</dd><dt>Built with</dt><dd>One canvas, about 200 lines of plain JavaScript, no library</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: the gray squares stand in for painted fragments</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p07-window/index.html" rel="prev"><small>Previous, P7</small>Window</a><a href="../p09-constellation/index.html" rel="next" style="text-align:right"><small>Next, P9</small>Constellation</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival">GitHub</a>.</footer><script>
+<div id="nvd" data-pattern="p12"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="stage solo split" id="demo" aria-label="Live demo"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>The world remembers</h1><p>Wherever you go, a faint trail stays behind. Come back a week later and the page starts where you left it.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the places on the map are ingredients.</p></div><div class="scene" id="scene">
+<canvas id="trail" class="full" aria-hidden="true"></canvas>
+<ul class="badges" id="badges" aria-label="Your sky"></ul>
+<div class="places" id="places">
+<button class="place" type="button" data-id="lemon" style="--x:16%;--y:30%"><i></i>Lemon</button>
+<button class="place" type="button" data-id="pear" style="--x:40%;--y:48%"><i></i>Pear</button>
+<button class="place" type="button" data-id="apple" style="--x:22%;--y:68%"><i></i>Apple</button>
+<button class="place" type="button" data-id="pumpkin" style="--x:62%;--y:36%"><i></i>Pumpkin</button>
+<button class="place" type="button" data-id="fig" style="--x:56%;--y:72%"><i></i>Fig</button>
+<button class="place" type="button" data-id="chestnut" style="--x:82%;--y:56%"><i></i>Chestnut</button>
+</div>
+<div class="welcome glass" id="welcome" hidden role="status"><p id="wtext"></p><div><button class="pill" type="button" id="wcont">Continue</button><button class="pill" type="button" id="wnow">Start at Now</button></div></div>
+<div class="tbar"><button class="pill" type="button" id="week">Come back a week later</button><button class="pill" type="button" id="forget">Forget my trail</button><span id="tnote">Stored only on this device.</span></div>
+</div>
+<p class="hint" id="hint">Visit a few places, then fast-forward a week</p></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Each place you open leaves a faint mark, and the marks join into a trail. Close the page and come back, or press the button that skips a week, and the page greets you where you left off. Every place you visited also hangs as a small badge in your sky.</p><p>This is the quietest pattern of the fourteen. It is not spectacular, it is personal: the space feels deep because it holds your own history.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are lemons, pears, pumpkins and chestnuts. The patterns themselves are general: anything people return to works, a course, a long read, a documentation site, a shop.</p><h3>The illusion</h3><p>Memory: a place that changes because you were there feels more real than one that resets every time. The trail is a second layer of depth, made of time instead of space.</p><h3>The rules it follows</h3><ul><li>Stored only on this device, never sent anywhere.</li><li>A visible forget button removes everything at once.</li><li>The greeting offers both ways: continue where you were, or start fresh.</li><li>Nothing depends on it. Without a trail the page simply starts at the beginning.</li><li>The trail is decoration and never covers a word.</li></ul><h3>Calm mode</h3><p>Calm mode draws the trail at once instead of letting it grow. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P12 of 14, depth you only feel</dd><dt>Gesture</dt><dd>None. It happens across visits. Here you can visit places and fast-forward a week</dd><dt>Illusion</dt><dd>Memory: a world that changes because you were there</dd><dt>Built with</dt><dd>Local storage, one canvas and about 110 lines of plain JavaScript</dd><dt>Effort</dt><dd>Small</dd><dt>Wow</dt><dd>1–2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: a soft gray line stands in for a watercolour trail</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p11-doors-that-never-cut/index.html" rel="prev"><small>Previous, P11</small>Doors that never cut</a><a href="../p13-the-lamp/index.html" rel="next" style="text-align:right"><small>Next, P13</small>The lamp</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p12-the-world-remembers">GitHub</a>.</footer><script>
 (() => {
 /* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
 const NVD = (() => {
@@ -202,126 +221,74 @@ const NVD = (() => {
   return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
 })();
 
-
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  const track = document.getElementById('track');
-  const teasers = [...document.querySelectorAll('.teaser')];
-
-
-
-  let ink, paper, signal;
-  const readColours = () => { ink = NVD.col.ink; paper = NVD.col.paper; signal = NVD.col.signal; };
-  const mix = NVD.mix;
-
-  // ---- the target picture: a pear on a grid, seeded so it is the same every visit
-  let seed = 11;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const R = (a, b) => a + rnd() * (b - a);
-  const inPear = (x, y) =>
-    (x / 0.95) ** 2 + ((y - 0.35) / 0.85) ** 2 <= 1 ||
-    (x / 0.55) ** 2 + ((y + 0.55) / 0.55) ** 2 <= 1;
-
-  const frags = [];
-  for (let gy = -12; gy <= 12; gy++) {
-    for (let gx = -10; gx <= 10; gx++) {
-      const ux = gx / 9.5, uy = gy / 9.5;
-      if (!inPear(ux, uy)) continue;
-      const hi = (ux + 0.45) ** 2 + (uy - 0.25) ** 2 < 0.06;
-      const shade = Math.min(1, Math.max(0, (ux + 1) / 2 + R(-0.15, 0.15)));
-      frags.push({ gx, gy, hi, shade, z: R(-1, 1), jx: R(-1, 1), jy: R(-1, 1), rot: R(-1, 1), out: Math.atan2(gy, gx) + R(-0.4, 0.4) });
-    }
-  }
-  frags.push({ gx: 0, gy: -13, hi: false, shade: 1, z: R(-1, 1), jx: 0.5, jy: -0.4, rot: 0.3, out: -1.6 });
-  frags.push({ gx: 1, gy: -13, hi: true, shade: 0, z: R(-1, 1), jx: -0.7, jy: 0.3, rot: -0.5, out: -1.2 });
-
-  // ---- sizing
-  let W = 0, H = 0, dpr = 1;
-  const resize = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    readColours(); draw(true);
-  };
-
-  const progress = () => NVD.progress(track);
-  const ease = NVD.ease;
-
-  let last = -1;
-  function draw(force) {
-    const p = progress();
-    if (!force && Math.abs(p - last) < 0.0005) return;
-    last = p;
-    if (p > 0.01) NVD.hintGone();
-    NVD.dim(p > 0.06);
-
-    // phases: align 0–0.42, hold 0.42–0.6, break apart 0.6–0.95
-    const a = ease(p / 0.42);
-    const b = ease((p - 0.6) / 0.35);
-    const step = p < 0.42 ? 0 : p < 0.62 ? 1 : 2;
-    NVD.step(step, p);
-
+  const scene = document.getElementById('scene'), placesEl = document.getElementById('places');
+  const places = [...placesEl.querySelectorAll('.place')];
+  const nameOf = id => places.find(p => p.dataset.id === id).textContent.trim();
+  const KEY = 'depth-trail';
+  let trail = [], grow = 1, raf = 0;
+  const load = () => { try { return JSON.parse(localStorage.getItem(KEY)) || null; } catch (_) { return null; } };
+  const save = () => { try { localStorage.setItem(KEY, JSON.stringify({ trail, at: Date.now() })); } catch (_) {} };
+  const centre = id => { const b = places.find(p => p.dataset.id === id).querySelector('i'), s = scene.getBoundingClientRect(), r = b.getBoundingClientRect(); return { x: r.left - s.left + r.width / 2, y: r.top - s.top + r.height / 2 }; };
+  const cv = NVD.canvas(document.getElementById('trail'), (ctx, W, H) => {
     ctx.clearRect(0, 0, W, H);
-    const small = Math.min(W, H);
-    const cell = small / (W < 640 ? 40 : 30);
-    const cx = W < 900 ? W * 0.5 : W * 0.62;
-    const cy = H * (W < 640 ? 0.6 : 0.5);
-    const spreadX = Math.min(W, 1100) * 0.5, spreadY = H * 0.42;
-    const depth = small * 0.55;
-
-    if (NVD.calm) {
-      // calm: no camera, no travel. The picture fades in, holds, fades out.
-      const alpha = a * (1 - b);
-      for (const f of frags) {
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = f.hi ? signal : mix(ink, paper, 0.15 + f.shade * 0.55);
-        const s = cell - 2;
-        ctx.fillRect(cx + f.gx * cell - s / 2, cy + f.gy * cell - s / 2, s, s);
+    if (trail.length < 2) return;
+    const pts = trail.map(centre);
+    // a soft, layered line, like a wash laid down three times
+    const n = pts.length - 1, upto = n - 1 + grow;
+    for (const [w, a, off] of [[18, 0.07, 0], [11, 0.09, 2], [5, 0.14, -1]]) {
+      ctx.lineWidth = w; ctx.lineCap = 'round'; ctx.lineJoin = 'round'; ctx.strokeStyle = NVD.col.ink; ctx.globalAlpha = a;
+      ctx.beginPath(); ctx.moveTo(pts[0].x + off, pts[0].y - off);
+      for (let i = 1; i <= n; i++) {
+        const f = Math.min(1, Math.max(0, upto - (i - 1)));
+        if (f <= 0) break;
+        const x = pts[i - 1].x + (pts[i].x - pts[i - 1].x) * f, y = pts[i - 1].y + (pts[i].y - pts[i - 1].y) * f;
+        const mx = (pts[i - 1].x + x) / 2 + off * 6, my = (pts[i - 1].y + y) / 2 - 18;
+        ctx.quadraticCurveTo(mx, my, x + off, y - off);
       }
-      ctx.globalAlpha = 1;
-    } else {
-      const yaw = (1 - a) * 0.66;               // about 38 degrees at rest
-      const cos = Math.cos(yaw), sin = Math.sin(yaw);
-      const pts = frags.map(f => {
-        let x = f.gx * cell + (1 - a) * f.jx * spreadX;
-        let y = f.gy * cell + (1 - a) * f.jy * spreadY;
-        const z = f.z * depth;
-        // break apart: every fragment leaves along its own direction
-        x += Math.cos(f.out) * b * W * 0.75;
-        y += Math.sin(f.out) * b * H * 0.75;
-        const xr = x * cos + z * sin;
-        const zr = -x * sin + z * cos;
-        const persp = 900 / (900 + zr * (1 - a) * 0.9);
-        return { zr, sx: cx + xr * persp, sy: cy + y * persp, s: (cell - 2) * persp * (0.75 + 0.25 * a), ang: f.rot * (1 - a) * 1.1, f };
-      }).sort((m, n) => n.zr - m.zr);
-      for (const q of pts) {
-        // far is paler (aerial perspective), fading out while breaking apart
-        const far = Math.min(1, Math.max(0, (q.zr / depth + 1) / 2)) * (1 - a);
-        ctx.globalAlpha = 1 - b;
-        ctx.fillStyle = q.f.hi ? signal : mix(ink, paper, Math.min(0.92, 0.15 + q.f.shade * 0.55 + far * 0.35));
-        ctx.save(); ctx.translate(q.sx, q.sy); ctx.rotate(q.ang);
-        ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
+      ctx.stroke();
     }
-
-    // teasers arrive from the depth (calm: they simply fade in)
-    const t = ease((p - 0.66) / 0.3);
-    teasers.forEach((el, i) => {
-      const ti = ease((p - 0.66 - i * 0.04) / 0.28);
-      el.style.opacity = NVD.calm ? t.toFixed(3) : ti.toFixed(3);
-      el.style.transform = NVD.calm ? 'none' : `scale(${(0.6 + 0.4 * ti).toFixed(3)}) translateY(${((1 - ti) * 40).toFixed(1)}px)`;
-    });
-  }
-
-  NVD.onScroll(() => draw(false));
-  addEventListener('resize', resize);
-  NVD.onTheme(() => { readColours(); draw(true); });
-  NVD.onCalm(() => draw(true));
+    ctx.globalAlpha = 1;
+  });
+  const render = () => {
+    const last = trail[trail.length - 1];
+    places.forEach(p => { p.classList.toggle('seen', trail.includes(p.dataset.id)); p.classList.toggle('here', p.dataset.id === last); });
+    document.getElementById('badges').innerHTML = [...new Set(trail)].map(id => `<li><span aria-hidden="true">${nameOf(id)[0]}</span>${nameOf(id)}</li>`).join('');
+    cv.redraw();
+  };
+  const animateGrow = () => {
+    if (NVD.calm) { grow = 1; render(); return; }
+    const t0 = performance.now();
+    cancelAnimationFrame(raf);
+    const step = now => { grow = Math.min(1, (now - t0) / 450); cv.redraw(); if (grow < 1) raf = requestAnimationFrame(step); };
+    raf = requestAnimationFrame(step);
+  };
+  placesEl.addEventListener('click', e => {
+    const b = e.target.closest('.place'); if (!b) return;
+    NVD.hintGone(); welcome.hidden = true;
+    if (trail[trail.length - 1] === b.dataset.id) return;
+    trail.push(b.dataset.id); if (trail.length > 24) trail.shift();
+    save(); grow = 0; render(); animateGrow();
+  });
+  const welcome = document.getElementById('welcome');
+  const greet = () => {
+    if (!trail.length) { document.getElementById('tnote').textContent = 'Visit a place first, then come back.'; return; }
+    const n = nameOf(trail[trail.length - 1]).toLowerCase();
+    document.getElementById('wtext').textContent = `Welcome back. You were at the ${n === 'fig' ? 'figs' : n === 'chestnut' ? 'chestnuts' : n === 'pumpkin' ? 'pumpkins' : n + 's'}.`;
+    welcome.hidden = false; document.getElementById('wcont').focus({ preventScroll: true });
+  };
+  document.getElementById('week').addEventListener('click', () => { NVD.hintGone(); greet(); });
+  document.getElementById('wcont').addEventListener('click', () => { welcome.hidden = true; places.find(p => p.dataset.id === trail[trail.length - 1]).focus(); });
+  document.getElementById('wnow').addEventListener('click', () => { welcome.hidden = true; places.forEach(p => p.classList.remove('here')); places[0].focus(); });
+  document.getElementById('forget').addEventListener('click', () => {
+    trail = []; try { localStorage.removeItem(KEY); } catch (_) {}
+    welcome.hidden = true; render(); document.getElementById('tnote').textContent = 'Forgotten. Nothing is stored any more.';
+  });
+  addEventListener('resize', () => cv.redraw());
   NVD.ready();
-  resize();
+  cv.size();
+  const prev = load();
+  if (prev && prev.trail && prev.trail.length) { trail = prev.trail.filter(id => places.some(p => p.dataset.id === id)); render(); greet(); }
+  else render();
 
 })();
 </script></div>

@@ -3,11 +3,11 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Anamorphic arrival · Depth patterns</title>
-<meta name="description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:title" content="Anamorphic arrival · Depth patterns">
-<meta property="og:description" content="Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers. A live graybox demo with a calm mode.">
-<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/frames/2.jpg">
+<title>The lazy Susan · Depth patterns</title>
+<meta name="description" content="Swipe sideways and a round table turns one season towards you: front large and sharp, the rest small and pale. A live graybox demo with arrows, labels, keys and a calm mode.">
+<meta property="og:title" content="The lazy Susan · Depth patterns">
+<meta property="og:description" content="Swipe sideways and a round table turns one season towards you: front large and sharp, the rest small and pale. A live graybox demo with arrows, labels, keys and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p04-lazy-susan/frames/2.jpg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
@@ -100,21 +100,36 @@ html[data-theme="dark"] #nvd .calm{background:rgba(43,50,52,.88);border-color:#5
 #nvd .stage.split .gauge{left:16px;right:16px}
 #nvd .hint{bottom:70px;font-size:.85rem}
 }
-#nvd .teasers{position:absolute;inset:auto var(--gut) 92px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);margin:0;padding:0;list-style:none;pointer-events:none;z-index:2}
-@media (min-width:768px){#nvd .teasers{left:max(var(--gut),40%)}}
-#nvd .teaser{opacity:0;transform-origin:50% 100%;background:var(--paper)}
-#nvd .teaser h3{font-size:clamp(1rem,2vw,1.35rem)}
-@media (max-width:640px){#nvd .teasers{bottom:84px}#nvd .teaser p{display:none}}
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+#nvd .scene:active{cursor:grabbing}
+#nvd .susan{position:absolute;inset:0 0 70px;perspective:900px;perspective-origin:50% 18%}
+#nvd .plate{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#nvd .plate ellipse{fill:color-mix(in srgb,var(--ink) 7%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .plate line{stroke:var(--rule);stroke-width:1}
+#nvd .season{position:absolute;left:50%;top:62%;width:var(--sw,180px);margin:0;transform-origin:50% 100%;will-change:transform,opacity}
+#nvd .season h3{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+#nvd .sbar{position:absolute;left:50%;bottom:12px;transform:translateX(-50%);display:flex;align-items:center;gap:6px;padding:6px;white-space:nowrap}
+#nvd .sbar>.pill{width:40px;justify-content:center;padding:0;font-size:1.3rem}
+#nvd .snames{display:flex;gap:2px}
+#nvd .snames button{background:none;border:0;padding:6px 8px;border-radius:999px;cursor:pointer;font-size:.9rem;color:var(--ink-soft)}
+#nvd .snames button[aria-pressed="true"]{color:var(--ink);background:color-mix(in srgb,var(--signal) 55%,transparent)}
+#nvd.is-calm .season{transition:opacity .35s ease}
+@media (max-width:767px){#nvd .season{--sw:138px;padding:7px}#nvd .season p{font-size:.72rem}#nvd .snames button{padding:6px 5px;font-size:.8rem}}
 #nvd{--serif:"Newsreader",Georgia,serif;--sans:"Outfit",system-ui,sans-serif}body{margin:0;background:#f4f4f4}@media (prefers-color-scheme:dark){body{background:#1c2022}}#nvd .calm{right:16px}@media screen and (max-width:767px){#nvd .calm{top:12px}}</style>
 </head>
 <body>
-<div id="nvd" data-pattern="p08"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="track" id="track" aria-label="Live demo" style="height:380vh"><div class="stage"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Anamorphic arrival</h1><p>Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the pieces become a pear.</p></div><canvas id="c" class="full" aria-hidden="true"></canvas>
-<ul class="teasers" id="teasers" aria-label="First teasers">
-<li class="teaser card"><div class="img"></div><h3>Pear tart</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Poached pears</h3><p>Next up</p></li>
-<li class="teaser card"><div class="img"></div><h3>Pear and chestnut cake</h3><p>Backlog</p></li>
-</ul>
-<p class="hint" id="hint">Scroll to bring the pieces into line</p><ol class="gauge" aria-label="Where you are in the demo"><li data-step="0" aria-current="step">Scattered</li><li data-step="1">One picture</li><li data-step="2">First teasers</li></ol></div></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>The fragments were never flat. Each one hangs at its own depth. Scrolling turns the camera, and at one angle, and only at that angle, the depths cancel out and the pieces read as a single pear. Keep scrolling and the picture breaks into what the page is actually for: the first three things to look at.</p><p>The scroll is never taken from you. One pixel of scroll is one step of the camera, it runs backwards when you scroll back, and nothing plays on a timer.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are pears, tarts and seasons. The patterns themselves are general: swap the pear for your own picture and the teasers for your own first three things.</p><h3>The illusion</h3><p>Anamorphosis: a picture that only exists from one viewpoint. Motion parallax does the rest. Near fragments move more than far ones, so your eye reads the space before it reads the picture.</p><h3>The rules it follows</h3><ul><li>The title is real text, readable before the first scroll and to screen readers.</li><li>Scroll stays 1:1 and never changes direction.</li><li>A progress line says where you are: scattered, one picture, first teasers.</li><li>You can skip it, and calm mode replaces the camera move with a plain crossfade.</li><li>It is decoration of an arrival, never the only way to reach the content.</li></ul><h3>Calm mode</h3><p>Turn it on with the switch at the top, or let your system decide: if your device asks for reduced motion, the page starts calm. Same picture, same teasers, no travel.</p><dl class="facts"><dt>Pattern</dt><dd>P8 of 14, depth you travel through</dd><dt>Gesture</dt><dd>The first scroll after arriving</dd><dt>Illusion</dt><dd>Anamorphosis, motion parallax</dd><dt>Built with</dt><dd>One canvas, about 200 lines of plain JavaScript, no library</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: the gray squares stand in for painted fragments</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p07-window/index.html" rel="prev"><small>Previous, P7</small>Window</a><a href="../p09-constellation/index.html" rel="next" style="text-align:right"><small>Next, P9</small>Constellation</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival">GitHub</a>.</footer><script>
+<div id="nvd" data-pattern="p04"><a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm" data-cursor="link"><span class="knob" aria-hidden="true"></span>Calm mode</button><main><section class="stage solo split" id="demo" aria-label="Live demo"><div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>The lazy Susan</h1><p>A round table turns around you, one season per gesture. The season in front is large and sharp, the others wait small and pale behind it.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. That is why the table carries the four seasons.</p></div><div class="scene" id="scene" tabindex="0" aria-roledescription="carousel" aria-label="Seasons on a turning table">
+<div class="susan" id="susan">
+<svg class="plate" id="plate" aria-hidden="true"><ellipse id="pe"/><line id="l1"/><line id="l2"/></svg>
+<article class="season card" data-i="0" aria-roledescription="slide"><div class="img"></div><h3>Winter</h3><p>Mulled wine · Chestnut soup · Hot chocolate</p></article>
+<article class="season card" data-i="1" aria-roledescription="slide"><div class="img"></div><h3>Spring</h3><p>Asparagus tart · Rhubarb crumble · Wild garlic pesto</p></article>
+<article class="season card" data-i="2" aria-roledescription="slide"><div class="img"></div><h3>Summer</h3><p>Peach galette · Gazpacho · Elderflower cordial</p></article>
+<article class="season card" data-i="3" aria-roledescription="slide"><div class="img"></div><h3>Autumn</h3><p>Pear tart · Pumpkin soup · Castagnaccio</p></article>
+</div>
+<div class="sbar glass"><button class="pill" type="button" id="prev" aria-label="Previous season">‹</button><div class="snames" id="snames"></div><button class="pill" type="button" id="next" aria-label="Next season">›</button></div>
+<p class="sr" id="live" aria-live="polite"></p>
+</div>
+<p class="hint" id="hint">Swipe, drag or use the arrows to turn the table</p></section><section class="notes" id="notes" tabindex="-1"><div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name">Nathalie Vernier</div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="https://natvernier.com">about</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" target="_blank" rel="noopener">linkedin</a></div></div></div><h2>What just happened</h2><p>Every gesture turns the table by exactly one quarter, no matter how hard you swipe. The season in front becomes large and sharp, the one behind small and pale, and the two at the sides wait half turned. A small overshoot when it stops gives the table weight.</p><p>It opened on the current season. In October that is autumn, so autumn faced you before you did anything.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are the four seasons and what to cook in them. The patterns themselves are general: any small set of equal choices works, four plans, four teams, four chapters. More than six and it stops being a table and starts being a carousel.</p><h3>The illusion</h3><p>Size and aerial perspective: closer is bigger, further is paler. Motion parallax: while the table turns, the front cards move faster than the back ones, so the circle reads as depth.</p><h3>The rules it follows</h3><ul><li>One gesture, one meaning: sideways always means the next season, never anything else.</li><li>Arrows and season labels for mouse users, arrow keys for the keyboard.</li><li>It opens on the current season.</li><li>A label always says which season faces you and how many there are.</li><li>The vertical scroll is never taken: only a sideways move turns the table.</li></ul><h3>Calm mode</h3><p>Calm mode stops the turning. The next season simply crossfades in front of you. If your device asks for reduced motion, the page starts calm.</p><dl class="facts"><dt>Pattern</dt><dd>P4 of 14, depth you can hold</dd><dt>Gesture</dt><dd>Swipe or drag sideways, scroll sideways on a trackpad, arrow keys or the season labels</dd><dt>Illusion</dt><dd>Size, motion parallax, aerial perspective</dd><dt>Built with</dt><dd>HTML cards placed on a 3D ring with plain JavaScript</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span>Graybox: hatched cards stand in for the painted seasons</dd></dl><nav class="pager" aria-label="More patterns"><a href="../p03-semantic-zoom/index.html" rel="prev"><small>Previous, P3</small>Semantic zoom</a><a href="../p05-pop-up-book/index.html" rel="next" style="text-align:right"><small>Next, P5</small>Pop-up book</a></nav></section></main><footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p04-lazy-susan">GitHub</a>.</footer><script>
 (() => {
 /* Depth patterns kit: calm mode, colours, scroll progress, helpers. Shared by every pattern. */
 const NVD = (() => {
@@ -202,126 +217,92 @@ const NVD = (() => {
   return { root, col, get calm() { return calm; }, onCalm: f => calmFns.push(f), onTheme: f => themeFns.push(f), clamp, ease, lerp, mix, seeded, progress, onScroll, scrollToProgress, hintGone, step, canvas, dim, ready };
 })();
 
+  const scene = document.getElementById('scene'), plate = document.getElementById('plate');
+  const cards = [...scene.querySelectorAll('.season')];
+  const names = cards.map(c => c.querySelector('h3').textContent);
+  const snames = document.getElementById('snames'), live = document.getElementById('live');
+  snames.innerHTML = names.map((n, i) => `<button type="button" data-i="${i}" aria-pressed="false">${n}</button>`).join('');
+  const m = new Date().getMonth();
+  let cur = m === 11 || m < 2 ? 0 : m < 5 ? 1 : m < 8 ? 2 : 3;  // opens on the current season (northern hemisphere)
+  let angle = -cur * 90, from = angle, to = angle, t0 = 0, raf = 0;
 
-  const canvas = document.getElementById('c');
-  const ctx = canvas.getContext('2d');
-  const track = document.getElementById('track');
-  const teasers = [...document.querySelectorAll('.teaser')];
-
-
-
-  let ink, paper, signal;
-  const readColours = () => { ink = NVD.col.ink; paper = NVD.col.paper; signal = NVD.col.signal; };
-  const mix = NVD.mix;
-
-  // ---- the target picture: a pear on a grid, seeded so it is the same every visit
-  let seed = 11;
-  const rnd = () => (seed = (seed * 16807) % 2147483647) / 2147483647;
-  const R = (a, b) => a + rnd() * (b - a);
-  const inPear = (x, y) =>
-    (x / 0.95) ** 2 + ((y - 0.35) / 0.85) ** 2 <= 1 ||
-    (x / 0.55) ** 2 + ((y + 0.55) / 0.55) ** 2 <= 1;
-
-  const frags = [];
-  for (let gy = -12; gy <= 12; gy++) {
-    for (let gx = -10; gx <= 10; gx++) {
-      const ux = gx / 9.5, uy = gy / 9.5;
-      if (!inPear(ux, uy)) continue;
-      const hi = (ux + 0.45) ** 2 + (uy - 0.25) ** 2 < 0.06;
-      const shade = Math.min(1, Math.max(0, (ux + 1) / 2 + R(-0.15, 0.15)));
-      frags.push({ gx, gy, hi, shade, z: R(-1, 1), jx: R(-1, 1), jy: R(-1, 1), rot: R(-1, 1), out: Math.atan2(gy, gx) + R(-0.4, 0.4) });
-    }
-  }
-  frags.push({ gx: 0, gy: -13, hi: false, shade: 1, z: R(-1, 1), jx: 0.5, jy: -0.4, rot: 0.3, out: -1.6 });
-  frags.push({ gx: 1, gy: -13, hi: true, shade: 0, z: R(-1, 1), jx: -0.7, jy: 0.3, rot: -0.5, out: -1.2 });
-
-  // ---- sizing
-  let W = 0, H = 0, dpr = 1;
-  const resize = () => {
-    dpr = Math.min(window.devicePixelRatio || 1, 2);
-    W = canvas.clientWidth; H = canvas.clientHeight;
-    canvas.width = Math.round(W * dpr); canvas.height = Math.round(H * dpr);
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    readColours(); draw(true);
-  };
-
-  const progress = () => NVD.progress(track);
-  const ease = NVD.ease;
-
-  let last = -1;
-  function draw(force) {
-    const p = progress();
-    if (!force && Math.abs(p - last) < 0.0005) return;
-    last = p;
-    if (p > 0.01) NVD.hintGone();
-    NVD.dim(p > 0.06);
-
-    // phases: align 0–0.42, hold 0.42–0.6, break apart 0.6–0.95
-    const a = ease(p / 0.42);
-    const b = ease((p - 0.6) / 0.35);
-    const step = p < 0.42 ? 0 : p < 0.62 ? 1 : 2;
-    NVD.step(step, p);
-
-    ctx.clearRect(0, 0, W, H);
-    const small = Math.min(W, H);
-    const cell = small / (W < 640 ? 40 : 30);
-    const cx = W < 900 ? W * 0.5 : W * 0.62;
-    const cy = H * (W < 640 ? 0.6 : 0.5);
-    const spreadX = Math.min(W, 1100) * 0.5, spreadY = H * 0.42;
-    const depth = small * 0.55;
-
-    if (NVD.calm) {
-      // calm: no camera, no travel. The picture fades in, holds, fades out.
-      const alpha = a * (1 - b);
-      for (const f of frags) {
-        ctx.globalAlpha = alpha;
-        ctx.fillStyle = f.hi ? signal : mix(ink, paper, 0.15 + f.shade * 0.55);
-        const s = cell - 2;
-        ctx.fillRect(cx + f.gx * cell - s / 2, cy + f.gy * cell - s / 2, s, s);
-      }
-      ctx.globalAlpha = 1;
-    } else {
-      const yaw = (1 - a) * 0.66;               // about 38 degrees at rest
-      const cos = Math.cos(yaw), sin = Math.sin(yaw);
-      const pts = frags.map(f => {
-        let x = f.gx * cell + (1 - a) * f.jx * spreadX;
-        let y = f.gy * cell + (1 - a) * f.jy * spreadY;
-        const z = f.z * depth;
-        // break apart: every fragment leaves along its own direction
-        x += Math.cos(f.out) * b * W * 0.75;
-        y += Math.sin(f.out) * b * H * 0.75;
-        const xr = x * cos + z * sin;
-        const zr = -x * sin + z * cos;
-        const persp = 900 / (900 + zr * (1 - a) * 0.9);
-        return { zr, sx: cx + xr * persp, sy: cy + y * persp, s: (cell - 2) * persp * (0.75 + 0.25 * a), ang: f.rot * (1 - a) * 1.1, f };
-      }).sort((m, n) => n.zr - m.zr);
-      for (const q of pts) {
-        // far is paler (aerial perspective), fading out while breaking apart
-        const far = Math.min(1, Math.max(0, (q.zr / depth + 1) / 2)) * (1 - a);
-        ctx.globalAlpha = 1 - b;
-        ctx.fillStyle = q.f.hi ? signal : mix(ink, paper, Math.min(0.92, 0.15 + q.f.shade * 0.55 + far * 0.35));
-        ctx.save(); ctx.translate(q.sx, q.sy); ctx.rotate(q.ang);
-        ctx.fillRect(-q.s / 2, -q.s / 2, q.s, q.s);
-        ctx.restore();
-      }
-      ctx.globalAlpha = 1;
-    }
-
-    // teasers arrive from the depth (calm: they simply fade in)
-    const t = ease((p - 0.66) / 0.3);
-    teasers.forEach((el, i) => {
-      const ti = ease((p - 0.66 - i * 0.04) / 0.28);
-      el.style.opacity = NVD.calm ? t.toFixed(3) : ti.toFixed(3);
-      el.style.transform = NVD.calm ? 'none' : `scale(${(0.6 + 0.4 * ti).toFixed(3)}) translateY(${((1 - ti) * 40).toFixed(1)}px)`;
+  const place = a => {
+    const W = scene.clientWidth, mobile = W < 520;
+    const H = scene.clientHeight - 70, R = Math.min(W * (mobile ? 0.3 : 0.34), 250);
+    // the plate is drawn where the card feet actually land after perspective
+    const P = 900, oy = H * 0.18, by = H * 0.62, cx = W / 2;
+    const proj = z => { const k = P / (P - z); return { k, y: oy + (by - oy) * k }; };
+    const f = proj(R * 1.12), b = proj(-R * 1.12);
+    const cy = (f.y + b.y) / 2, ry = (f.y - b.y) / 2, rx = R * 1.12;
+    const pe = plate.querySelector('ellipse');
+    pe.setAttribute('cx', cx); pe.setAttribute('cy', cy); pe.setAttribute('rx', rx); pe.setAttribute('ry', ry);
+    ['l1', 'l2'].forEach((id, j) => {
+      const th = (a + 45 + j * 90) * Math.PI / 180, l = plate.querySelector('#' + id);
+      l.setAttribute('x1', cx + Math.sin(th) * rx); l.setAttribute('y1', cy + Math.cos(th) * ry);
+      l.setAttribute('x2', cx - Math.sin(th) * rx); l.setAttribute('y2', cy - Math.cos(th) * ry);
     });
+    cards.forEach((c, i) => {
+      const th = (i * 90 + a) * Math.PI / 180;
+      const x = Math.sin(th) * R, z = Math.cos(th) * R;
+      const depth = Math.cos(th);  // 1 in front, -1 behind
+      if (NVD.calm) {
+        c.style.transform = 'translate(-50%,-100%) translateZ(60px)';
+        c.style.opacity = i === cur ? '1' : '0'; c.style.zIndex = i === cur ? 2 : 1; c.style.filter = 'none';
+        return;
+      }
+      c.style.transform = `translate(-50%,-100%) translate3d(${x.toFixed(1)}px,0,${z.toFixed(1)}px)`;
+      c.style.opacity = (0.28 + 0.72 * Math.pow((depth + 1) / 2, 1.4)).toFixed(3);
+      c.style.filter = depth < 0.9 ? `blur(${((1 - depth) * 0.9).toFixed(2)}px)` : 'none';
+      c.style.zIndex = String(Math.round(100 + depth * 50));
+    });
+  };
+  const backOut = t => { const c = 1.2; return 1 + (c + 1) * Math.pow(t - 1, 3) + c * Math.pow(t - 1, 2); };
+  const tick = now => {
+    const t = Math.min(1, (now - t0) / 420);
+    angle = from + (to - from) * backOut(t);
+    place(angle);
+    if (t < 1) raf = requestAnimationFrame(tick); else raf = 0;
+  };
+  const label = () => {
+    snames.querySelectorAll('button').forEach((b, i) => b.setAttribute('aria-pressed', String(i === cur)));
+    cards.forEach((c, i) => c.setAttribute('aria-hidden', String(i !== cur)));
+    live.textContent = `${names[cur]} faces you, ${cur + 1} of 4`;
+  };
+  function turn(k) {
+    // one gesture turns exactly one quarter; the shortest way round
+    let d = ((k - cur) % 4 + 4) % 4; if (d === 3) d = -1; if (d === 2) d = 2;
+    if (!d) return;
+    cur = (k + 4) % 4; NVD.hintGone(); label();
+    from = angle; to = to - d * 90; t0 = performance.now();
+    if (NVD.calm) { angle = to; place(angle); return; }
+    if (!raf) raf = requestAnimationFrame(tick);
   }
-
-  NVD.onScroll(() => draw(false));
-  addEventListener('resize', resize);
-  NVD.onTheme(() => { readColours(); draw(true); });
-  NVD.onCalm(() => draw(true));
+  document.getElementById('prev').addEventListener('click', () => turn(cur - 1));
+  document.getElementById('next').addEventListener('click', () => turn(cur + 1));
+  snames.addEventListener('click', e => { const b = e.target.closest('button'); if (b) turn(+b.dataset.i); });
+  scene.addEventListener('keydown', e => {
+    if (e.key === 'ArrowRight') { e.preventDefault(); turn(cur + 1); } else if (e.key === 'ArrowLeft') { e.preventDefault(); turn(cur - 1); }
+  });
+  // swipe or drag: one turn per gesture, however far the hand moves
+  let x0 = null, y0 = 0;
+  scene.addEventListener('pointerdown', e => { if (e.target.closest('button')) return; x0 = e.clientX; y0 = e.clientY; });
+  addEventListener('pointerup', e => {
+    if (x0 === null) return; const dx = e.clientX - x0, dy = e.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 40 && Math.abs(dx) > Math.abs(dy)) turn(cur + (dx < 0 ? 1 : -1));
+  });
+  // sideways scroll on a trackpad; vertical scroll stays with the page
+  let acc = 0, lock = 0;
+  scene.addEventListener('wheel', e => {
+    if (Math.abs(e.deltaX) <= Math.abs(e.deltaY)) return;
+    e.preventDefault();
+    if (performance.now() < lock) return;
+    acc += e.deltaX;
+    if (Math.abs(acc) > 30) { turn(cur + (acc > 0 ? 1 : -1)); acc = 0; lock = performance.now() + 500; }
+  }, { passive: false });
+  addEventListener('resize', () => place(angle));
+  NVD.onCalm(() => place(angle));
   NVD.ready();
-  resize();
+  label(); place(angle);
 
 })();
 </script></div>

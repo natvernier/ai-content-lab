@@ -51,7 +51,7 @@ This is the format-variation principle of this lab applied to motion: the format
 
 | Collection | What it is | State |
 |---|---|---|
-| [Depth patterns](depth-patterns/) | Fourteen ways a flat page can feel deep, on the laptop and phone you already have | 1 of 14 live |
+| [Depth patterns](depth-patterns/) | Fourteen ways a flat page can feel deep, on the laptop and phone you already have | 14 of 14 live |
 | Explorable AI literacy | Interactive versions of AI literacy explainers, starting with how one task becomes a permission chain | Planned |
 
 Live pages: https://natvernier.github.io/ai-content-lab/
