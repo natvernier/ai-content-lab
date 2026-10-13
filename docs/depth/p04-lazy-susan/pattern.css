@@ -1,0 +1,20 @@
+/* The lazy Susan · P4 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/lazy-susan
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p04-lazy-susan · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden;touch-action:pan-y;user-select:none;-webkit-user-select:none;cursor:grab}
+#nvd .scene:active{cursor:grabbing}
+#nvd .susan{position:absolute;inset:0 0 70px;perspective:900px;perspective-origin:50% 18%}
+#nvd .plate{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+#nvd .plate ellipse{fill:color-mix(in srgb,var(--ink) 7%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .plate line{stroke:var(--rule);stroke-width:1}
+#nvd .season{position:absolute;left:50%;top:62%;width:var(--sw,180px);margin:0;transform-origin:50% 100%;will-change:transform,opacity}
+#nvd .season h3{font-size:clamp(1.3rem,2.2vw,1.8rem)}
+#nvd .sbar{position:absolute;left:50%;bottom:12px;transform:translate(-50%);display:flex;align-items:center;gap:6px;padding:6px;white-space:nowrap}
+#nvd .sbar>.pill{width:40px;justify-content:center;padding:0;font-size:1.3rem}
+#nvd .snames{display:flex;gap:2px}
+#nvd .snames button{background:none;border:0;padding:6px 8px;border-radius:999px;cursor:pointer;font-size:.9rem;color:var(--ink-soft)}
+#nvd .snames button[aria-pressed=true]{color:var(--ink);background:color-mix(in srgb,var(--signal) 55%,transparent)}
+#nvd.is-calm .season{transition:opacity .35s ease}
+@media(max-width:767px){#nvd .season{--sw:138px;padding:7px}
+#nvd .season p{font-size:.72rem}
+#nvd .snames button{padding:6px 5px;font-size:.8rem}
+}

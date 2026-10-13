@@ -1,8 +1,10 @@
 # Depth patterns
 
-Fourteen ways a flat page can feel deep, on the laptop and phone you already have.
+Fifteen ways a flat page can feel deep, on the laptop and phone you already have.
 
 **Live:** https://natvernier.github.io/ai-content-lab/depth/
+
+I built the series while making [A Hat of Thyme](https://natvernier.com/projects/a-hat-of-thyme), my recipe library. That is why the examples are pears, pumpkins and seasons. The patterns themselves work for any content.
 
 ## The thesis
 
@@ -22,9 +24,9 @@ The page becomes a space, and the scroll moves you through it.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P1 | Flight through time | Scroll forward instead of down | M · 3 | Storyboard |
-| P3 | Semantic zoom | Pinch or zoom one level deeper | L · 3 | Storyboard |
-| P7 | Window | Move the mouse or tilt the phone | S–M · 2–3 | Storyboard |
+| P1 | [Flight through time](https://natvernier.github.io/ai-content-lab/depth/p01-flight-through-time/) | Scroll forward instead of down | M · 3 | Live |
+| P3 | [Semantic zoom](https://natvernier.github.io/ai-content-lab/depth/p03-semantic-zoom/) | Pinch or zoom one level deeper | L · 3 | Live |
+| P7 | [Window](https://natvernier.github.io/ai-content-lab/depth/p07-window/) | Move the mouse or tilt the phone | S–M · 2–3 | Live |
 | P8 | [Anamorphic arrival](https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/) | The first scroll after arriving | M · 3 | Live |
 
 ### Depth you can hold
@@ -33,12 +35,13 @@ Things unfold, turn or travel when you touch them. Nothing jumps.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P2 | Focus and fan | Tap one thing; its options fan out | M · 2–3 | Storyboard |
-| P4 | The lazy Susan | Swipe sideways, one season per gesture | M · 2 | Storyboard |
-| P5 | Pop-up book | Each scroll step opens one spread | S–M · 2 | Storyboard |
-| P6 | Assembly | Scroll; the parts come together | L · 3 | Storyboard |
-| P10 | Time scrub | Drag a time line under a picture | M · 2 | Storyboard |
-| P11 | Doors that never cut | Any click that opens something | S · 2 | Storyboard |
+| P2 | [Focus and fan](https://natvernier.github.io/ai-content-lab/depth/p02-focus-and-fan/) | Tap one thing; its options fan out | M · 2–3 | Live |
+| P4 | [The lazy Susan](https://natvernier.github.io/ai-content-lab/depth/p04-lazy-susan/) | Swipe sideways, one season per gesture | M · 2 | Live |
+| P5 | [Pop-up book](https://natvernier.github.io/ai-content-lab/depth/p05-pop-up-book/) | Each scroll step opens one spread | S–M · 2 | Live |
+| P6 | [Assembly](https://natvernier.github.io/ai-content-lab/depth/p06-assembly/) | Scroll; the parts come together | L · 3 | Live |
+| P10 | [Time scrub](https://natvernier.github.io/ai-content-lab/depth/p10-time-scrub/) | Drag a time line under a picture | M · 2 | Live |
+| P11 | [Doors that never cut](https://natvernier.github.io/ai-content-lab/depth/p11-doors-that-never-cut/) | Any click that opens something | S · 2 | Live |
+| P15 | [Turn and tilt](https://natvernier.github.io/ai-content-lab/depth/p15-turn-and-tilt/) | Scroll to turn, the mouse to tilt | S · 2 | Live |
 
 ### Depth you only feel
 
@@ -46,10 +49,10 @@ Quiet layers. Decoration only, never needed to read anything.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P9 | Constellation | Drag, pinch, hover a star | M–L · 3 | Storyboard |
-| P12 | The world remembers | None; it happens across visits | S · 1–2 | Storyboard |
-| P13 | The lamp | Move the cursor, or touch and hold | S–M · 2 | Storyboard |
-| P14 | Glass controls | None; it is the control layer | S · 2 | Storyboard |
+| P9 | [Constellation](https://natvernier.github.io/ai-content-lab/depth/p09-constellation/) | Drag, pinch, hover a star | M–L · 3 | Live |
+| P12 | [The world remembers](https://natvernier.github.io/ai-content-lab/depth/p12-the-world-remembers/) | None; it happens across visits | S · 1–2 | Live |
+| P13 | [The lamp](https://natvernier.github.io/ai-content-lab/depth/p13-the-lamp/) | Move the cursor, or touch and hold | S–M · 2 | Live |
+| P14 | [Glass controls](https://natvernier.github.io/ai-content-lab/depth/p14-glass-controls/) | None; it is the control layer | S · 2 | Live |
 
 ## Conventions in short
 
@@ -63,9 +66,44 @@ Quiet layers. Decoration only, never needed to read anything.
 
 ## How a pattern is built
 
-Each live pattern is one self-contained `index.html` under `docs/depth/`. No build step, no dependencies, no tracking. Open it in a browser to run it.
+Each pattern has its own folder under [`docs/depth/`](../../docs/depth/). No build step, no dependencies, no tracking.
 
-Build order: P8 first, then P11, P13 and P7, roughly two patterns a month.
+```txt
+docs/depth/
+  kit/depth-kit.css      shared by all fifteen: colours, type, stage, calm switch, notes
+  kit/depth-kit.js       shared by all fifteen: calm mode, theme colours, 1:1 scroll progress, canvas helper
+  p01-flight-through-time/
+    index.html           the live page
+    pattern.html         the demo markup on its own
+    pattern.css          the demo styles
+    pattern.js           the demo script
+    codepen/             the same demo as three panes for CodePen, kit included
+    frames/              three keyframes and a phone frame
+    README.md            what it does, the rules it follows, how to use it
+```
+
+Calm mode follows the system's reduced-motion setting and has its own switch. Light and dark follow the device.
+
+All fifteen are live as graybox demos. Gray shapes stand in for the art on purpose, so the motion can be judged on its own. The next step is painted art, pattern by pattern.
+
+## Use them
+
+Take any pattern into your own page: the kit's two files plus the pattern's three. Each pattern README shows the markup. To try one first, paste its `codepen/` panes into a new pen.
+
+The demos load two open fonts from Google Fonts, Newsreader and Outfit (SIL Open Font License). No licensed fonts or other licensed assets ship with them.
+
+## Author
+
+Designed and built by **Nathalie Vernier**, AI transformation and enablement, Berlin.
+[natvernier.com](https://www.natvernier.com) · [Depth patterns on natvernier.com](https://www.natvernier.com/depth-patterns) · [LinkedIn](https://www.linkedin.com/in/nathalievernier/)
+
+## Licence and credit
+
+Code under the [MIT licence](../../docs/depth/LICENSE). Texts and frames under [CC BY 4.0](https://creativecommons.org/licenses/by/4.0/). Free to use and adapt, also commercially; please credit:
+
+> Depth patterns by Nathalie Vernier, natvernier.com
+
+Not included in either licence: the portrait of Nathalie Vernier and the natvernier.com brand.
 
 ## Publishing
 

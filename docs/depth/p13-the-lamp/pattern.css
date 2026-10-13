@@ -1,0 +1,11 @@
+/* The lamp · P13 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/the-lamp
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p13-the-lamp · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{--lx:22%;--ly:24%;border-radius:18px;border:1px solid var(--rule);overflow:hidden;background:color-mix(in srgb,var(--ink) 13%,var(--paper));touch-action:pan-y}
+#nvd .pool{position:absolute;inset:0;background:radial-gradient(circle at var(--lx) var(--ly),rgba(255,253,246,.92),rgba(255,253,246,.35) 22%,rgba(255,253,246,0) 46%);pointer-events:none}
+#nvd .cut{position:absolute;left:var(--x);top:var(--y);width:var(--w);transform:translate(-50%,-50%);color:color-mix(in srgb,var(--ink) 38%,var(--paper))}
+#nvd .cut svg{display:block;width:100%;height:auto;fill:currentColor;overflow:visible}
+#nvd .night{position:absolute;right:12px;bottom:12px}
+#nvd .scene.dark{background:#101315;border-color:#2a3133}
+#nvd .scene.dark .pool{mix-blend-mode:normal;background:radial-gradient(circle at var(--lx) var(--ly),rgba(255,246,220,.42),rgba(255,246,220,.08) 26%,rgba(0,0,0,0) 46%)}
+#nvd .scene.dark .cut{color:#3c4446}
+#nvd .scene.dark .night{background:#eef0f0;color:#101315;border-color:#eef0f0}

@@ -1,0 +1,47 @@
+/* Semantic zoom · P3 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/semantic-zoom
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p03-semantic-zoom · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden;touch-action:pan-y}
+#nvd .zbar{position:absolute;left:12px;right:12px;top:12px;z-index:6;display:flex;align-items:center;justify-content:space-between;gap:10px;padding:6px 6px 6px 14px}
+#nvd .zcrumbs{display:flex;flex-wrap:wrap;align-items:center;gap:4px 8px;font-size:.95rem}
+#nvd .zcrumbs button{background:none;border:0;padding:4px 2px;cursor:pointer;text-decoration:underline;text-decoration-color:var(--signal);text-decoration-thickness:2px;text-underline-offset:.2em}
+#nvd .zcrumbs [aria-current]{font-weight:600}
+#nvd .zcrumbs span{opacity:.5}
+#nvd .zbtns{display:flex;gap:6px}
+#nvd .zbtns .pill{width:40px;justify-content:center;padding:0;font-size:1.2rem}
+#nvd .zbtns .pill:disabled{opacity:.35;cursor:default}
+#nvd .lvl{position:absolute;inset:0;padding:84px 24px 24px;transform-origin:0 0;visibility:hidden;display:flex;flex-direction:column}
+#nvd .lvl.on,#nvd .lvl.moving{visibility:visible}
+#nvd .lh{margin:0;font:400 clamp(1.8rem,3.2vw,2.6rem)/1.05 var(--serif)}
+#nvd .ls{margin:.3rem 0 1rem;color:var(--ink-soft);font-size:.95rem}
+#nvd .tiles{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;flex:1;min-height:0}
+#nvd .tiles.three{grid-template-columns:repeat(3,1fr);align-content:start}
+#nvd .tile{display:flex;flex-direction:column;align-items:flex-start;justify-content:flex-end;gap:2px;padding:14px;border:1px solid var(--rule);border-radius:12px;background:var(--card);text-align:left;opacity:.55;min-height:0}
+#nvd .tile.go{opacity:1;cursor:pointer;border-color:var(--ink)}
+#nvd .tile.go:hover{box-shadow:0 10px 24px -12px #0006}
+#nvd .tile b{font:400 1.3rem/1.1 var(--serif)}
+#nvd .tile small{font-size:.8rem;color:var(--ink-soft)}
+#nvd .tile.go small{color:var(--ink)}
+#nvd .tile .img{width:100%;aspect-ratio:4/3;border-radius:6px;margin-bottom:8px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 9%,transparent) 0 8px,transparent 8px 16px)}
+#nvd .shape{flex:1;align-self:center;aspect-ratio:1;max-height:110px;min-height:40px;border-radius:50%;background:color-mix(in srgb,var(--ink) 40%,var(--paper));margin-bottom:10px}
+#nvd .shape.pear{border-radius:50% 50% 46% 46%/62% 62% 38% 38%;aspect-ratio:.8;background:color-mix(in srgb,var(--ink) 30%,var(--paper));outline:3px solid var(--signal);outline-offset:4px}
+#nvd .shape.nut{border-radius:50% 50% 40% 40%;background:color-mix(in srgb,var(--ink) 62%,var(--paper))}
+#nvd .shape.s{transform:scale(.85)}
+#nvd .recipe{display:grid;grid-template-columns:1.3fr 1fr;gap:20px;align-items:start}
+#nvd .pic{display:block;padding:0;border:0;background:none;cursor:pointer;position:relative;text-align:left}
+#nvd .pic svg{width:100%;display:block;border-radius:10px;background:var(--card);border:1px solid var(--rule)}
+#nvd .pic .tag{display:inline-block;margin-top:8px;font-size:.85rem;border-bottom:2px solid var(--signal)}
+#nvd .t1{fill:color-mix(in srgb,var(--ink) 30%,var(--paper))}
+#nvd .t2{fill:color-mix(in srgb,var(--ink) 14%,var(--paper))}
+#nvd .slices path{fill:color-mix(in srgb,var(--ink) 48%,var(--paper));stroke:var(--card);stroke-width:1.2}
+#nvd .slices.big path{stroke-width:.6}
+#nvd .mark{fill:none;stroke:var(--signal);stroke-width:2.5;stroke-dasharray:6 4}
+#nvd .rtext ul{margin:0;padding-left:1.1rem;font-size:.95rem}
+#nvd .detail{flex:1;min-height:0;width:100%}
+#nvd .cap{margin:8px 0 0;font-size:.95rem;max-width:44ch}
+@media(max-width:767px){#nvd .recipe{grid-template-columns:1fr}
+#nvd .tiles.three{grid-template-columns:repeat(3,1fr);gap:8px}
+#nvd .tile{padding:8px}
+#nvd .tile b{font-size:1rem}
+#nvd .lvl{padding:76px 14px 14px}
+#nvd .rtext ul{display:none}
+}

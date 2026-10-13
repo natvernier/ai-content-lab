@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The lamp · Depth patterns</title>
+<meta name="description" content="The cursor becomes a soft lamp over paper cut-outs, and their shadows turn away from it. At night only the lamp lights the table. A live graybox demo with a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/the-lamp">
+<meta property="og:title" content="The lamp · Depth patterns">
+<meta property="og:description" content="The cursor becomes a soft lamp over paper cut-outs, and their shadows turn away from it. At night only the lamp lights the table. A live graybox demo with a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p13-the-lamp/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="split">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage solo split">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>The lamp</h1><p>Your cursor is a soft lamp over the paper. Move it and the shadows of the cut-outs swing away from the light.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the cut-outs on the paper are a pear, a bottle and a cup.</span></p></div>
+<div class="scene" id="scene" tabindex="0" aria-label="Paper table lit by a lamp. Arrow keys move the lamp."> <div class="pool" id="pool"></div> <div class="cut" data-e="1.2" style="--x:26%;--y:58%;--w:15%"><svg viewBox="0 0 60 90" aria-hidden="true"><path d="M30 8c-6 0-8 10-9 20-1 8-13 16-13 34 0 15 10 24 22 24s22-9 22-24c0-18-12-26-13-34-1-10-3-20-9-20z"/></svg></div> <div class="cut" data-e="1.8" style="--x:50%;--y:42%;--w:10%"><svg viewBox="0 0 40 120" aria-hidden="true"><path d="M15 0h10v24c0 6 11 12 11 26v64c0 4-3 6-6 6H10c-3 0-6-2-6-6V50c0-14 11-20 11-26z"/></svg></div> <div class="cut" data-e=".8" style="--x:72%;--y:62%;--w:16%"><svg viewBox="0 0 70 60" aria-hidden="true"><path d="M8 10h44v30c0 9-7 14-22 14S8 49 8 40z"/><path d="M52 18h6c8 0 8 18 0 18h-6" stroke="currentColor" stroke-width="6" fill="none"/></svg></div> <div class="cut" data-e=".5" style="--x:40%;--y:76%;--w:14%"><svg viewBox="0 0 80 40" aria-hidden="true"><path d="M2 38C16 8 50 0 78 4 64 30 34 42 2 38z"/></svg></div> <div class="cut" data-e="1.4" style="--x:78%;--y:30%;--w:9%"><svg viewBox="0 0 50 50" aria-hidden="true"><circle cx="25" cy="25" r="22"/></svg></div> <button class="pill night" type="button" id="night" aria-pressed="false">Night</button> </div> <p class="hint" id="hint">Move the lamp over the paper</p>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>The pool of light follows your hand, and every cut-out casts its shadow away from it. Things that stand higher off the paper throw longer, softer shadows, so the flat sheet gains a few millimetres of height.</p><p>Switch the table to night and only the lamp lights it. The paper near the light glows at its edges, the rest falls into the dark. It is pure decoration: every word on the page reads the same with or without it.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are a pear, a bottle, a cup and a leaf. The patterns themselves are general: any layered artwork works, a cut-paper header, product photos on a background, a set of icons.</p><h3>The illusion</h3><p>Light and shadow: a shadow that moves against the light is the oldest depth cue there is. Light through paper: edges that glow towards the lamp make the cut-outs read as thin sheets standing in the light.</p><h3>The rules it follows</h3><ul><li>Decoration only, never needed to read anything.</li><li>The lamp follows the hand directly, nothing moves by itself.</li><li>On a phone, a tap or a touch and hold places the lamp. The page still scrolls.</li><li>Arrow keys move the lamp for keyboard users.</li><li>Night is the site theme: the switch here turns the whole page dark or light, and the table follows.</li></ul><h3>Calm mode</h3><p>Calm mode stops the lamp from following the cursor. It moves only where you click or tap, and the shadows change without easing. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P13 of 15, depth you only feel</dd><dt>Gesture</dt><dd>Move the cursor, tap or touch and hold on a phone, or the arrow keys</dd><dt>Illusion</dt><dd>Light, shadow, light through paper</dd><dt>Built with</dt><dd>CSS gradients and drop shadows, about 70 lines of plain JavaScript</dd><dt>Effort</dt><dd>Small to medium</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: flat gray silhouettes stand in for the painted cut-outs</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p12-the-world-remembers/index.html" rel="prev"><small>Previous, P12</small>The world remembers</a><a href="../p14-glass-controls/index.html" rel="next" style="text-align:right"><small>Next, P14</small>Glass controls</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p13-the-lamp">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>

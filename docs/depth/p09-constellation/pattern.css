@@ -1,0 +1,23 @@
+/* Constellation · P9 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/constellation
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p09-constellation · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene.night{--paper:#14181a;--ink:#eef0f0;--ink-soft:#a7aeb0;--rule:#3a4143;--card:#1f2527;--glass:rgba(28,32,34,.72);background:#14181a;color:#eef0f0;border-radius:18px;overflow:hidden;touch-action:pan-y;color-scheme:dark}
+#nvd #sky{cursor:grab}
+#nvd #sky:active{cursor:grabbing}
+#nvd .clabels button{position:absolute;transform:translate(-50%,-50%);background:#14181a8c;border:1px solid #3a4143;color:#eef0f0;border-radius:999px;padding:4px 12px;font-size:.85rem;cursor:pointer;white-space:nowrap}
+#nvd .clabels button:hover{border-color:#67ff56}
+#nvd .tip{position:absolute;z-index:6;padding:10px 12px;max-width:240px;pointer-events:none;font-size:.85rem;line-height:1.35}
+#nvd .tip b{display:block;font:400 1.15rem/1.15 var(--serif)}
+#nvd .tip small{color:var(--ink-soft)}
+#nvd .sbar{position:absolute;left:12px;right:12px;top:12px;display:flex;gap:6px;padding:6px;z-index:7}
+#nvd .sbar input{flex:1;min-width:0;height:40px;border-radius:999px;border:1px solid var(--rule);background:transparent;color:var(--ink);padding:0 14px;font:inherit;font-size:.95rem}
+#nvd .sbar .pill{flex:none}
+#nvd #zi,#nvd #zo{width:40px;justify-content:center;padding:0;font-size:1.2rem}
+#nvd .cpanel,#nvd .slist{position:absolute;z-index:7;right:12px;top:70px;bottom:12px;width:min(300px,calc(100% - 24px));padding:14px;overflow:auto}
+#nvd .cpanel h3{margin:12px 0 6px;font:400 1.6rem/1.1 var(--serif)}
+#nvd .cpanel ul,#nvd .slist ul{list-style:none;margin:0 0 10px;padding:0}
+#nvd .cpanel li,#nvd .slist li{padding:6px 0;border-bottom:1px solid var(--rule);font-size:.95rem;display:flex;justify-content:space-between;gap:8px}
+#nvd .cpanel li small,#nvd .slist li small{color:var(--ink-soft)}
+#nvd .slist h4{margin:10px 0 2px;font:600 .85rem/1.2 var(--sans);color:var(--ink-soft)}
+@media(max-width:767px){#nvd .cpanel,#nvd .slist{left:12px;width:auto;top:auto;max-height:55%}
+#nvd .clabels button{font-size:.75rem;padding:3px 9px}
+}
