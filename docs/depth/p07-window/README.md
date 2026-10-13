@@ -2,7 +2,7 @@
 
 An ordinary picture becomes a window. Move the mouse or tilt the phone and the scene inside shifts, as if you leaned in to look.
 
-**P7 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p07-window/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/window)
+**P7 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/window)
 
 That is why there is a pear tart behind the glass. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

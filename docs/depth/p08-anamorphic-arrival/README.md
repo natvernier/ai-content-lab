@@ -2,7 +2,7 @@
 
 Scattered fragments line up into one picture from exactly one point of view, then come apart into the first teasers.
 
-**P8 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/anamorphic-arrival)
+**P8 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/anamorphic-arrival)
 
 That is why the pieces become a pear. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

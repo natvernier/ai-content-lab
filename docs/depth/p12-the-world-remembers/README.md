@@ -2,7 +2,7 @@
 
 Wherever you go, a faint trail stays behind. Come back a week later and the page starts where you left it.
 
-**P12 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p12-the-world-remembers/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/the-world-remembers)
+**P12 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/the-world-remembers)
 
 That is why the places on the map are ingredients. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

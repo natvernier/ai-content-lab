@@ -2,7 +2,7 @@
 
 Search, filters and the way out float as a thin layer of glass in front of the painted world. Filters work like lenses: what does not match steps back.
 
-**P14 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p14-glass-controls/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/glass-controls)
+**P14 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/glass-controls)
 
 That is why the world behind the glass is full of recipes. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

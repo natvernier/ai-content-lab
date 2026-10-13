@@ -2,7 +2,7 @@
 
 Ingredients lie on the table. Pick one and the view dives onto it while its recipes fan out around it like a hand of cards.
 
-**P2 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p02-focus-and-fan/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/focus-and-fan)
+**P2 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/focus-and-fan)
 
 That is why the things on the table are ingredients. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

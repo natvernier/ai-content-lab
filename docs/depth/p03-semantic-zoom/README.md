@@ -2,7 +2,7 @@
 
 Zoom into a season and find its ingredients, into an ingredient and find its recipes, into a recipe and find the one detail painted precisely.
 
-**P3 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p03-semantic-zoom/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/semantic-zoom)
+**P3 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/semantic-zoom)
 
 That is why the zoom goes from autumn to a pear to a tart. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 
