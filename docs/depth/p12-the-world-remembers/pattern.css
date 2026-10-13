@@ -1,0 +1,26 @@
+/* The world remembers · P12 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/the-world-remembers
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p12-the-world-remembers · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden}
+#nvd .places{position:absolute;inset:56px 0 64px}
+#nvd .place{position:absolute;left:var(--x);top:var(--y);transform:translate(-50%,-50%);display:flex;flex-direction:column;align-items:center;gap:6px;background:none;border:0;cursor:pointer;font-size:.95rem;padding:4px}
+#nvd .place i{width:46px;height:46px;border-radius:50%;background:color-mix(in srgb,var(--ink) 30%,var(--paper));border:2px solid transparent;transition:transform .2s}
+#nvd .place{font-size:.95rem}
+#nvd .place{color:var(--ink)}
+#nvd .place:hover i{transform:scale(1.08)}
+#nvd .place{z-index:1}
+#nvd .place:after{content:none}
+#nvd .place.seen i{border-color:var(--ink)}
+#nvd .place.here i{background:var(--signal);border-color:var(--ink)}
+#nvd .badges{position:absolute;left:12px;right:12px;top:10px;margin:0;padding:0;list-style:none;display:flex;gap:10px;flex-wrap:wrap;min-height:36px}
+#nvd .badges li{display:flex;flex-direction:column;align-items:center;font-size:.7rem;color:var(--ink-soft)}
+#nvd .badges li:before{content:"";width:1px;height:10px;background:var(--rule)}
+#nvd .badges li span{display:grid;place-items:center;width:28px;height:28px;border-radius:50%;border:1.5px solid var(--ink);background:var(--card);font:400 .8rem/1 var(--serif);color:var(--ink)}
+#nvd .welcome{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);z-index:5;padding:18px;width:min(360px,calc(100% - 24px));text-align:center}
+#nvd .welcome p{margin:0 0 12px;font:400 1.35rem/1.2 var(--serif)}
+#nvd .welcome div{display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+#nvd .tbar{position:absolute;left:12px;right:12px;bottom:12px;display:flex;gap:8px;align-items:center;flex-wrap:wrap;font-size:.8rem;color:var(--ink-soft)}
+@media(max-width:767px){#nvd .place i{width:34px;height:34px}
+#nvd .place{font-size:.8rem}
+#nvd .places{bottom:110px}
+}
+#nvd .place .pl{background:var(--paper);padding:0 8px;border-radius:999px}

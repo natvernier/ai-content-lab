@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The world remembers · Depth patterns</title>
+<meta name="description" content="A faint trail remembers where you went, and a return visit starts where you left. Stored only on your device, with a visible forget button. A live graybox demo with a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/the-world-remembers">
+<meta property="og:title" content="The world remembers · Depth patterns">
+<meta property="og:description" content="A faint trail remembers where you went, and a return visit starts where you left. Stored only on your device, with a visible forget button. A live graybox demo with a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p12-the-world-remembers/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="split">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage solo split">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>The world remembers</h1><p>Wherever you go, a faint trail stays behind. Come back a week later and the page starts where you left it.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the places on the map are ingredients.</span></p></div>
+<div class="scene" id="scene"> <canvas id="trail" class="full" aria-hidden="true"></canvas> <ul class="badges" id="badges" aria-label="Your sky"></ul> <div class="places" id="places"> <button class="place" type="button" data-id="lemon" style="--x:16%;--y:30%"><i></i><span class="pl">Lemon</span></button> <button class="place" type="button" data-id="pear" style="--x:40%;--y:48%"><i></i><span class="pl">Pear</span></button> <button class="place" type="button" data-id="apple" style="--x:22%;--y:68%"><i></i><span class="pl">Apple</span></button> <button class="place" type="button" data-id="pumpkin" style="--x:62%;--y:36%"><i></i><span class="pl">Pumpkin</span></button> <button class="place" type="button" data-id="fig" style="--x:56%;--y:72%"><i></i><span class="pl">Fig</span></button> <button class="place" type="button" data-id="chestnut" style="--x:82%;--y:56%"><i></i><span class="pl">Chestnut</span></button> </div> <div class="welcome glass" id="welcome" hidden role="status"><p id="wtext"></p><div><button class="pill" type="button" id="wcont">Continue</button><button class="pill" type="button" id="wnow">Start fresh</button></div></div> <div class="tbar"><button class="pill" type="button" id="week">Come back a week later</button><button class="pill" type="button" id="forget">Forget my trail</button><span id="tnote">Stored only on this device.</span></div> </div> <p class="hint" id="hint">Visit a few places, then fast-forward a week</p>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>Each place you open leaves a faint mark, and the marks join into a trail. Close the page and come back, or press the button that skips a week, and the page greets you where you left off. Every place you visited also hangs as a small badge in your sky.</p><p>This is the quietest pattern of the fifteen. It is not spectacular, it is personal: the space feels deep because it holds your own history.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are lemons, pears, pumpkins and chestnuts. The patterns themselves are general: anything people return to works, a course, a long read, a documentation site, a shop.</p><h3>The illusion</h3><p>Memory: a place that changes because you were there feels more real than one that resets every time. The trail is a second layer of depth, made of time instead of space.</p><h3>The rules it follows</h3><ul><li>Stored only on this device, never sent anywhere.</li><li>A visible forget button removes everything at once.</li><li>The greeting offers both ways: continue where you were, or start fresh.</li><li>Nothing depends on it. Without a trail the page simply starts at the beginning.</li><li>The trail is decoration and never covers a word.</li></ul><h3>Calm mode</h3><p>Calm mode draws the trail at once instead of letting it grow. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P12 of 15, depth you only feel</dd><dt>Gesture</dt><dd>None. It happens across visits. Here you can visit places and fast-forward a week</dd><dt>Illusion</dt><dd>Memory: a world that changes because you were there</dd><dt>Built with</dt><dd>Local storage, one canvas and about 110 lines of plain JavaScript</dd><dt>Effort</dt><dd>Small</dd><dt>Wow</dt><dd>1–2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: a soft gray line stands in for a watercolour trail</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p11-doors-that-never-cut/index.html" rel="prev"><small>Previous, P11</small>Doors that never cut</a><a href="../p13-the-lamp/index.html" rel="next" style="text-align:right"><small>Next, P13</small>The lamp</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p12-the-world-remembers">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>

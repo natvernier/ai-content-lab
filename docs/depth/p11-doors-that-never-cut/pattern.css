@@ -1,0 +1,19 @@
+/* Doors that never cut · P11 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/doors-that-never-cut
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p11-doors-that-never-cut · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{border-radius:18px;background:color-mix(in srgb,var(--ink) 4%,var(--paper));border:1px solid var(--rule);overflow:hidden}
+#nvd .view{position:absolute;inset:0;padding:22px;overflow:auto}
+#nvd .vh{margin:0 0 14px;font:400 clamp(1.8rem,3vw,2.4rem)/1.1 var(--serif)}
+#nvd .teas{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+#nvd .tea{display:block;width:100%;text-align:left;cursor:pointer}
+#nvd .tea:hover{box-shadow:0 12px 24px -14px #0006}
+#nvd .tea .img,#nvd .rec .img{display:block;aspect-ratio:4/3;border-radius:6px;background:repeating-linear-gradient(135deg,color-mix(in srgb,var(--ink) 9%,transparent) 0 8px,transparent 8px 16px)}
+#nvd .tea .tt{display:block;margin-top:.55rem;font:400 1.3rem/1.15 var(--serif);transform-origin:0 0}
+#nvd .tea small{display:block;font-size:.82rem;color:var(--ink-soft)}
+#nvd .rec .hero{margin:14px 0 0;aspect-ratio:16/7;max-height:42%;width:100%;border-radius:10px;transform-origin:0 0}
+#nvd .rh{margin:16px 0 4px;font:400 clamp(2rem,4vw,3.2rem)/1.05 var(--serif);transform-origin:0 0;outline:none}
+#nvd .rmeta{margin:0 0 10px;color:var(--ink-soft);font-size:.95rem}
+#nvd .rbody ul{margin:0;padding-left:1.1rem;font-size:.95rem}
+@media(max-width:767px){#nvd .teas{grid-template-columns:1fr 1fr}
+#nvd .view{padding:14px}
+#nvd .tea .tt{font-size:1.05rem}
+}

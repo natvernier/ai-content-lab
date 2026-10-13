@@ -1,0 +1,31 @@
+/* Flight through time · P1 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/flight-through-time
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p01-flight-through-time · MIT licence · needs the depth kit (../kit/) */
+#nvd .space{position:absolute;inset:0;overflow:hidden;z-index:2;pointer-events:none}
+#nvd .title{max-width:min(46vw,620px)}
+#nvd .fly{position:absolute;left:60%;top:52%;width:var(--cw,240px);margin:0;transform-origin:50% 50%;will-change:transform,opacity;opacity:0}
+#nvd .fly.card{box-shadow:0 10px 30px #20262714}
+#nvd .fly.wash .img{opacity:.45}
+#nvd .fly.wash h3,#nvd .fly.wash p{opacity:.8}
+#nvd .fly.now{width:auto;display:flex;flex-direction:column;align-items:center;justify-content:center;width:420px;height:420px;border-radius:50%;border:1.5px solid var(--ink);background:transparent}
+#nvd .fly.now span{font:400 3rem/1 var(--serif)}
+#nvd .fly.now small{font-size:.9rem;color:var(--ink-soft)}
+#nvd .fly.suggest{text-align:center;padding:24px 18px;border:1.5px dashed var(--ink)}
+#nvd .fly.suggest h3{font-size:clamp(1.4rem,2.4vw,2rem)}
+#nvd .listbtn{position:absolute;right:var(--gut);top:120px;z-index:5}
+#nvd .flat{position:absolute;z-index:6;left:var(--gut);right:var(--gut);top:110px;bottom:84px;overflow:auto;padding:20px}
+#nvd .flat-head{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-bottom:12px}
+#nvd .flat-head h2{margin:0;font:400 1.6rem/1.1 var(--serif)}
+#nvd .flat-body h3{font:600 .95rem/1.3 var(--sans);margin:14px 0 8px}
+#nvd .flat-body ul{list-style:none;margin:0;padding:0;display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:10px}
+#nvd .flat-body li{padding:10px 12px;border:1px solid var(--rule);border-radius:10px;background:var(--card);font:400 1.05rem/1.25 var(--serif)}
+#nvd.is-calm .fly{transition:opacity .35s ease}
+@media(max-width:767px){#nvd .title{max-width:none}
+#nvd .fly{--cw:150px;left:50%;top:60%}
+#nvd .fly.card{padding:7px}
+#nvd .fly .card p,#nvd .fly p{font-size:.75rem}
+#nvd .fly.now{width:260px;height:260px}
+#nvd .listbtn{top:auto;bottom:64px;right:12px}
+#nvd .flat{left:12px;right:12px;top:120px}
+#nvd .hint{left:16px;transform:none}
+}
+#nvd .track{height:520vh}

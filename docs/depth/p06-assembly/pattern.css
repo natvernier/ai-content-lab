@@ -1,0 +1,35 @@
+/* Assembly · P6 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/assembly
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p06-assembly · MIT licence · needs the depth kit (../kit/) */
+#nvd .title{max-width:min(36vw,520px)}
+#nvd .skipdish{position:absolute;right:var(--gut);top:120px;z-index:5}
+#nvd .dish{position:absolute;left:62%;top:58%;width:0;height:0;z-index:2}
+#nvd .plate{position:absolute;width:300px;left:-150px;top:70px;opacity:0}
+#nvd .plate ellipse{fill:color-mix(in srgb,var(--ink) 8%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .part{position:absolute;left:0;top:0;margin:0;will-change:transform}
+#nvd .part svg{display:block;position:absolute;transform:translate(-50%,-50%);overflow:visible}
+#nvd .part[data-i="0"] svg{width:240px}
+#nvd .part[data-i="1"] svg{width:200px}
+#nvd .part[data-i="2"] svg{width:170px}
+#nvd .part[data-i="3"] svg{width:50px}
+#nvd .part[data-i="4"] svg{width:160px}
+#nvd .part figcaption{position:absolute;left:0;top:0;transform:translate(-50%,calc(-50% + var(--cy,60px)));white-space:nowrap;font-size:.9rem;background:var(--paper);padding:0 8px;border-radius:999px;transition:opacity .25s}
+#nvd .mer{fill:color-mix(in srgb,var(--ink) 12%,var(--paper));stroke:var(--rule);stroke-width:1.5}
+#nvd .pur path{fill:none;stroke:color-mix(in srgb,var(--ink) 55%,var(--paper));stroke-width:5;stroke-linecap:round}
+#nvd .cre{fill:var(--card);stroke:color-mix(in srgb,var(--ink) 25%,var(--paper));stroke-width:1.5}
+#nvd .mar{fill:color-mix(in srgb,var(--ink) 70%,var(--paper))}
+#nvd .stem{stroke:color-mix(in srgb,var(--ink) 70%,var(--paper));stroke-width:3;fill:none}
+#nvd .coc circle{fill:color-mix(in srgb,var(--ink) 80%,var(--paper))}
+#nvd .part[data-i="4"] svg{z-index:3}
+#nvd .dname{position:absolute;left:0;top:130px;transform:translate(-50%) scale(.7);transform-origin:50% 0;margin:0;text-align:center;white-space:nowrap;transition:transform .3s}
+#nvd .dname.done{transform:translate(-50%)}
+#nvd .dname b{display:block;font:400 clamp(1.8rem,3vw,2.6rem)/1 var(--serif)}
+#nvd .dname span{font-size:.9rem;color:var(--ink-soft)}
+@media(max-width:767px){#nvd .title{max-width:none}
+#nvd .dish{left:50%;top:70%;transform:scale(.72)}
+#nvd .skipdish{top:auto;bottom:64px;right:12px}
+#nvd .hint{left:16px;transform:none}
+}
+@media(max-width:767px)and (max-height:700px){#nvd .dish{top:72%;transform:scale(.6)}
+#nvd .dname{top:112px}
+}
+#nvd .track{height:460vh}

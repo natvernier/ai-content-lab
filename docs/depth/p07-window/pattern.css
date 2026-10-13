@@ -1,0 +1,33 @@
+/* Window · P7 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/window
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p07-window · MIT licence · needs the depth kit (../kit/) */
+#nvd .scene{outline-offset:6px}
+#nvd .win{position:absolute;right:0;top:0;bottom:64px;left:calc(26% - var(--peek,0px));display:flex;border:10px solid color-mix(in srgb,var(--ink) 75%,var(--paper));border-radius:6px;overflow:hidden;background:var(--card);box-shadow:0 20px 40px -24px #00000073;transition:left .4s cubic-bezier(.3,.7,.2,1)}
+#nvd .peek{position:relative;width:var(--peek,0px);flex:none;overflow:hidden;transition:width .4s cubic-bezier(.3,.7,.2,1);border-right:2px solid color-mix(in srgb,var(--ink) 40%,var(--paper))}
+#nvd .peek svg{position:absolute;inset:0;width:220px;height:100%}
+#nvd .peek p{position:absolute;left:14px;top:14px;margin:0;font-size:.8rem;color:var(--ink-soft);white-space:nowrap}
+#nvd .peek p b{display:block;font:400 1.3rem/1.1 var(--serif);color:var(--ink)}
+#nvd .view{position:relative;flex:1;overflow:hidden}
+#nvd .ly{position:absolute;inset:-6%;width:112%;height:112%;will-change:transform}
+#nvd .figly{inset:auto auto 4% 3%;width:22%;height:56%}
+#nvd .w0{fill:color-mix(in srgb,var(--ink) 6%,var(--paper))}
+#nvd .wnd{fill:color-mix(in srgb,var(--signal) 18%,var(--paper));stroke:color-mix(in srgb,var(--ink) 30%,var(--paper));stroke-width:3}
+#nvd .wl{stroke:color-mix(in srgb,var(--ink) 30%,var(--paper));stroke-width:3}
+#nvd .w1{fill:color-mix(in srgb,var(--ink) 22%,var(--paper))}
+#nvd .w2{fill:color-mix(in srgb,var(--ink) 40%,var(--paper))}
+#nvd .w3{fill:color-mix(in srgb,var(--ink) 16%,var(--paper))}
+#nvd .pr{fill:color-mix(in srgb,var(--ink) 50%,var(--paper))}
+#nvd .fig{fill:color-mix(in srgb,var(--ink) 72%,var(--paper))}
+#nvd .lf{fill:color-mix(in srgb,var(--ink) 60%,var(--paper))}
+#nvd .tatin circle{fill:color-mix(in srgb,var(--ink) 55%,var(--paper))}
+#nvd .wctl{position:absolute;left:26%;bottom:0;display:flex;gap:8px;flex-wrap:wrap}
+#nvd .scene.open .win{--peek:220px}
+#nvd.is-calm .win,#nvd.is-calm .peek{transition:none}
+#nvd.is-calm .scene.open .peek{animation:nvdfade .35s ease}
+@keyframes nvdfade{0%{opacity:0}
+to{opacity:1}
+}
+@media(max-width:767px){#nvd .win{left:0}
+#nvd .scene.open .win{--peek:120px}
+#nvd .peek p b{font-size:1rem}
+#nvd .wctl{left:0}
+}

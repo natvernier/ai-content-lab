@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Constellation · Depth patterns</title>
+<meta name="description" content="Every recipe is a star, placed by similarity, and clusters form by themselves. Drag the sky, hover a star, open a cluster, or search. A live graybox demo with a list view and a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/constellation">
+<meta property="og:title" content="Constellation · Depth patterns">
+<meta property="og:description" content="Every recipe is a star, placed by similarity, and clusters form by themselves. Drag the sky, hover a star, open a cluster, or search. A live graybox demo with a list view and a calm mode.">
+<meta property="og:image" content="https://natvernier.github.io/ai-content-lab/depth/p09-constellation/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="split">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage solo split">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Constellation</h1><p>Every recipe is a star, placed by how close it is to the others. Clusters form by themselves: chestnuts, citrus, warm drinks.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the stars are recipes.</span></p></div>
+<div class="scene night" id="scene"> <canvas id="sky" class="full" tabindex="0" aria-label="Star map of recipes. Arrow keys move the sky, Enter steps from star to star, plus and minus zoom."></canvas> <div class="clabels" id="clabels"></div> <div class="tip glass" id="tip" hidden></div> <div class="sbar glass"><label class="sr" for="find">Search recipes</label><input id="find" type="search" placeholder="Search" autocomplete="off"><button class="pill" type="button" id="listbtn" aria-pressed="false" aria-controls="slist">List</button><button class="pill" type="button" id="zo" aria-label="Zoom out">−</button><button class="pill" type="button" id="zi" aria-label="Zoom in">+</button></div> <div class="cpanel glass" id="cpanel" hidden><button class="pill" type="button" id="cback">← Whole sky</button><h3 id="cname"></h3><ul id="clist"></ul></div> <div class="slist glass" id="slist" hidden></div> <p class="sr" id="live" aria-live="polite"></p> </div> <p class="hint" id="hint">Drag the sky, hover a star, open a cluster</p>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>Each star is a recipe. Recipes that share taste, ingredients and season sit close together, so clusters appear without anyone drawing them. Hover a star and fine lines reach to its nearest neighbours, so you see why it sits where it sits.</p><p>Brightness carries meaning: what was already cooked shines, what comes next glows faintly, the backlog is just visible. Drag the sky and the stars move at three different speeds, which is all it takes for a flat sky to look deep.</p><p>The map is never the only way in. The search field and the list show the same recipes as plain text.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are recipes grouped by taste and season. The patterns themselves are general: any collection with a notion of similarity works, articles, songs, products, people with skills. In a real build the positions come from embeddings, computed once when a new item is added.</p><h3>The illusion</h3><p>Depth through brightness and size: bright and large reads as near, faint and small as far. Parallax between three star layers turns the flat sky into a volume as soon as it moves.</p><h3>The rules it follows</h3><ul><li>Search and a list view are always there. The map is an extra, never the only way.</li><li>Every cluster has a readable label, and every label is a button.</li><li>A plain scroll still scrolls the page. Zoom needs a pinch, Ctrl with scroll, or the buttons.</li><li>Brightness has one meaning: how close a recipe is to being cooked.</li><li>Everything is reachable with the keyboard: arrow keys move the sky, Enter steps from star to star.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the sky still. Panning and zooming jump straight to the new view instead of gliding, and the stars stop drifting with the layers. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P9 of 15, depth you only feel</dd><dt>Gesture</dt><dd>Drag to move the sky, hover or tap a star, open a cluster, pinch or the plus and minus buttons to zoom</dd><dt>Illusion</dt><dd>Depth through brightness and size, parallax between star layers</dd><dt>Built with</dt><dd>One canvas, HTML labels, search and list, about 200 lines of plain JavaScript</dd><dt>Effort</dt><dd>Medium to large</dd><dt>Wow</dt><dd>3 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: hand-placed positions stand in for positions computed from embeddings</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p08-anamorphic-arrival/index.html" rel="prev"><small>Previous, P8</small>Anamorphic arrival</a><a href="../p10-time-scrub/index.html" rel="next" style="text-align:right"><small>Next, P10</small>Time scrub</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p09-constellation">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>
