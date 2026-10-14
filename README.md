@@ -414,11 +414,11 @@ Adoption handoff
 
 ## Current status
 
-Early-stage learning, prototyping and workflow documentation repository.
+Early-stage repository for learning, prototyping and workflow documentation.
 
-The current focus is building reusable structures for AI-supported content workflows, internal communication, source-to-draft systems, RAG-supported editorial work and content evaluation loops.
+Current focus: reusable structures for AI-supported content workflows, internal communication, source-to-draft systems, RAG-supported editorial work and content evaluation loops.
 
-First live work: the interactive formats module, with the depth patterns collection at https://github.com/natvernier/ai-content-lab/tree/main/docs/depth
+First published module: [`10-interactive-formats/`](10-interactive-formats/), content you can operate, not just read. Its first collection is [depth patterns](10-interactive-formats/depth-patterns/): all fifteen live as demos, code in [`docs/depth/`](docs/depth/), live on [natvernier.com](https://www.natvernier.com/depth-patterns).
 
 ## Author
 
