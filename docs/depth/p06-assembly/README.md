@@ -2,7 +2,7 @@
 
 The parts of a dish float apart in empty space. Scroll and they come together into the dish. Scroll back and it comes apart again.
 
-**P6 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p06-assembly/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/assembly)
+**P6 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/assembly)
 
 That is why the parts are meringue, chestnut and cream. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

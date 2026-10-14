@@ -2,7 +2,7 @@
 
 Every recipe is a star, placed by how close it is to the others. Clusters form by themselves: chestnuts, citrus, warm drinks.
 
-**P9 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p09-constellation/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/constellation)
+**P9 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/constellation)
 
 That is why the stars are recipes. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

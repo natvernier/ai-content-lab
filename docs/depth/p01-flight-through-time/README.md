@@ -2,7 +2,7 @@
 
 You scroll as usual, but instead of the page moving up, you travel forward: from what was cooked, past now, into what comes next.
 
-**P1 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p01-flight-through-time/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/flight-through-time)
+**P1 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/flight-through-time)
 
 That is why the things flying past are dishes. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

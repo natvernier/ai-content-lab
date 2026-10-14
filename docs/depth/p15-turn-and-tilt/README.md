@@ -2,7 +2,7 @@
 
 Scroll and the dish turns in space. Move the mouse up or down and it tips towards you or away.
 
-**P15 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p15-turn-and-tilt/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/turn-and-tilt)
+**P15 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/turn-and-tilt)
 
 That is why the thing that turns is a pear tart. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

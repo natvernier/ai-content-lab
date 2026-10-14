@@ -2,7 +2,7 @@
 
 Your cursor is a soft lamp over the paper. Move it and the shadows of the cut-outs swing away from the light.
 
-**P13 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p13-the-lamp/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/the-lamp)
+**P13 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/the-lamp)
 
 That is why the cut-outs on the paper are a pear, a bottle and a cup. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

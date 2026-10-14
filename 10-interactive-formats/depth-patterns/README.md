@@ -2,7 +2,7 @@
 
 Fifteen ways a flat page can feel deep, on the laptop and phone you already have.
 
-**Live:** https://natvernier.github.io/ai-content-lab/depth/
+**Live:** https://www.natvernier.com/depth-patterns · **Code:** https://github.com/natvernier/ai-content-lab/tree/main/docs/depth
 
 I built the series while making [A Hat of Thyme](https://natvernier.com/projects/a-hat-of-thyme), my recipe library. That is why the examples are pears, pumpkins and seasons. The patterns themselves work for any content.
 
@@ -24,10 +24,10 @@ The page becomes a space, and the scroll moves you through it.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P1 | [Flight through time](https://natvernier.github.io/ai-content-lab/depth/p01-flight-through-time/) | Scroll forward instead of down | M · 3 | Live |
-| P3 | [Semantic zoom](https://natvernier.github.io/ai-content-lab/depth/p03-semantic-zoom/) | Pinch or zoom one level deeper | L · 3 | Live |
-| P7 | [Window](https://natvernier.github.io/ai-content-lab/depth/p07-window/) | Move the mouse or tilt the phone | S–M · 2–3 | Live |
-| P8 | [Anamorphic arrival](https://natvernier.github.io/ai-content-lab/depth/p08-anamorphic-arrival/) | The first scroll after arriving | M · 3 | Live |
+| P1 | [Flight through time](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p01-flight-through-time) | Scroll forward instead of down | M · 3 | Live |
+| P3 | [Semantic zoom](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p03-semantic-zoom) | Pinch or zoom one level deeper | L · 3 | Live |
+| P7 | [Window](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p07-window) | Move the mouse or tilt the phone | S–M · 2–3 | Live |
+| P8 | [Anamorphic arrival](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival) | The first scroll after arriving | M · 3 | Live |
 
 ### Depth you can hold
 
@@ -35,13 +35,13 @@ Things unfold, turn or travel when you touch them. Nothing jumps.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P2 | [Focus and fan](https://natvernier.github.io/ai-content-lab/depth/p02-focus-and-fan/) | Tap one thing; its options fan out | M · 2–3 | Live |
-| P4 | [The lazy Susan](https://natvernier.github.io/ai-content-lab/depth/p04-lazy-susan/) | Swipe sideways, one season per gesture | M · 2 | Live |
-| P5 | [Pop-up book](https://natvernier.github.io/ai-content-lab/depth/p05-pop-up-book/) | Each scroll step opens one spread | S–M · 2 | Live |
-| P6 | [Assembly](https://natvernier.github.io/ai-content-lab/depth/p06-assembly/) | Scroll; the parts come together | L · 3 | Live |
-| P10 | [Time scrub](https://natvernier.github.io/ai-content-lab/depth/p10-time-scrub/) | Drag a time line under a picture | M · 2 | Live |
-| P11 | [Doors that never cut](https://natvernier.github.io/ai-content-lab/depth/p11-doors-that-never-cut/) | Any click that opens something | S · 2 | Live |
-| P15 | [Turn and tilt](https://natvernier.github.io/ai-content-lab/depth/p15-turn-and-tilt/) | Scroll to turn, the mouse to tilt | S · 2 | Live |
+| P2 | [Focus and fan](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p02-focus-and-fan) | Tap one thing; its options fan out | M · 2–3 | Live |
+| P4 | [The lazy Susan](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p04-lazy-susan) | Swipe sideways, one season per gesture | M · 2 | Live |
+| P5 | [Pop-up book](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p05-pop-up-book) | Each scroll step opens one spread | S–M · 2 | Live |
+| P6 | [Assembly](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p06-assembly) | Scroll; the parts come together | L · 3 | Live |
+| P10 | [Time scrub](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p10-time-scrub) | Drag a time line under a picture | M · 2 | Live |
+| P11 | [Doors that never cut](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p11-doors-that-never-cut) | Any click that opens something | S · 2 | Live |
+| P15 | [Turn and tilt](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p15-turn-and-tilt) | Scroll to turn, the mouse to tilt | S · 2 | Live |
 
 ### Depth you only feel
 
@@ -49,10 +49,10 @@ Quiet layers. Decoration only, never needed to read anything.
 
 | ID | Pattern | Gesture | Effort · wow | State |
 |---|---|---|---|---|
-| P9 | [Constellation](https://natvernier.github.io/ai-content-lab/depth/p09-constellation/) | Drag, pinch, hover a star | M–L · 3 | Live |
-| P12 | [The world remembers](https://natvernier.github.io/ai-content-lab/depth/p12-the-world-remembers/) | None; it happens across visits | S · 1–2 | Live |
-| P13 | [The lamp](https://natvernier.github.io/ai-content-lab/depth/p13-the-lamp/) | Move the cursor, or touch and hold | S–M · 2 | Live |
-| P14 | [Glass controls](https://natvernier.github.io/ai-content-lab/depth/p14-glass-controls/) | None; it is the control layer | S · 2 | Live |
+| P9 | [Constellation](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p09-constellation) | Drag, pinch, hover a star | M–L · 3 | Live |
+| P12 | [The world remembers](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p12-the-world-remembers) | None; it happens across visits | S · 1–2 | Live |
+| P13 | [The lamp](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p13-the-lamp) | Move the cursor, or touch and hold | S–M · 2 | Live |
+| P14 | [Glass controls](https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p14-glass-controls) | None; it is the control layer | S · 2 | Live |
 
 ## Conventions in short
 

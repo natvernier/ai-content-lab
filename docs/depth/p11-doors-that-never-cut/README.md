@@ -2,7 +2,7 @@
 
 Open a teaser and its picture flies to its place on the recipe while the title glides into the headline. Nothing jumps.
 
-**P11 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p11-doors-that-never-cut/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/doors-that-never-cut)
+**P11 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/doors-that-never-cut)
 
 That is why the doors open onto recipes. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 

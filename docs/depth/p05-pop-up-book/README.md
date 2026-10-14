@@ -2,7 +2,7 @@
 
 Each scroll step opens one spread. The cut-outs fold up from the paper and stand, and their shadows grow beneath them.
 
-**P5 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live](https://natvernier.github.io/ai-content-lab/depth/p05-pop-up-book/) · [On natvernier.com](https://www.natvernier.com/depth-patterns/pop-up-book)
+**P5 of the [Depth patterns](../) by [Nathalie Vernier](https://www.natvernier.com/)** · [Try it live on natvernier.com](https://www.natvernier.com/depth-patterns/pop-up-book)
 
 That is why the book has a spread for every season. The series comes from [A Hat of Thyme](https://www.natvernier.com/projects/a-hat-of-thyme), my recipe library.
 
