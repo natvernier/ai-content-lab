@@ -1,0 +1,14 @@
+/* Turn and tilt · P15 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/turn-and-tilt
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p15-turn-and-tilt · MIT licence · needs the depth kit (../kit/) */
+#nvd .title{max-width:min(36vw,520px)}
+#nvd .scrub{position:absolute;left:var(--gut);right:var(--gut);bottom:30px;width:calc(100% - 2*var(--gut));margin:0;height:28px;transform:translateY(-12px);background:transparent;-webkit-appearance:none;appearance:none;z-index:4;cursor:pointer}
+#nvd .scrub::-webkit-slider-runnable-track{height:3px;background:transparent}
+#nvd .scrub::-moz-range-track{height:3px;background:transparent}
+#nvd .scrub::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;margin-top:-10px;border-radius:50%;background:var(--signal);border:2px solid var(--ink);box-shadow:0 2px 6px #00000040}
+#nvd .scrub::-moz-range-thumb{width:18px;height:18px;border-radius:50%;background:var(--signal);border:2px solid var(--ink)}
+#nvd .scrub:focus-visible{outline:none}
+#nvd .scrub:focus-visible::-webkit-slider-thumb{outline:3px solid var(--signal-text);outline-offset:3px}
+#nvd .gauge li{cursor:default}
+@media(max-width:767px){#nvd .title{max-width:none}
+}
+#nvd .track{height:420vh}

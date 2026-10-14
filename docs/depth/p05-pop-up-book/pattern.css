@@ -1,0 +1,24 @@
+/* Pop-up book · P5 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/pop-up-book
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p05-pop-up-book · MIT licence · needs the depth kit (../kit/) */
+#nvd .book{position:absolute;left:max(var(--gut),40%);right:var(--gut);top:16%;bottom:110px;perspective:1300px;perspective-origin:50% 0%}
+#nvd .spread{position:absolute;inset:0;transform-style:preserve-3d;transform:rotateX(48deg);transform-origin:50% 100%;opacity:0}
+#nvd .leaf{position:absolute;top:0;bottom:0;width:50%;background:var(--card);border:1px solid var(--rule);transform-style:preserve-3d}
+#nvd .leaf.l{left:0;border-radius:10px 0 0 10px;padding:4% 5%;box-shadow:inset -18px 0 22px -18px #00000040}
+#nvd .leaf.r{left:50%;border-radius:0 10px 10px 0;transform-origin:0 50%;transform:rotateY(var(--turn,0deg));z-index:3}
+#nvd .leaf.r span{position:absolute;inset:0;border-radius:inherit;background:linear-gradient(90deg,rgba(0,0,0,.12),transparent 30%)}
+#nvd .leaf h3{margin:0;font:400 clamp(1.6rem,3vw,2.6rem)/1 var(--serif)}
+#nvd .leaf p{margin:.4rem 0 0;font-size:clamp(.8rem,1.2vw,1rem);color:var(--ink-soft);max-width:22ch}
+#nvd .pop{position:absolute;left:var(--x);top:var(--y);width:var(--w);height:var(--h);transform-origin:50% 100%;transform:translate(-50%,-100%) rotateX(calc(var(--up,0)*-90deg));transform-style:preserve-3d;z-index:4}
+#nvd .pop svg{width:100%;height:100%;display:block;overflow:visible;color:color-mix(in srgb,var(--ink) calc(var(--k)*100%),var(--paper));fill:currentColor}
+#nvd .pop:after{content:"";position:absolute;left:50%;bottom:0;width:140%;height:26%;border-radius:50%;background:radial-gradient(closest-side,rgba(0,0,0,.28),transparent);transform:translate(-50%,50%) rotateX(calc(var(--up,0)*90deg)) translateY(calc(var(--up,0)*30%)) scale(calc(.4 + var(--up,0)*.9));opacity:var(--up,0);z-index:-1}
+#nvd .pop.fig svg{color:color-mix(in srgb,var(--ink) 72%,var(--paper))}
+#nvd .title{max-width:min(36vw,520px)}
+@media(max-width:767px){#nvd .title{max-width:none}
+#nvd .book{inset:66% 16px 96px;transition:top .4s ease}
+#nvd .title.dim~.book{top:36%}
+}
+#nvd .skipbook{position:absolute;right:var(--gut);top:120px;z-index:5}
+@media(max-width:767px){#nvd .skipbook{top:auto;bottom:64px;right:12px}
+#nvd .hint{left:16px;transform:none}
+}
+#nvd .track{height:560vh}

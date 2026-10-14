@@ -1,0 +1,11 @@
+/* Anamorphic arrival · P8 of the Depth patterns by Nathalie Vernier, https://www.natvernier.com/depth-patterns/anamorphic-arrival
+   https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p08-anamorphic-arrival · MIT licence · needs the depth kit (../kit/) */
+#nvd .teasers{position:absolute;inset:auto var(--gut) 92px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:clamp(10px,2vw,24px);margin:0;padding:0;list-style:none;pointer-events:none;z-index:2}
+@media(min-width:768px){#nvd .teasers{left:max(var(--gut),40%)}
+}
+#nvd .teaser{opacity:0;transform-origin:50% 100%;background:var(--paper)}
+#nvd .teaser h3{font-size:clamp(1rem,2vw,1.35rem)}
+@media(max-width:640px){#nvd .teasers{bottom:84px}
+#nvd .teaser p{display:none}
+}
+#nvd .track{height:380vh}

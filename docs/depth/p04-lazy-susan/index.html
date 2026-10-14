@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The lazy Susan · Depth patterns</title>
+<meta name="description" content="Swipe sideways and a round table turns one season towards you: front large and sharp, the rest small and pale. A live graybox demo with arrows, labels, keys and a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/lazy-susan">
+<meta property="og:title" content="The lazy Susan · Depth patterns">
+<meta property="og:description" content="Swipe sideways and a round table turns one season towards you: front large and sharp, the rest small and pale. A live graybox demo with arrows, labels, keys and a calm mode.">
+<meta property="og:image" content="https://raw.githubusercontent.com/natvernier/ai-content-lab/main/docs/depth/p04-lazy-susan/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="split">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage solo split">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>The lazy Susan</h1><p>A round table turns around you, one season per gesture. The season in front is large and sharp, the others wait small and pale behind it.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the table carries the four seasons.</span></p></div>
+<div class="scene" id="scene" tabindex="0" aria-roledescription="carousel" aria-label="Seasons on a turning table"> <div class="susan" id="susan"> <svg class="plate" id="plate" aria-hidden="true"><ellipse id="pe"/><line id="l1"/><line id="l2"/></svg> <article class="season card" data-i="0" aria-roledescription="slide"><div class="img"></div><h3>Winter</h3><p>Mulled wine · Chestnut soup · Hot chocolate</p></article> <article class="season card" data-i="1" aria-roledescription="slide"><div class="img"></div><h3>Spring</h3><p>Asparagus tart · Rhubarb crumble · Wild garlic pesto</p></article> <article class="season card" data-i="2" aria-roledescription="slide"><div class="img"></div><h3>Summer</h3><p>Peach galette · Gazpacho · Elderflower cordial</p></article> <article class="season card" data-i="3" aria-roledescription="slide"><div class="img"></div><h3>Autumn</h3><p>Pear tart · Pumpkin soup · Castagnaccio</p></article> </div> <div class="sbar glass"><button class="pill" type="button" id="prev" aria-label="Previous season">‹</button><div class="snames" id="snames"></div><button class="pill" type="button" id="next" aria-label="Next season">›</button></div> <p class="sr" id="live" aria-live="polite"></p> </div> <p class="hint" id="hint">Swipe, drag or use the arrows to turn the table</p>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>Every gesture turns the table by exactly one quarter, no matter how hard you swipe. The season in front becomes large and sharp, the one behind small and pale, and the two at the sides wait half turned. A small overshoot when it stops gives the table weight.</p><p>It opened on the current season. In October that is autumn, so autumn faced you before you did anything.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are the four seasons and what to cook in them. The patterns themselves are general: any small set of equal choices works, four plans, four teams, four chapters. More than six and it stops being a table and starts being a carousel.</p><h3>The illusion</h3><p>Size and aerial perspective: closer is bigger, further is paler. Motion parallax: while the table turns, the front cards move faster than the back ones, so the circle reads as depth.</p><h3>The rules it follows</h3><ul><li>One gesture, one meaning: sideways always means the next season, never anything else.</li><li>Arrows and season labels for mouse users, arrow keys for the keyboard.</li><li>It opens on the current season.</li><li>A label always says which season faces you and how many there are.</li><li>The vertical scroll is never taken: only a sideways move turns the table.</li></ul><h3>Calm mode</h3><p>Calm mode stops the turning. The next season simply crossfades in front of you. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P4 of 15, depth you can hold</dd><dt>Gesture</dt><dd>Swipe or drag sideways, scroll sideways on a trackpad, arrow keys or the season labels</dd><dt>Illusion</dt><dd>Size, motion parallax, aerial perspective</dd><dt>Built with</dt><dd>HTML cards placed on a 3D ring with plain JavaScript</dd><dt>Effort</dt><dd>Medium</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: hatched cards stand in for the painted seasons</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p03-semantic-zoom/index.html" rel="prev"><small>Previous, P3</small>Semantic zoom</a><a href="../p05-pop-up-book/index.html" rel="next" style="text-align:right"><small>Next, P5</small>Pop-up book</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p04-lazy-susan">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>

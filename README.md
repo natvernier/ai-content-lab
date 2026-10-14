@@ -354,7 +354,7 @@ The interactive format layer.
 
 Some ideas only land when the reader can act on them. This section documents live, interactive formats: when to choose one, the rules every one follows (reader-driven motion, real text, a full calm mode) and how one live original is rendered for channels that cannot run it.
 
-The first collection is `depth-patterns/`: fourteen ways a flat page can feel deep, on ordinary laptops and phones. The live pages are in `docs/` and published at https://natvernier.github.io/ai-content-lab/
+The first collection is `depth-patterns/`: fifteen ways a flat page can feel deep, on ordinary laptops and phones. The code is in `docs/depth/` (https://github.com/natvernier/ai-content-lab/tree/main/docs/depth), live on https://www.natvernier.com/depth-patterns. Free to use: code under MIT, texts under CC BY 4.0.
 
 ## Working principles
 
@@ -418,4 +418,9 @@ Early-stage repository for learning, prototyping and workflow documentation.
 
 Current focus: reusable structures for AI-supported content workflows, internal communication, source-to-draft systems, RAG-supported editorial work and content evaluation loops.
 
-First published module: [`10-interactive-formats/`](10-interactive-formats/), content you can operate, not just read. Its first collection is [depth patterns](10-interactive-formats/depth-patterns/), with one live demo so far.
+First published module: [`10-interactive-formats/`](10-interactive-formats/), content you can operate, not just read. Its first collection is [depth patterns](10-interactive-formats/depth-patterns/): all fifteen live as demos, code in [`docs/depth/`](docs/depth/), live on [natvernier.com](https://www.natvernier.com/depth-patterns).
+
+## Author
+
+Nathalie Vernier, AI transformation and enablement, Berlin.
+[natvernier.com](https://www.natvernier.com) · [LinkedIn](https://www.linkedin.com/in/nathalievernier/)

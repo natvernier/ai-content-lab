@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Time scrub · Depth patterns</title>
+<meta name="description" content="Scroll or drag a thin time line and a dish changes under your hand: whole, halved, poached, on the tart. A live graybox demo with a keyboard scrubber and a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/time-scrub">
+<meta property="og:title" content="Time scrub · Depth patterns">
+<meta property="og:description" content="Scroll or drag a thin time line and a dish changes under your hand: whole, halved, poached, on the tart. A live graybox demo with a keyboard scrubber and a calm mode.">
+<meta property="og:image" content="https://raw.githubusercontent.com/natvernier/ai-content-lab/main/docs/depth/p10-time-scrub/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="track">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Time scrub</h1><p>Scroll, or drag the thin time line, and a pear goes from whole to halved to poached to fanned out on a tart.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the thing that changes is a pear.</span></p></div>
+<canvas id="pear" class="full" aria-hidden="true"></canvas> <p class="sr" id="pearstate" aria-live="polite"></p> <label class="sr" for="scrub">Time line: whole, halved, poached, on the tart</label> <input class="scrub" id="scrub" type="range" min="0" max="300" step="1" value="0" aria-valuetext="Whole"> <p class="hint" id="hint">Scroll or drag the time line</p><ol class="gauge" aria-label="Where the pear is in its preparation"><li data-step="0" aria-current="step">Whole</li><li data-step="1">Halved</li><li data-step="2">Poached</li><li data-step="3">On the tart</li></ol>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>This is the same pear all the way through. It splits, darkens in the syrup, and its halves become the slices fanned on top of the tart. Because nothing is swapped for a new picture, you can follow one object through time.</p><p>The time line under the picture is a real control. Drag it, or tab to it and use the arrow keys to step from one stage to the next. Moving it scrolls the page, so the scroll position and the time line never disagree.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe library. Every pattern was storyboarded for that site first, which is why the examples are a pear on its way into a tart. The patterns themselves are general: any process with a few clear stages works, a building going up, a product being assembled, a day passing from morning light to night.</p><h3>The illusion</h3><p>Object constancy: the pear never disappears and reappears, it changes. Your eye stays on it the whole time, and that continuity is what makes a few drawings feel like time passing.</p><h3>The rules it follows</h3><ul><li>A visible time line that also works with the arrow keys.</li><li>Scroll and the time line are the same thing: moving one moves the other.</li><li>Every stage has a name, and the current one is always marked.</li><li>Scroll stays 1:1 and runs backwards.</li><li>In a real build each stage is a painted frame, kept consistent with image edits.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the stages but drops the in-between motion. Each stage crossfades into the next instead of moving. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P10 of 15, depth you can hold</dd><dt>Gesture</dt><dd>Scroll, drag the time line, or use the arrow keys on it</dd><dt>Illusion</dt><dd>Object constancy, light</dd><dt>Built with</dt><dd>One canvas and a range input, about 130 lines of plain JavaScript</dd><dt>Effort</dt><dd>Medium per dish</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: drawn shapes stand in for three to five painted frames per dish</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p09-constellation/index.html" rel="prev"><small>Previous, P9</small>Constellation</a><a href="../p11-doors-that-never-cut/index.html" rel="next" style="text-align:right"><small>Next, P11</small>Doors that never cut</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p10-time-scrub">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>

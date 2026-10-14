@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Turn and tilt · Depth patterns</title>
+<meta name="description" content="A dish turns in space as you scroll and tips up or down by about twenty degrees under the mouse. A live graybox demo with a calm mode.">
+<meta name="author" content="Nathalie Vernier">
+<link rel="canonical" href="https://www.natvernier.com/depth-patterns/turn-and-tilt">
+<meta property="og:title" content="Turn and tilt · Depth patterns">
+<meta property="og:description" content="A dish turns in space as you scroll and tips up or down by about twenty degrees under the mouse. A live graybox demo with a calm mode.">
+<meta property="og:image" content="https://raw.githubusercontent.com/natvernier/ai-content-lab/main/docs/depth/p15-turn-and-tilt/frames/2.jpg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Newsreader:opsz,wght@6..72,400;6..72,500&family=Outfit:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../kit/depth-kit.css">
+<link rel="stylesheet" href="pattern.css">
+<style>body{margin:0}</style>
+</head>
+<body>
+<div id="nvd" data-layout="track">
+<a class="skip" href="#notes">Skip the demo</a><button class="calm" type="button" aria-pressed="false" id="calm"><span class="knob" aria-hidden="true"></span>Calm mode</button>
+<main>
+<section class="track" id="track" aria-label="Live demo"><div class="stage">
+<div class="title"><p class="crumbs"><a href="../../index.html">ai content lab</a><span aria-hidden="true">x</span><a href="../index.html">depth patterns</a></p><h1>Turn and tilt</h1><p>Scroll and the dish turns in space. Move the mouse up or down and it tips towards you or away.</p><p class="origin">From <a href="../index.html">Depth patterns</a>, a series I built while making <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my recipe library. <span>That is why the thing that turns is a pear tart.</span></p></div>
+<canvas id="turn" class="full" aria-hidden="true"></canvas> <p class="sr" id="turnstate" aria-live="polite"></p> <label class="sr" for="scrub">Turn the dish: front, right side, back, left side. The up and down arrow keys tilt it.</label> <input class="scrub" id="scrub" type="range" min="0" max="360" step="1" value="0" aria-valuetext="Front"> <p class="hint" id="hint">Scroll to turn, move the mouse up or down to tilt</p><ol class="gauge" aria-label="Which side of the dish faces you"><li data-step="0" aria-current="step">Front</li><li data-step="1">Right side</li><li data-step="2">Back</li><li data-step="3">Left side</li><li data-step="4">Front</li></ol>
+</div></section>
+<section class="notes" id="notes" tabindex="-1">
+<h2>What just happened</h2><p>Scroll and the dish on the table turns in space, one full turn across the length of the scene, so you see the tart from the front, the side and the back before you read a word about it. Nothing else moves: the page stays where it is and the object does the travelling.</p><p>Move the mouse up or down and the same object tips towards you or away, by about twenty degrees at most. That is enough to look onto the top of the tart or under its rim, and little enough that it never becomes a 3D viewer you have to steer.</p><h3>Where it comes from</h3><p>Depth patterns started as design work for <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>, my personal recipe collection. Every pattern was storyboarded for that site first, which is why the example is a pear tart on a plate. The pattern itself is general: anything with a front and a back works, a product, a book, a device, a building model.</p><h3>The illusion</h3><p>Structure from motion: an object that turns shows its sides one after another, and the eye assembles them into a solid. The small tilt adds a second axis, and that is what separates a turning picture from a thing you could pick up.</p><h3>The rules it follows</h3><ul><li>Nothing depends on it. Without scroll or mouse the dish is an ordinary picture, seen from the front.</li><li>Scroll turns it, and only scroll: it never spins on its own.</li><li>The tilt stops at about 20 degrees up and 20 down, and eases back when the mouse leaves.</li><li>The arrow keys do both: left and right turn, up and down tilt.</li><li>On phones the turn follows the scroll, and there is no tilt.</li></ul><h3>Calm mode</h3><p>Calm mode keeps the dish still and shows three fixed views side by side instead: front, side, back. If your device asks for reduced motion, the page starts calm.</p>
+<dl class="facts"><dt>Pattern</dt><dd>P15 of 15, depth you can hold</dd><dt>Gesture</dt><dd>Scroll to turn, move the mouse up or down to tilt, or use the arrow keys</dd><dt>Illusion</dt><dd>Structure from motion, on two axes</dd><dt>Built with</dt><dd>One canvas and a range input, about 100 lines of plain JavaScript</dd><dt>Effort</dt><dd>Small</dd><dt>Wow</dt><dd>2 of 3</dd><dt>State</dt><dd><span class="marker" aria-hidden="true"></span><span>Graybox: a drawn tart on a plate stands in for the painted dish</span></dd></dl>
+<nav class="pager" aria-label="More patterns"><a href="../p14-glass-controls/index.html" rel="prev"><small>Previous, P14</small>Glass controls</a><a href="../index.html" style="text-align:right"><small>All patterns</small>Depth patterns</a></nav>
+<div class="byline"><img src="https://cdn.prod.website-files.com/66ffd630ea77d3e10d970492/69af66584156af4c516c4f8a_natvernier_contrast-p-500.png" alt="Nathalie Vernier" width="100" height="100" loading="lazy"><div><div class="by-name"><a href="https://www.natvernier.com/" style="text-decoration:none">Nathalie Vernier</a></div><div class="by-role">AI transformation and enablement</div><div class="by-links"><a href="mailto:nathalie@vernier.de">mail</a><span aria-hidden="true">x</span><a href="https://www.linkedin.com/in/nathalievernier/" rel="noopener">linkedin</a></div></div></div>
+</section>
+</main>
+<footer class="nvd-foot">Part of <a href="../index.html">Depth patterns</a>, made while building <a href="https://www.natvernier.com/projects/a-hat-of-thyme">A Hat of Thyme</a>. Follow the source on <a href="https://github.com/natvernier/ai-content-lab/tree/main/docs/depth/p15-turn-and-tilt">GitHub</a>. Code under the MIT licence, texts under CC BY 4.0: free to use and adapt, with credit to Nathalie Vernier.</footer>
+</div>
+<script src="../kit/depth-kit.js"></script>
+<script src="pattern.js"></script>
+</body>
+</html>
