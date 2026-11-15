@@ -1,0 +1,20 @@
+/* Production additions to the signed-off test-page styles (v10). Everything lives inside the Shadow DOM of #aot-world. */
+:host{display:block;position:fixed;inset:0;z-index:20}
+.aot{position:absolute;inset:0}
+.legal a{color:inherit;text-decoration:none}
+.legal a:hover{text-decoration:underline;text-underline-offset:3px}
+.rp-foot a{color:inherit;text-decoration:none}
+.rp-foot a:hover{text-decoration:underline;text-underline-offset:3px}
+/* AI pill next to a card, never inside its button */
+.mcard{position:relative;flex:none;scroll-snap-align:start}
+.pcard{position:relative}
+.ai.pl{left:10px;top:calc(50% - 42px)}
+/* stamp on the photo of served recipes (Figma 792:1250: centred on the photo's top edge, no tilt) */
+.rp-media .stamp{position:absolute;left:50%;top:0;transform:translate(-50%,-50%);z-index:3;padding:6px 14px;border:1.5px solid var(--ink);border-radius:4px;background:var(--raised);font:600 12px/14px var(--sans);letter-spacing:.12em;text-transform:uppercase;white-space:nowrap}
+/* loading and error states of level 3 */
+.rp.is-loading .rp-cols,.rp.is-loading .tags,.rp.is-loading .mem{opacity:.35}
+.rp-note{margin:24px 0 0;font-size:14px;color:var(--muted)}
+.rp-note button{margin-left:8px;text-decoration:underline;text-underline-offset:3px}
+.it img{opacity:0;transition:opacity .35s}
+.it img.on{opacity:1}
+@media (prefers-reduced-motion:reduce){.it img{transition:none}}
