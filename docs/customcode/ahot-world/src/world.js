@@ -28,7 +28,8 @@ function boot(){
 /* ---------- index from the hidden CMS lists on /world (read only) ---------- */
 const KINDS=['Fruits','Vegetables','Herbs & Spices','From the sea','From Animals','More'];
 const norm=s=>String(s||'').trim().toLowerCase();
-function attr(e,k){const v=e.getAttribute('data-'+k);if(v)return v.trim();const im=e.querySelector('img[data-aot-'+k+']');return im?(im.getAttribute('src')||''):'';}
+/* image fields cannot be bound to attributes in Webflow: they come as hidden <img data-aot-…> (lazy, never loaded); empty ones carry w-dyn-bind-empty and a placeholder */
+function attr(e,k){const v=e.getAttribute('data-'+k);if(v)return v.trim();const im=e.querySelector('img[data-aot-'+k+']');if(!im||im.classList.contains('w-dyn-bind-empty'))return '';const s=im.getAttribute('src')||'';return /\/plugins\/Basic\/assets\/placeholder/.test(s)?'':s;}
 function readIndex(){
   if(window.AOT_DATA)return window.AOT_DATA;
   const ing=[...D0.querySelectorAll('[data-aot-ing]')].map(e=>({s:attr(e,'s'),n:attr(e,'n'),k:attr(e,'k'),t:attr(e,'t'),img:attr(e,'i')}));

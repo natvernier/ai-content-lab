@@ -32,6 +32,11 @@ pub = [r for r in rec if not r.get('isDraft') and not r.get('isArchived')]
 BYID = {r['id']: r['fieldData']['slug'] for r in pub}
 url = lambda v: (v or {}).get('url') if isinstance(v, dict) else None
 
+# Webflow renders bound images as <img>; empty ones get w-dyn-bind-empty and a placeholder
+PH='https://cdn.prod.website-files.com/plugins/Basic/assets/placeholder.60f9b1840c.svg'
+def img(k,u):
+    return f'<img data-aot-{k}="1" loading="lazy" src="{e(u)}" alt="">' if u else f'<img data-aot-{k}="1" loading="lazy" src="{PH}" alt="" class="w-dyn-bind-empty">'
+
 # /world index (hidden lists, exactly the attributes the Webflow lists will carry)
 ing_items = []
 for g in rest['ingredients']:
@@ -39,16 +44,14 @@ for g in rest['ingredients']:
     if g.get('isDraft') or g.get('isArchived'):
         continue
     ing_items.append(f'<div data-aot-ing data-s="{e(fd["slug"])}" data-n="{e(fd["name"])}" data-k="{e(KIND.get(fd.get("kind"), ""))}" '
-                     f'data-t="{e(fd.get("intro", ""))}" data-i="{e(url(fd.get("card-cut-out")) or "")}"></div>')
+                     f'data-t="{e(fd.get("intro", ""))}">{img("i", url(fd.get("card-cut-out")))}</div>')
 rec_items = []
 for r in sorted(pub, key=lambda r: r['fieldData']['name'].lower()):
     fd = r['fieldData']
-    if not fd.get('main-ingredient'):
-        continue
-    rec_items.append(f'<div data-aot-rec data-s="{e(fd["slug"])}" data-n="{e(fd["name"])}" data-mi="{e(fd["main-ingredient"])}" '
-                     f'data-c="{e(fd.get("ingredient-count") if fd.get("ingredient-count") is not None else "")}" data-d="{e(url(fd.get("dish-cut-out")) or "")}" '
+    rec_items.append(f'<div data-aot-rec data-s="{e(fd["slug"])}" data-n="{e(fd["name"])}" data-mi="{e(fd.get("main-ingredient") or "")}" '
+                     f'data-c="{e(fd.get("ingredient-count") if fd.get("ingredient-count") is not None else "")}" '
                      f'data-p="{e(fd.get("place-caption", ""))}" data-kp="{e(fd.get("kcal-per-portion") if fd.get("kcal-per-portion") is not None else "")}" '
-                     f'data-cb="{e(url(fd.get("pairing-image")) or "")}"></div>')
+                     f'>{img("d", url(fd.get("dish-cut-out")))}{img("cb", url(fd.get("pairing-image")))}</div>')
 # five lists of up to 100, as on Webflow
 lists = ''.join(f'<div class="aot-list">{"".join(rec_items[i:i + 100])}</div>' for i in range(0, len(rec_items), 100))
 hosted = site['hostedFiles']
@@ -59,7 +62,7 @@ open(os.path.join(M, 'world', 'index.html'), 'w', encoding='utf-8').write(f'''<!
 <script>{hosted["lthead-1.0.5.js"]}</script>
 </head><body class="body">
 <div id="aot-world"></div>
-<div class="aot-data" style="display:none" aria-hidden="true"><div class="aot-list">{"".join(ing_items)}</div>{lists}</div>
+<div hidden="hidden" aria-hidden="true" data-aot-index="1"><div class="aot-list">{"".join(ing_items)}</div>{lists}</div>
 <script src="/aot-world.js"></script>
 {site["siteFooterFreeform"]}
 <script>{hosted["ltbundle-1.3.2.js"]}</script>
