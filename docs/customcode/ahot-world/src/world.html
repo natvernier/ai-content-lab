@@ -1,0 +1,40 @@
+<div id="loader">Loading the illustrations …</div>
+
+<div id="world" aria-label="Ingredients in space. Scroll to fly forward or back, drag to slide sideways; the arrow keys work too."><div id="stage"></div><div id="tag" class="glass" hidden><b></b><small></small></div></div>
+<div id="list" hidden></div>
+<div id="recipe" hidden></div>
+<div class="rpfade t" hidden></div><div class="rpfade b" hidden></div>
+
+<div id="hint" class="glass" aria-hidden="true"></div>
+<button id="straight" class="pill glass" hidden>Straight ahead</button>
+
+<div class="hud tl">
+  <div class="wm">A Hat of Thyme</div>
+  <button id="back" class="pill glass" hidden>← Ingredients</button>
+  <div id="lvl" class="lvl" hidden><b></b><small></small></div>
+</div>
+<div class="hud tr">
+  <div class="tog glass" role="group" aria-label="View">
+    <button id="tSorted" aria-pressed="false" aria-label="Show as list" title="Show as list"><svg width="18" height="16" viewBox="0 0 18 16" fill="currentColor" aria-hidden="true"><circle cx="1.6" cy="2.5" r="1.6"/><rect x="5" y="1.7" width="13" height="1.6" rx=".8"/><circle cx="1.6" cy="8" r="1.6"/><rect x="5" y="7.2" width="13" height="1.6" rx=".8"/><circle cx="1.6" cy="13.5" r="1.6"/><rect x="5" y="12.7" width="13" height="1.6" rx=".8"/></svg></button>
+    <button id="tWorld" aria-pressed="true" aria-label="Show as world" title="Show as world"><svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" aria-hidden="true"><ellipse cx="13" cy="9" rx="12" ry="4" stroke-width="1.3" transform="rotate(-20 13 9)"/><circle cx="13" cy="9" r="5.5" stroke-width="1.5" fill="var(--glass)"/><circle cx="23.6" cy="5" r="1.8" fill="currentColor" stroke="none"/></svg></button>
+  </div>
+  <button class="round glass" id="menu" aria-label="Menu"><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><rect y="0" width="16" height="2" rx="1"/><rect y="5" width="16" height="2" rx="1"/><rect y="10" width="16" height="2" rx="1"/></svg></button>
+</div>
+<button class="hud bl" id="lamp" aria-label="Light on or off">
+  <svg viewBox="0 0 90 140" aria-hidden="true">
+    <defs><radialGradient id="g"><stop offset="0" stop-color="#fbe3a0" stop-opacity=".9"/><stop offset="1" stop-color="#fbe3a0" stop-opacity="0"/></radialGradient></defs>
+    <circle cx="50" cy="36" r="26" fill="url(#g)" style="opacity:var(--glow);transition:opacity .4s"/>
+    <ellipse cx="50" cy="137" rx="30" ry="5" fill="url(#g)" style="opacity:var(--glow)"/>
+    <circle cx="50" cy="110" r="27" fill="url(#g)" style="opacity:calc(var(--glow)*.55);transition:opacity .4s"/>
+    <image href="{{PIP_LAMP}}" x="36" y="82" width="28" height="55"/>
+    <g fill="currentColor"><rect x="0" y="137" width="24" height="3" rx="1.5"/><rect x="11.25" y="20" width="1.5" height="118"/><rect x="46" y="15" width="8" height="7" rx="1"/><rect x="46.5" y="21.5" width="7" height="4.2"/></g>
+    <path d="M12 22C12 9 21 2 32 2C43 2 50 8 50 16" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/>
+    <path d="M46.5 26C46.4 27.6 45.8 28.8 44.6 30C42.8 31.8 41 34.1 41 37.4C41 42.1 44.8 46 50 46C55.2 46 59 42.1 59 37.4C59 34.1 57.2 31.8 55.4 30C54.2 28.8 53.6 27.6 53.5 26Z" fill="var(--bulb)" stroke="currentColor" stroke-width="1.25"/>
+    <path d="M48 26V29.5L49.2 34L50 31.8L50.8 34L52 29.5V26" fill="none" stroke="currentColor" stroke-width=".9"/>
+  </svg>
+</button>
+<div class="hud legal"><a href="/impressum">Impressum</a> · <a href="/privacy">Privacy</a> · <a href="/how-i-use-ai">How I use AI</a></div>
+<button class="hud br round glass" id="search" aria-label="Search"><svg width="20" height="20" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true"><circle cx="8.5" cy="8.5" r="6"/><path d="M13 13l5 5" stroke-linecap="round"/></svg></button>
+
+<div id="aiCard" role="dialog" aria-modal="false" aria-labelledby="aiCardT"><p class="t" id="aiCardT"></p><p class="d"></p><a target="_blank" rel="noopener"></a></div>
+<div id="toast" class="glass" hidden role="status"></div>

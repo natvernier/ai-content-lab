@@ -1,0 +1,90 @@
+// Smoke test for /world against the local stand-in (test/mock), with the main site's real site-wide code loaded.
+// Run: python3 -m http.server 8790 -d test/mock & node test/smoke.js
+const {chromium}=require('playwright');
+const BASE=process.env.BASE||'http://localhost:8790';
+(async()=>{
+ const b=await chromium.launch();const out={},fails=[];
+ const ok=(name,cond,detail)=>{out[name]=cond?'ok':('FAIL '+(detail!==undefined?JSON.stringify(detail):''));if(!cond)fails.push(name);};
+ const errs=[];
+ const c=await b.newContext({viewport:{width:1440,height:900}});const p=await c.newPage();
+ p.on('pageerror',e=>errs.push(e.message));p.on('console',m=>{if(m.type()==='error'&&/aot/.test(m.text()))errs.push(m.text());});
+ const sh=(fn,arg)=>p.evaluate(fn,arg);
+ await p.goto(BASE+'/world/?aot-debug#world');await p.waitForTimeout(1500);
+ const l1=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {items:R.querySelectorAll('.it').length,loaded:R.querySelectorAll('.it img.on').length,ndw:!!document.querySelector('.nd-w'),ndb:!!document.querySelector('.nd-b'),aiInShadow:R.querySelectorAll('.ail').length,version:window.__aotWorld};});
+ ok('L1 builds the world (36 ingredients with recipes)',l1.items===36,l1);
+ ok('L1 pictures load',l1.loaded>=5,l1.loaded);
+ ok('phone menu of the main site stays off',l1.ndw&&!l1.ndb,l1);
+ ok('main-site AI label does not reach into /world',l1.aiInShadow===0,l1.aiInShadow);
+ // theme follows the main site's class
+ await sh(()=>document.documentElement.classList.add('theme-night'));await p.waitForTimeout(50);
+ const th1=await sh(()=>document.getElementById('aot-world').dataset.theme);
+ await sh(()=>document.documentElement.classList.remove('theme-night'));await p.waitForTimeout(50);
+ const th2=await sh(()=>document.getElementById('aot-world').dataset.theme);
+ ok('day/night follows html.theme-night',th1==='dark'&&th2==='light',[th1,th2]);
+ // idle: the loop sleeps
+ const cdp=await c.newCDPSession(p);await cdp.send('Performance.enable');await p.waitForTimeout(1500);
+ const m0=await cdp.send('Performance.getMetrics');await p.waitForTimeout(2000);const m1=await cdp.send('Performance.getMetrics');
+ const g=(m,k)=>m.metrics.find(x=>x.name===k).value;const idleMs=Math.round((g(m1,'TaskDuration')-g(m0,'TaskDuration'))*1000/2);
+ ok('idle CPU near zero (ms per s)',idleMs<15,idleMs);
+ // level 2, biggest world
+ await sh(()=>location.hash='cream');await p.waitForTimeout(900);
+ const l2=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {rows:R.querySelectorAll('.rowit').length,pills:R.querySelectorAll('.rowit .ai').length,lvl:R.getElementById('lvl').textContent};});
+ ok('L2 Cream & Butter row',l2.rows>=30&&l2.pills===0,l2);
+ await p.waitForTimeout(1500);
+ const pre=await sh(()=>window.AOT.done.size);
+ ok('centred recipe and neighbours are prefetched',pre>=1,pre);
+ // level 3 with photo
+ await sh(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await p.waitForTimeout(1200);
+ const l3=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;const q=s=>R.querySelector(s);return {h1:q('.rp h1')&&q('.rp h1').textContent,kick:q('.kick')&&q('.kick').textContent,place:q('.place')&&q('.place').textContent,src:q('.src b')&&q('.src b').textContent,
+   steps:R.querySelectorAll('.steps li').length,ing:!!(q('.ing-list')&&q('.ing-list').textContent.trim()),photoPill:q('.rp-media > .ai')&&q('.rp-media > .ai').dataset.ai,stamp:q('.stamp')&&q('.stamp').textContent,pos:q('.pager .pos')&&q('.pager .pos').textContent,
+   more:R.querySelectorAll('.mcard').length,nested:R.querySelectorAll('button .ai').length,credit:q('.credit')&&q('.credit').textContent,tags:R.querySelectorAll('.pills span').length,loading:!!q('.rp.is-loading')};});
+ ok('L3 reads the recipe page',l3.h1==='Lemon & Thyme Vin de Citron'&&l3.steps>=3&&l3.ing&&!l3.loading,l3);
+ ok('L3 place line from the index',/By the sea/.test(l3.place||''),l3.place);
+ ok('L3 photo labelled Edited, stamp shown',l3.photoPill==='edited'&&!!l3.stamp,l3);
+ ok('L3 pager and More-with row',/^Lemon · \d+ of 8$/.test(l3.pos||'')&&l3.more===21,l3);
+ ok('no AI pill inside a button',l3.nested===0,l3.nested);
+ // pill opens the card and never navigates
+ await p.click('.rp-media > .ai');await p.waitForTimeout(250);
+ const card=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {open:R.getElementById('aiCard').classList.contains('open'),t:R.querySelector('#aiCard .t').textContent,hash:location.hash};});
+ ok('AI card opens with the main site text',card.open&&/photograph/i.test(card.t)&&card.hash==='#recipe/lemon-and-thyme-vin-de-citron',card);
+ await p.keyboard.press('Escape');
+ // pairing: Citron pressé → Moules card, repeated text hidden
+ await sh(()=>location.hash='recipe/citron-presse');await p.waitForTimeout(1200);
+ const pr=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {cards:[...R.querySelectorAll('.plink b')].map(x=>x.textContent),txt:(R.querySelector('.pair .txt')||{textContent:''}).textContent,img:R.querySelector('.rp-media > .ai')&&R.querySelector('.rp-media > .ai').dataset.ai,pip:!!R.querySelector('.side.pip .ai.below')};});
+ ok('pairing card links Moules marinières',pr.cards.some(x=>/Moules/i.test(x)),pr);
+ ok('no-photo recipe: illustration Generated, Pip labelled below',pr.img==='generated'&&pr.pip,pr);
+ // Next up recipe: the main site hides method, dashboard, playlist, stamp
+ await sh(()=>location.hash='recipe/apfelstrudel');await p.waitForTimeout(1200);
+ const nu=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {steps:R.querySelectorAll('.steps li').length,dash:R.querySelectorAll('.dash > div').length,note:(R.querySelector('.note h3')||{textContent:''}).textContent,play:!!R.querySelector('.play')};});
+ ok('Next up parity (no method, dashboard, playlist)',nu.steps===0&&nu.dash<=1&&!nu.play,nu);
+ // sorted lists show the pill
+ await sh(()=>location.hash='list');await p.waitForTimeout(600);
+ const li=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {rows:R.querySelectorAll('.row').length,pill:R.querySelectorAll('.pv-img .ai').length,zero:R.querySelectorAll('.row.zero').length};});
+ ok('ingredient list with preview pill, Truffle greyed',li.rows===37&&li.pill===1&&li.zero===1,li);
+ await sh(()=>location.hash='lemon-list');await p.waitForTimeout(600);
+ const ll=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {rows:R.querySelectorAll('.toc .row').length,h1:R.querySelector('.lhead h1').textContent};});
+ ok('Lemon recipe list',ll.rows===8&&ll.h1==='Lemon',ll);
+ // missing recipe page → calm error, retry button
+ await p.route('**/recipe/sgroppino*',r=>r.fulfill({status:404,body:'not found'}));
+ await sh(()=>location.hash='recipe/sgroppino');await p.waitForTimeout(1000);
+ const er=await sh(()=>!!document.getElementById('aot-world').shadowRoot.querySelector('[data-retry]'));
+ ok('a missing page shows a calm note with "Try again"',er,er);
+ ok('no errors from /world',errs.length===0,errs.slice(0,3));
+ await c.close();
+ // phone: tap a recipe in the row, then the recipe opens
+ const m=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});const q=await m.newPage();const merr=[];q.on('pageerror',e=>merr.push(e.message));
+ await q.goto(BASE+'/world/#lemon');await q.waitForTimeout(1200);
+ const t=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;let best=null,bd=1e9;R.querySelectorAll('.rowit').forEach(e=>{const r=e.getBoundingClientRect();const d=Math.abs(r.left+r.width/2-innerWidth/2);if(d<bd){bd=d;best=e;}});const r=best.getBoundingClientRect();return {x:r.left+r.width/2,y:r.top+r.height/2};});
+ await q.touchscreen.tap(t.x,t.y);await q.waitForTimeout(1200);
+ const mh=await q.evaluate(()=>({hash:location.hash,h1:(document.getElementById('aot-world').shadowRoot.querySelector('.rp h1')||{}).textContent}));
+ ok('phone: tap in the row opens the recipe',/^#recipe\//.test(mh.hash)&&!!mh.h1,mh);
+ ok('phone: no errors',merr.length===0,merr.slice(0,3));
+ await m.close();
+ // reduced motion starts in the list
+ const rm=await b.newContext({viewport:{width:1280,height:800},reducedMotion:'reduce'});const rp=await rm.newPage();
+ await rp.goto(BASE+'/world/');await rp.waitForTimeout(900);
+ const rl=await rp.evaluate(()=>!document.getElementById('aot-world').shadowRoot.getElementById('list').hidden);
+ ok('reduced motion starts in the list',rl,rl);
+ await rm.close();await b.close();
+ console.log(JSON.stringify(out,null,1));console.log(fails.length?'FAILED: '+fails.length:'ALL OK');process.exit(fails.length?1:0);
+})().catch(e=>{console.error(e);process.exit(2);});

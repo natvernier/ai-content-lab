@@ -1,0 +1,228 @@
+{
+ "pipLamp": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9fc14859d3e65d88d3b20_aot_pip-lamp.webp",
+ "assetFolder": "aot-world 6af9f948493d5c0653fa5764",
+ "webp": {
+  "6af0646ebaf5a4c9cac8689c": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97e4bc3d7b8cc7ca271_6af0646ebaf5a4c9cac8689c_potato.webp",
+   "w": 464,
+   "h": 508,
+   "s": "potato"
+  },
+  "6af0646ebaf5a4c9cac86893": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97fb7328336612140e6_6af0646ebaf5a4c9cac86893_rice.webp",
+   "w": 464,
+   "h": 508,
+   "s": "rice"
+  },
+  "6af05d5bad34c8b5a303ba18": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97fb732833661214113_6af05d5bad34c8b5a303ba18_artichoke.webp",
+   "w": 464,
+   "h": 508,
+   "s": "artichoke"
+  },
+  "6af05d5bad34c8b5a303b9ef": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97f3be594877597a98f_6af05d5bad34c8b5a303b9ef_tomato.webp",
+   "w": 464,
+   "h": 508,
+   "s": "tomato"
+  },
+  "6aefa204e4e365276807c41d": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97fa95502ba31e6ffca_6aefa204e4e365276807c41d_poultry.webp",
+   "w": 464,
+   "h": 508,
+   "s": "poultry"
+  },
+  "6aefa203aeef0714dbd30f9c": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97ffb507f9678202498_6aefa203aeef0714dbd30f9c_pear.webp",
+   "w": 464,
+   "h": 508,
+   "s": "pear"
+  },
+  "6aefa202e4e365276807c31d": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f97fb73283366121415f_6aefa202e4e365276807c31d_cherry.webp",
+   "w": 464,
+   "h": 508,
+   "s": "cherry"
+  },
+  "6aefa20137b8a1b48337834d": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98085279ad5ccec5fd3_6aefa20137b8a1b48337834d_lime.webp",
+   "w": 464,
+   "h": 508,
+   "s": "lime"
+  },
+  "6af06f1dc9e95dfb70073397": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f981fb507f96782025ef_6af06f1dc9e95dfb70073397_garden-vegetables.webp",
+   "w": 464,
+   "h": 508,
+   "s": "garden-vegetables"
+  },
+  "6aefa2042f6e637080d9e899": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f981e266fff34cb6d146_6aefa2042f6e637080d9e899_egg.webp",
+   "w": 464,
+   "h": 508,
+   "s": "egg"
+  },
+  "6ae7a1167e6c6546018f44e8": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f981f4cd507ac245ba52_6ae7a1167e6c6546018f44e8_beans-lentils-and-tofu.webp",
+   "w": 464,
+   "h": 508,
+   "s": "beans-lentils-and-tofu"
+  },
+  "6ae7a1167e6c6546018f44df": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9812e25964c62f2a9a4_6ae7a1167e6c6546018f44df_chilli.webp",
+   "w": 464,
+   "h": 508,
+   "s": "chilli"
+  },
+  "6ae7a1167e6c6546018f44ee": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98485279ad5ccec6074_6ae7a1167e6c6546018f44ee_spices.webp",
+   "w": 464,
+   "h": 508,
+   "s": "spices"
+  },
+  "6af05d5c89500e2a98e71fb0": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98585279ad5ccec6093_6af05d5c89500e2a98e71fb0_flour.webp",
+   "w": 464,
+   "h": 508,
+   "s": "flour"
+  },
+  "6ae7a1167e6c6546018f44eb": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9851bf9aae0706081ec_6ae7a1167e6c6546018f44eb_wine-and-spirits.webp",
+   "w": 464,
+   "h": 508,
+   "s": "wine-and-spirits"
+  },
+  "6af0646ebaf5a4c9cac8689f": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98557cc4e346e86177f_6af0646ebaf5a4c9cac8689f_pasta.webp",
+   "w": 464,
+   "h": 508,
+   "s": "pasta"
+  },
+  "6aefa2054e266a7755601b3f": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98585279ad5ccec60d6_6aefa2054e266a7755601b3f_game-and-meat.webp",
+   "w": 464,
+   "h": 508,
+   "s": "game-and-meat"
+  },
+  "6ade385527cf9de2fe4b146b": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9850daa057aa1337d2a_6ade385527cf9de2fe4b146b_coffee.webp",
+   "w": 464,
+   "h": 508,
+   "s": "coffee"
+  },
+  "6ade385527cf9de2fe4b146e": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f985b45fc109ea565a97_6ade385527cf9de2fe4b146e_cheese.webp",
+   "w": 464,
+   "h": 508,
+   "s": "cheese"
+  },
+  "6ade1a5748ce866d0fd6698f": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98543df4fe7b475e579_6ade1a5748ce866d0fd6698f_ginger.webp",
+   "w": 464,
+   "h": 508,
+   "s": "ginger"
+  },
+  "6adce5cbb6313926f257d6c2": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9864bc3d7b8cc7ca520_6adce5cbb6313926f257d6c2_truffle.webp",
+   "w": 464,
+   "h": 508,
+   "s": "truffle"
+  },
+  "6adce5cbb6313926f257d6c6": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f986fb507f96782027fa_6adce5cbb6313926f257d6c6_fish.webp",
+   "w": 464,
+   "h": 508,
+   "s": "fish"
+  },
+  "6ae7a1167e6c6546018f44f1": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f987e266fff34cb6d2ba_6ae7a1167e6c6546018f44f1_cream.webp",
+   "w": 464,
+   "h": 508,
+   "s": "cream"
+  },
+  "6adce5cbb6313926f257d6c9": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f987fb507f967820281d_6adce5cbb6313926f257d6c9_asparagus.webp",
+   "w": 464,
+   "h": 508,
+   "s": "asparagus"
+  },
+  "6adce5cbb6313926f257d6d1": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f987e266fff34cb6d2d3_6adce5cbb6313926f257d6d1_prawns.webp",
+   "w": 464,
+   "h": 508,
+   "s": "prawns"
+  },
+  "6adce5cbb6313926f257d6e0": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98743df4fe7b475e5d6_6adce5cbb6313926f257d6e0_nuts.webp",
+   "w": 464,
+   "h": 508,
+   "s": "nuts"
+  },
+  "6adce5cbb6313926f257d6d9": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9871a4392c3cbbcced2_6adce5cbb6313926f257d6d9_coconut.webp",
+   "w": 464,
+   "h": 508,
+   "s": "coconut"
+  },
+  "6adce5cbb6313926f257d6dd": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9871e952ac993a34e77_6adce5cbb6313926f257d6dd_berries.webp",
+   "w": 464,
+   "h": 508,
+   "s": "berries"
+  },
+  "6adcc8fe495427bd1989bdcb": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f98757cc4e346e861835_6adcc8fe495427bd1989bdcb_basil.webp",
+   "w": 464,
+   "h": 508,
+   "s": "basil"
+  },
+  "6adce5ccb6313926f257d6e8": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9871a4392c3cbbccf44_6adce5ccb6313926f257d6e8_chocolate.webp",
+   "w": 464,
+   "h": 508,
+   "s": "chocolate"
+  },
+  "6ac278df8478b8fb9d8c7ea5": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f987493d5c0653fa5e91_6ac278df8478b8fb9d8c7ea5_thyme.webp",
+   "w": 464,
+   "h": 508,
+   "s": "thyme"
+  },
+  "6ac278df8478b8fb9d8c7e9f": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9881bf9aae07060843f_6ac278df8478b8fb9d8c7e9f_orange.webp",
+   "w": 464,
+   "h": 508,
+   "s": "orange"
+  },
+  "6ac278df8478b8fb9d8c7e9c": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f988e266fff34cb6d327_6ac278df8478b8fb9d8c7e9c_chestnut.webp",
+   "w": 464,
+   "h": 508,
+   "s": "chestnut"
+  },
+  "6ac278df8478b8fb9d8c7ea2": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f988d4ef89928819ef6d_6ac278df8478b8fb9d8c7ea2_mussels-and-clams.webp",
+   "w": 464,
+   "h": 508,
+   "s": "mussels-and-clams"
+  },
+  "6ac278df8478b8fb9d8c7eab": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9881e952ac993a34ef7_6ac278df8478b8fb9d8c7eab_pumpkin.webp",
+   "w": 464,
+   "h": 508,
+   "s": "pumpkin"
+  },
+  "6ac278df8478b8fb9d8c7ea8": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9887c1ee3f7da016e1e_6ac278df8478b8fb9d8c7ea8_apple.webp",
+   "w": 464,
+   "h": 508,
+   "s": "apple"
+  },
+  "6ac278c62768374fac59eca3": {
+   "u": "https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9f9882e25964c62f2ab9d_6ac278c62768374fac59eca3_lemon.webp",
+   "w": 464,
+   "h": 508,
+   "s": "lemon"
+  }
+ }
+}
