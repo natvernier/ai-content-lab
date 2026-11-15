@@ -67,6 +67,9 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await sh(()=>location.hash='lemon-list');await p.waitForTimeout(600);
  const ll=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {rows:R.querySelectorAll('.toc .row').length,h1:R.querySelector('.lhead h1').textContent};});
  ok('Lemon recipe list',ll.rows===8&&ll.h1==='Lemon',ll);
+ await p.click('#pv .pv-img img');await p.waitForTimeout(500);
+ const pvh=await sh(()=>location.hash);
+ ok('list preview picture opens its recipe',/^#recipe\//.test(pvh),pvh);
  // missing recipe page → calm error, retry button
  await p.route('**/recipe/sgroppino*',r=>r.fulfill({status:404,body:'not found'}));
  await sh(()=>location.hash='recipe/sgroppino');await p.waitForTimeout(1000);
@@ -85,6 +88,27 @@ const BASE=process.env.BASE||'http://localhost:8790';
  const ms=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;const lg=R.querySelector('.legal');const big=Math.max(...[...R.querySelectorAll('.it')].filter(e=>e.style.visibility!=='hidden').map(e=>e.getBoundingClientRect().width));return {legal:lg&&getComputedStyle(lg).display!=='none'&&lg.getBoundingClientRect().width>0,big:Math.round(big)};});
  ok('phone: legal links visible on the world',ms.legal,ms);
  ok('phone: starts with one big ingredient (≥ 55 % of the width)',ms.big>=390*0.55,ms);
+ // phone, world: first tap shows the label, a tap on the label opens (review 15 Nov)
+ const it={x:195,y:390}; /* the phone start puts the Lemon in the middle */
+ await q.touchscreen.tap(it.x,it.y);await q.waitForTimeout(400);
+ const tg=await q.evaluate(()=>{const t=document.getElementById('aot-world').shadowRoot.getElementById('tag');const r=t.getBoundingClientRect();return {shown:!t.hidden,x:r.left+r.width/2,y:r.top+r.height/2,name:t.querySelector('b').textContent,hash:location.hash};});
+ ok('phone world: first tap shows the label, no jump',tg.shown&&tg.hash==='#world',tg);
+ await q.touchscreen.tap(tg.x,tg.y);await q.waitForTimeout(700);
+ const th=await q.evaluate(()=>location.hash);
+ ok('phone world: tap on the label opens the ingredient',th!=='#world'&&th.length>1,{th,name:tg.name});
+ // phone, lists: one tap on the name opens
+ await q.evaluate(()=>location.hash='lemon-list');await q.waitForTimeout(700);
+ const rw=await q.evaluate(()=>{const r=document.getElementById('aot-world').shadowRoot.querySelector('.toc .row .ttl').getBoundingClientRect();return {x:r.left+10,y:r.top+r.height/2};});
+ await q.touchscreen.tap(rw.x,rw.y);await q.waitForTimeout(900);
+ const lh=await q.evaluate(()=>location.hash);
+ ok('phone list: one tap on the name opens the recipe',/^#recipe\//.test(lh),lh);
+ // phone: More with … has left and right arrows that move the row
+ await q.evaluate(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await q.waitForTimeout(1300);
+ await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;R.querySelector('.more').scrollIntoView({block:'center'});});await q.waitForTimeout(400);
+ const s0=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;const a=[...R.querySelectorAll('.more .arr')].map(b=>b.getBoundingClientRect().width);return {arrows:a,sl:R.querySelector('.more .track').scrollLeft};});
+ await q.evaluate(()=>document.getElementById('aot-world').shadowRoot.querySelector('.more .arr[data-dir="1"]').click());await q.waitForTimeout(800);
+ const s1=await q.evaluate(()=>document.getElementById('aot-world').shadowRoot.querySelector('.more .track').scrollLeft);
+ ok('phone: More with has left and right arrows that move the row',s0.arrows.length===2&&s0.arrows.every(w=>w>=40)&&s1>s0.sl,{s0,s1});
  ok('phone: no errors',merr.length===0,merr.slice(0,3));
  await m.close();
  // reduced motion starts in the list

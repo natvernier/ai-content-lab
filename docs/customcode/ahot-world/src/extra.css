@@ -47,6 +47,11 @@
  .aot:not(.is-recipe) .legal{display:block;left:50%;right:auto;transform:translateX(-50%);bottom:calc(10px + env(safe-area-inset-bottom,0px));font-size:11px;white-space:nowrap}
 }
 @media (max-height:500px){.aot:not(.is-recipe) .legal{display:block;font-size:11px;bottom:calc(8px + env(safe-area-inset-bottom,0px))}}
+/* More with …: left and right arrows on phones and tablets too (Nathalie, 15 Nov) */
+@media (max-width:900px){.more .arr{display:grid;width:40px;height:40px;font-size:18px}}
+/* the label in the world opens the ingredient too; the list preview picture opens its row */
+#tag{pointer-events:auto;cursor:pointer}
+#pv .pv-img{cursor:pointer}
 .it img{opacity:0;transition:opacity .35s}
 .it img.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.it img{transition:none}}

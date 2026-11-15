@@ -184,10 +184,10 @@ function side(dxPx){lastInput=performance.now();noteInput();tgt.x-=dxPx*1300/foc
 function fly(dz){lastInput=performance.now();noteInput();tgt.z+=dz;kick();}
 function noteInput(){if(aiCur)aiClose();if(!interacted){interacted=true;$('hint').classList.add('gone');}}
 world.addEventListener('pointerdown',e=>{world.setPointerCapture(e.pointerId);pointers.set(e.pointerId,{x:e.clientX,y:e.clientY,t:e.pointerType});
-  if(pointers.size===1){downPos={x:e.clientX,y:e.clientY};moved=0;axis=null;ax0=0;ay0=0;rowStart=rowT;const el=e.target.closest('.it');downIt=el?items[+el.dataset.i]:null;world.classList.add('drag');}
+  if(pointers.size===1){downPos={x:e.clientX,y:e.clientY};moved=0;axis=null;ax0=0;ay0=0;rowStart=rowT;const el=e.target.closest('.it');downIt=el?items[+el.dataset.i]:(!rowMode&&e.target.closest('#tag')?(selected||hover):null);world.classList.add('drag');}
   else if(pointers.size===2){const p=[...pointers.values()];pinch0=Math.hypot(p[0].x-p[1].x,p[0].y-p[1].y);}kick();});
 world.addEventListener('pointermove',e=>{
-  if(!pointers.has(e.pointerId)){if(e.pointerType==='mouse'&&!rowMode){const el=e.target.closest('.it');hoverOn(el?items[+el.dataset.i]:null);}return;}
+  if(!pointers.has(e.pointerId)){if(e.pointerType==='mouse'&&!rowMode){const el=e.target.closest('.it');if(!el&&e.target.closest('#tag'))return;hoverOn(el?items[+el.dataset.i]:null);}return;}
   const p=pointers.get(e.pointerId);const dx=e.clientX-p.x,dy=e.clientY-p.y;p.x=e.clientX;p.y=e.clientY;
   /* touch: swiping down moves forward / to the next recipe (Nathalie, 15 Nov) */
   const inv=p.t==='mouse'?1:-1;
@@ -221,30 +221,26 @@ function buildList(){
   let h='';
   if(S.level==='ing'){
     const byKind=KINDS.map(k=>ING.filter(x=>x.k===k).sort((a,b)=>b.c-a.c||a.n.localeCompare(b.n)));
-    const col=ks=>ks.map(ki=>'<div class="kind"><div class="khead label"><span>'+esc(KINDS[ki].toUpperCase())+'</span><span>'+byKind[ki].length+'</span></div>'+byKind[ki].map(x=>'<button class="row'+(x.c===0?' zero':'')+'" data-s="'+esc(x.s)+'"><span class="nm">'+esc(x.n)+'</span><span class="ld"></span><span class="ct">'+x.c+'</span></button><div class="inline" data-for="'+esc(x.s)+'"></div>').join('')+'</div>').join('');
+    const col=ks=>ks.map(ki=>'<div class="kind"><div class="khead label"><span>'+esc(KINDS[ki].toUpperCase())+'</span><span>'+byKind[ki].length+'</span></div>'+byKind[ki].map(x=>'<button class="row'+(x.c===0?' zero':'')+'" data-s="'+esc(x.s)+'"><span class="nm">'+esc(x.n)+'</span><span class="ld"></span><span class="ct">'+x.c+'</span></button>').join('')+'</div>').join('');
     h='<div class="lgrid"><div><div class="lhead"><h1>Ingredients</h1><p>'+ING.length+' ingredients in six kinds, one per recipe.</p></div><div class="preview" id="pv"></div></div><div><div class="cols"><div>'+col([0,1,2])+'</div><div>'+col([3,4,5])+'</div></div></div></div>';
   }else{
     const w=S.w;
-    h='<div class="lgrid"><div><div class="lhead"><h1>'+esc(w.n)+'</h1>'+(w.t?'<p class="intro">'+esc(w.t)+'</p>':'')+'</div><div class="preview" id="pv"></div></div><div class="toc"><div class="label" style="margin-bottom:10px">Contents</div>'+w.rec.map((x,i)=>'<button class="row" data-s="'+esc(x.s)+'"><span class="num">'+String(i+1).padStart(2,'0')+'</span><span class="ttl">'+esc(x.n)+'</span><span class="ct">'+(x.i!=null?plural(x.i,'ingredient','ingredients'):'')+'</span></button><div class="inline" data-for="'+esc(x.s)+'"></div>').join('')+'</div></div>';
+    h='<div class="lgrid"><div><div class="lhead"><h1>'+esc(w.n)+'</h1>'+(w.t?'<p class="intro">'+esc(w.t)+'</p>':'')+'</div><div class="preview" id="pv"></div></div><div class="toc"><div class="label" style="margin-bottom:10px">Contents</div>'+w.rec.map((x,i)=>'<button class="row" data-s="'+esc(x.s)+'"><span class="num">'+String(i+1).padStart(2,'0')+'</span><span class="ttl">'+esc(x.n)+'</span><span class="ct">'+(x.i!=null?plural(x.i,'ingredient','ingredients'):'')+'</span></button>').join('')+'</div></div>';
   }
   list.innerHTML=h;list.scrollTop=0;
-  const first=S.level==='ing'?(WORLD.slice().sort((a,b)=>b.c-a.c)[0]):S.w.rec[0];preview(first,false);
+  const first=S.level==='ing'?(WORLD.slice().sort((a,b)=>b.c-a.c)[0]):S.w.rec[0];preview(first);
 }
 function info(s){return S.level==='ing'?BYS[s]:REC[s];}
-function preview(d,inline){
+function preview(d){
   if(!d)return;let src=d.img,cap='',txt='';
   if(S.level==='ing'){cap=d.n+' · '+d.k+' · '+plural(d.c,'recipe','recipes');txt=d.t;}
-  const pv=R.getElementById('pv');if(pv&&!inline)pv.innerHTML=src?pvHTML(src,cap,txt):'<div class="pv-cap">'+esc(cap)+'</div>';
+  const pv=R.getElementById('pv');if(pv){pv.innerHTML=src?pvHTML(src,cap,txt):'<div class="pv-cap">'+esc(cap)+'</div>';pv.dataset.s=d.s;}
   list.querySelectorAll('.row').forEach(r=>r.classList.toggle('on',r.dataset.s===d.s));
-  if(inline){list.querySelectorAll('.inline').forEach(n=>{const on=n.dataset.for===d.s;n.classList.toggle('show',on);n.innerHTML=on&&src?pvHTML(src,'',S.level==='ing'?cap:''):'';});}
 }
-let listSel=null;
-list.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse')return;const r=e.target.closest('.row');if(r)preview(info(r.dataset.s),false);});
+list.addEventListener('pointerover',e=>{if(e.pointerType!=='mouse')return;const r=e.target.closest('.row');if(r)preview(info(r.dataset.s));});
 list.addEventListener('click',e=>{
-  const r=e.target.closest('.row');if(!r)return;const d=info(r.dataset.s);if(!d)return;
-  const touchy=matchMedia('(hover: none)').matches||innerWidth<=900;
-  if(touchy&&listSel!==d.s){listSel=d.s;preview(d,true);preview(d,false);return;}
-  listSel=null;
+  /* one tap opens, on the name or on the picture (Nathalie, 15 Nov) */
+  const r=e.target.closest('.row')||(e.target.closest('.pv-img')&&e.target.closest('#pv'));if(!r)return;const d=info(r.dataset.s);if(!d)return;
   if(S.level==='ing'){if(d.c>0)location.hash=d.s+(S.mode==='sorted'?'-list':'');else toast('No recipes with '+d.n+' yet.');}
   else location.hash='recipe/'+d.s;
 });
