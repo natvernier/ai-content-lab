@@ -4,6 +4,29 @@ An applied systems repository for AI-supported content workflows, editorial syst
 
 This repository documents prototypes, prompts, workflows, review patterns and lightweight systems for turning research, organizational knowledge and AI-supported drafting into usable communication formats.
 
+## What is in the repository today
+
+```txt
+ai-content-lab/
+├── README.md
+├── LICENSE
+├── 10-interactive-formats/
+│   ├── README.md
+│   └── depth-patterns/      fifteen interaction patterns, documented
+├── docs/
+│   ├── index.html
+│   └── depth/               code for the fifteen live demos
+├── workflows/
+│   ├── README.md
+│   └── human-in-the-loop.md
+├── datasets/                README only
+├── notes/                   README only
+├── prompts/                 README only
+└── prototypes/              README only
+```
+
+Folders with only a README are placeholders. The finished part is [`10-interactive-formats/depth-patterns/`](10-interactive-formats/depth-patterns/).
+
 ## Core idea
 
 AI does not create value just because it can generate content.
@@ -115,7 +138,7 @@ This repository is guided by questions such as:
 * governance-aware publication workflows
 * interactive and explorable formats
 
-## What this repository may contain
+## Planned content
 
 * editorial workflow models
 * RAG-supported drafting workflows
@@ -140,7 +163,9 @@ This repository is guided by questions such as:
 
 All examples and applied scenarios in this repository are abstracted, generalized or fictionalized. They are designed to show transferable patterns, not to disclose confidential employer, client, team, stakeholder or internal process information.
 
-## Repository structure
+## Planned structure
+
+The tree below is the target structure. Only the parts listed under *What is in the repository today* exist so far.
 
 ```txt
 ai-content-lab/
@@ -282,7 +307,9 @@ ai-content-lab/
     └── backlog.md
 ```
 
-## Key modules
+## Planned modules
+
+Available today: `10-interactive-formats/`. Modules `00` to `09` are planned.
 
 ### `00-content-system/`
 
@@ -416,9 +443,17 @@ Adoption handoff
 
 Early-stage repository for learning, prototyping and workflow documentation.
 
-Current focus: reusable structures for AI-supported content workflows, internal communication, source-to-draft systems, RAG-supported editorial work and content evaluation loops.
-
 First published module: [`10-interactive-formats/`](10-interactive-formats/), content you can operate, not just read. Its first collection is [depth patterns](10-interactive-formats/depth-patterns/): all fifteen live as demos, code in [`docs/depth/`](docs/depth/), live on [natvernier.com](https://www.natvernier.com/depth-patterns).
+
+Also available: a first workflow note on [human-in-the-loop review](workflows/human-in-the-loop.md).
+
+The numbered modules `00` to `09` are planned.
+
+Last updated: November 2026.
+
+## License
+
+Code in `docs/`: [MIT](docs/depth/LICENSE). Texts, templates and images: [CC BY 4.0](LICENSE).
 
 ## Author
 
