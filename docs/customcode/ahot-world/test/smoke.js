@@ -40,7 +40,8 @@ const BASE=process.env.BASE||'http://localhost:8790';
    more:R.querySelectorAll('.mcard').length,nested:R.querySelectorAll('button .ai').length,credit:q('.credit')&&q('.credit').textContent,tags:R.querySelectorAll('.pills span').length,loading:!!q('.rp.is-loading')};});
  ok('L3 reads the recipe page',l3.h1==='Lemon & Thyme Vin de Citron'&&l3.steps>=3&&l3.ing&&!l3.loading,l3);
  ok('L3 place line from the index',/By the sea/.test(l3.place||''),l3.place);
- ok('L3 photo labelled Edited, stamp shown',l3.photoPill==='edited'&&!!l3.stamp,l3);
+ ok('L3 photo labelled Edited, no stamp (review 15 Nov)',l3.photoPill==='edited'&&!l3.stamp,l3);
+ ok('no Filed-under list, credit stays',l3.tags===0&&/Image:/.test(l3.credit||''),l3);
  ok('L3 pager and More-with row',/^Lemon · \d+ of 8$/.test(l3.pos||'')&&l3.more===21,l3);
  ok('no AI pill inside a button',l3.nested===0,l3.nested);
  // pill opens the card and never navigates
@@ -53,6 +54,8 @@ const BASE=process.env.BASE||'http://localhost:8790';
  const pr=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {cards:[...R.querySelectorAll('.plink b')].map(x=>x.textContent),txt:(R.querySelector('.pair .txt')||{textContent:''}).textContent,img:R.querySelector('.rp-media > .ai')&&R.querySelector('.rp-media > .ai').dataset.ai,pip:!!R.querySelector('.side.pip .ai.below')};});
  ok('pairing card links Moules marinières',pr.cards.some(x=>/Moules/i.test(x)),pr);
  ok('no-photo recipe: illustration Generated, Pip labelled below',pr.img==='generated'&&pr.pip,pr);
+ const pw=await sh(()=>{const e=document.getElementById('aot-world').shadowRoot.querySelector('.side.pip');return e?Math.round(e.getBoundingClientRect().width):0;});
+ ok('Pip four times bigger on the recipe page (384 px)',pw===384,pw);
  // Next up recipe: the main site hides method, dashboard, playlist, stamp
  await sh(()=>location.hash='recipe/apfelstrudel');await p.waitForTimeout(1200);
  const nu=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {steps:R.querySelectorAll('.steps li').length,dash:R.querySelectorAll('.dash > div').length,note:(R.querySelector('.note h3')||{textContent:''}).textContent,play:!!R.querySelector('.play')};});
@@ -78,6 +81,10 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await q.touchscreen.tap(t.x,t.y);await q.waitForTimeout(1200);
  const mh=await q.evaluate(()=>({hash:location.hash,h1:(document.getElementById('aot-world').shadowRoot.querySelector('.rp h1')||{}).textContent}));
  ok('phone: tap in the row opens the recipe',/^#recipe\//.test(mh.hash)&&!!mh.h1,mh);
+ await q.evaluate(()=>location.hash='world');await q.waitForTimeout(1200);
+ const ms=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;const lg=R.querySelector('.legal');const big=Math.max(...[...R.querySelectorAll('.it')].filter(e=>e.style.visibility!=='hidden').map(e=>e.getBoundingClientRect().width));return {legal:lg&&getComputedStyle(lg).display!=='none'&&lg.getBoundingClientRect().width>0,big:Math.round(big)};});
+ ok('phone: legal links visible on the world',ms.legal,ms);
+ ok('phone: starts with one big ingredient (≥ 55 % of the width)',ms.big>=390*0.55,ms);
  ok('phone: no errors',merr.length===0,merr.slice(0,3));
  await m.close();
  // reduced motion starts in the list

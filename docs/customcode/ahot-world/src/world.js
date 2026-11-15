@@ -106,6 +106,9 @@ function buildWorld(){
     el.dataset.i=items.length;stage.appendChild(el);items.push(it);
   });
   tgt.x=cam.x=0;tgt.z=cam.z=r()*D;
+  /* phones: start close to one big ingredient, it is more inviting (Nathalie, 15 Nov) */
+  if(innerWidth<=640){const st=items.find(x=>x.d.s==='lemon'&&x.img)||items.filter(x=>x.img).sort((a,b)=>b.d.c-a.d.c)[0];
+    if(st){const f=Math.min(innerWidth,innerHeight*1.45)*0.95,sc=innerWidth*0.66/st.w,d=f/sc;st.y=-30;tgt.x=cam.x=st.x;tgt.z=cam.z=st.z+d;ensureImg(st);}}
   render();kick();
   /* the rest of the 37 pictures load quietly once the first view stands */
   if(!lean)idle(()=>{let k=0;for(const it of items){if(!it.src){setTimeout(()=>ensureImg(it),k*60);k++;}}});
@@ -264,6 +267,8 @@ function route(){
   $('back').hidden=S.level!=='dish';
   const lv=$('lvl');lv.hidden=!(S.level==='dish'&&S.mode==='world');if(S.w){lv.querySelector('b').textContent=S.w.n;lv.querySelector('small').textContent=plural(S.w.c,'recipe','recipes');}
   world.hidden=S.mode!=='world';list.hidden=S.mode!=='sorted';$('hint').hidden=S.mode!=='world'||interacted;
+  /* lists: rows fade out under the logo and above the legal line, as on the recipe page (review 15 Nov) */
+  R.querySelectorAll('.rpfade').forEach(n=>n.hidden=S.mode!=='sorted');
   if(S.mode==='world')buildWorld();else buildList();
   if(S.level==='dish'&&S.mode==='world'){const last=S.last[S.w.s];const i=last?S.w.rec.findIndex(d=>d.s===last):-1;if(i>=0){rowT=rowX=i*rowStep();kick();}}
 }
@@ -360,10 +365,11 @@ function buildRecipe(r,x,refill){
   }
   const noteLine=loading?'':(err?'<p class="rp-note">This recipe could not be loaded right now.<button data-retry="'+esc(r.s)+'">Try again</button></p>':'');
   rp.innerHTML='<article class="rp'+(loading?' is-loading':'')+'"><header class="rp-hero"><div class="rp-intro">'+(x.kicker?'<p class="kick">'+esc(x.kicker)+'</p>':'')+'<h1>'+esc(x.name||r.n)+'</h1>'+(r.p?'<p class="place">'+esc(r.p)+'</p>':'')+(x.source?'<p class="src"><span>Source</span><b>'+esc(x.source)+'</b></p>':'')+noteLine+'</div>'+
-    '<figure class="rp-media">'+(mainImg?'<img class="main" src="'+esc(mainImg)+'" alt="">'+aiPill(edited?'edited':'generated','tr'):'')+(x.stamp&&x.photo?'<span class="stamp">'+esc(x.stamp)+'</span>':'')+side+'</figure><div class="dash">'+dash+'</div>'+(x.oven?'<p class="oven">Oven: '+esc(x.oven)+'</p>':'')+'</header>'+
+    '<figure class="rp-media">'+(mainImg?'<img class="main" src="'+esc(mainImg)+'" alt="">'+aiPill(edited?'edited':'generated','tr'):'')+side+'</figure><div class="dash">'+dash+'</div>'+(x.oven?'<p class="oven">Oven: '+esc(x.oven)+'</p>':'')+'</header>'+
     '<section class="rp-cols"><div><div class="lab"><span>Ingredients</span><span>'+(r.i!=null?r.i:'')+'</span></div><div class="ing-list">'+(x.ingredients||'')+'</div></div>'+(x.method?'<div><div class="lab"><span>Method</span><span></span></div><ol class="steps">'+steps(x.method)+'</ol></div>':'<div></div>')+'</section>'+
     '<section class="rp-cols b">'+noteH+pairH+'</section>'+memH+
-    (x.tags&&x.tags.length||x.credit?'<section class="tags">'+(x.tags&&x.tags.length?'<div class="lab"><span>Filed under</span><span></span></div><div class="pills">'+x.tags.map(y=>'<span>#'+esc(y)+'</span>').join('')+'</div>':'')+(x.credit?'<p class="credit">Image: '+esc(x.credit)+'</p>':'')+'</section>':'')+
+    /* "Filed under" and the hashtag list are not shown in /world (Nathalie, 15 Nov); the image credit stays */
+    (x.credit?'<section class="tags"><p class="credit">Image: '+esc(x.credit)+'</p></section>':'')+
     moreH+pagerH+'<p class="rp-foot">2026 © A Hat of Thyme · <a href="/impressum">Impressum</a> · <a href="/privacy">Privacy</a> · <a href="/how-i-use-ai">How I use AI</a></p></article>';
   const tr=rp.querySelector('.track');
   if(tr){const n=+tr.dataset.n,its=tr.children,pad=()=>parseFloat(getComputedStyle(tr).scrollPaddingLeft)||0;

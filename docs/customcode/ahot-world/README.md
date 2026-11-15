@@ -72,7 +72,9 @@ python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # lo
 python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 24 checks, incl. the main site's real site-wide code
 ```
 
-Current release (15 Nov 2026): v0.1.1, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6af9ffcf4b333e8b03280d42_aot-world-0.1.1.js`, registered script `aotworld` 0.1.1 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+Current release (15 Nov 2026): v0.1.2, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afa1cc29eb44edc324ef88c_aot-world-0.1.2.js`, registered script `aotworld` 0.1.2 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+
+v0.1.2 (Nathalie's review, 15 Nov): no "served" stamp on recipe photos; no "Filed under" hashtag list (image credit stays); Pip on the recipe page four times bigger (384 px, shrinks on narrower screens, hangs below the picture on phones); list headline and intro stay in place while the list scrolls, more room under the group heads, rows fade out under the logo and above the legal line; phones: roomier lists, legal links visible, the world opens close to one big ingredient (Lemon).
 
 Release: upload `dist/aot-world.min.js` to the Webflow asset folder `aot-world` (`build/wf_s3_upload.py` after `create_asset`), register it as a hosted script with its SRI hash and a new version, apply it to the /world page footer, publish to staging (webflow.io) first.
 
