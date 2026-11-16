@@ -339,7 +339,8 @@ function buildRecipe(r,x,refill){
   const dash=[x.time?'<div><b>'+esc(big)+(rest?'<small>'+esc(rest)+'</small>':'')+'</b><span>'+esc(x.timeLabel||'')+'</span></div>':'',
     x.serves?'<div><b>'+esc(x.serves)+'</b><span>serves</span></div>':'',x.kcal100?'<div><b>'+esc(x.kcal100)+'<small>kcal</small></b><span>per 100 g</span></div>':'',
     !x.planned&&r.kp?'<div><b>'+esc(r.kp)+'<small>kcal</small></b><span>per portion</span></div>':'',r.i!=null&&!loading?'<div><b>'+r.i+'</b><span>ingredients</span></div>':''].join('');
-  const mainImg=x.img||r.img||'',edited=!!x.photo;
+  /* while the page text loads, the picture place is kept empty (no cut-out first, then the real picture) */
+  const mainImg=loading?'':(x.img||r.img||''),edited=!!x.photo;
   const side=x.photo&&r.cb?'<span class="side combo"><img src="'+esc(r.cb)+'" alt="">'+aiPill('generated','tl')+'</span>':(x.pip?'<span class="side pip"><img src="'+esc(x.pip)+'" alt="">'+aiPill('generated','below')+'</span>':'');
   const card=(kind,slug)=>{const y=REC[slug];if(!y)return '';return '<div class="pcard"><button class="plink" data-rec="'+esc(y.s)+'"><span class="cut">'+(y.img?'<img src="'+esc(y.img)+'" alt="">':'')+'</span><span><span class="k">'+kind+'</span><b>'+esc(y.n)+'</b><small>'+esc(y.w.n)+(y.i!=null?' · '+plural(y.i,'ingredient','ingredients'):'')+' →</small></span></button>'+(y.img?aiPill('generated','pl'):'')+'</div>';};
   const plain=h=>{const d=D0.createElement('div');d.innerHTML=h||'';return d.textContent.trim().toLowerCase();};
@@ -361,12 +362,18 @@ function buildRecipe(r,x,refill){
   }
   const noteLine=loading?'':(err?'<p class="rp-note">This recipe could not be loaded right now.<button data-retry="'+esc(r.s)+'">Try again</button></p>':'');
   rp.innerHTML='<article class="rp'+(loading?' is-loading':'')+'"><header class="rp-hero"><div class="rp-intro">'+(x.kicker?'<p class="kick">'+esc(x.kicker)+'</p>':'')+'<h1>'+esc(x.name||r.n)+'</h1>'+(r.p?'<p class="place">'+esc(r.p)+'</p>':'')+(x.source?'<p class="src"><span>Source</span><b>'+esc(x.source)+'</b></p>':'')+noteLine+'</div>'+
-    '<figure class="rp-media">'+(mainImg?'<img class="main" src="'+esc(mainImg)+'" alt="">'+aiPill(edited?'edited':'generated','tr'):'')+side+'</figure><div class="dash">'+dash+'</div>'+(x.oven?'<p class="oven">Oven: '+esc(x.oven)+'</p>':'')+'</header>'+
+    '<figure class="rp-media">'+(mainImg?'<img class="main" src="'+esc(mainImg)+'" alt="">'+aiPill(edited?'edited':'generated','tr'):(loading?'<span class="main ph"></span>':''))+side+'</figure><div class="dash">'+dash+'</div>'+(x.oven?'<p class="oven">Oven: '+esc(x.oven)+'</p>':'')+'</header>'+
     '<section class="rp-cols"><div><div class="lab"><span>Ingredients</span><span>'+(r.i!=null?r.i:'')+'</span></div><div class="ing-list">'+(x.ingredients||'')+'</div></div>'+(x.method?'<div><div class="lab"><span>Method</span><span></span></div><ol class="steps">'+steps(x.method)+'</ol></div>':'<div></div>')+'</section>'+
     '<section class="rp-cols b">'+noteH+pairH+'</section>'+memH+
     /* "Filed under" and the hashtag list are not shown in /world (Nathalie, 15 Nov); the image credit stays */
     (x.credit?'<section class="tags"><p class="credit">Image: '+esc(x.credit)+'</p></section>':'')+
     moreH+pagerH+'<p class="rp-foot">2026 © A Hat of Thyme · <a href="/impressum">Impressum</a> · <a href="/privacy">Privacy</a> · <a href="/how-i-use-ai">How I use AI</a></p></article>';
+  /* pictures fade in once loaded; Pip and his night disc wait for the main picture, so nothing shows half-built (review 17 Nov) */
+  const fig=rp.querySelector('.rp-media');
+  if(fig){const m=fig.querySelector('img.main'),sd=fig.querySelector('.side'),si=sd&&sd.querySelector('img');
+    const st=im=>!im?'none':im.complete?(im.naturalWidth?'ok':'bad'):'wait';
+    const show=()=>{const a=st(m),b=st(si);if(a==='ok')m.classList.add('ok');if(sd&&b==='ok'&&a!=='wait')sd.classList.add('ok');};
+    [m,si].forEach(im=>{if(im){im.addEventListener('load',show);im.addEventListener('error',show);}});show();}
   const tr=rp.querySelector('.track');
   if(tr){const n=+tr.dataset.n,its=tr.children,pad=()=>parseFloat(getComputedStyle(tr).scrollPaddingLeft)||0;
     const setW=()=>its[n].offsetLeft-its[0].offsetLeft;

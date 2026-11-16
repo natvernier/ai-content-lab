@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 49 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 51 checks, incl. the main site's real site-wide code
 ```
 
-Current release (16 Nov 2026): v0.1.4, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb8d0cd4b4d83d6d3cb43a_aot-world-0.1.4.js`, registered script `aotworld` 0.1.4 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+Current release (17 Nov 2026): v0.1.5, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb91aa44b1c5a90348076d_aot-world-0.1.5.js`, registered script `aotworld` 0.1.5 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+
+v0.1.5 (Nathalie's review, 17 Nov): recipe page: while the page text loads, the picture place stays empty (no cut-out first); the picture fades in once loaded, and Pip with his night disc fades in only after it, so the disc never shows alone; Pip half the size (192 px on wide screens, 130 px on phones, where he sits at the picture's left edge).
 
 v0.1.4 (16 Nov): world switch, the corner button chosen by Nathalie (Figma 857:3981): Classic · Cosmos · List in one round button top right, in place of the two-way toggle; it stays on the recipe page too. Same place in the other world, else one level up, else the start (all ingredients → /ingredients, an ingredient → /ingredient/<slug>, a recipe → /recipe/<slug>; on the recipe page Cosmos/List keep the recipe and only change where "back" leads). Button and wordmark sit on the Classic header line (66 px from the top, 58.5 px on tablets, 46 px on phones; 24 / 16 px from the right). The wordmark is a link to the start of its own world (#world or #list). `/world?view=list#…` (from the Classic switch) opens the List view; the parameter is removed after reading. The Classic side: [`../ahot-switch`](../ahot-switch).
 

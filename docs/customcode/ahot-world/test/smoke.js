@@ -55,7 +55,18 @@ const BASE=process.env.BASE||'http://localhost:8790';
  ok('pairing card links Moules marinières',pr.cards.some(x=>/Moules/i.test(x)),pr);
  ok('no-photo recipe: illustration Generated, Pip labelled below',pr.img==='generated'&&pr.pip,pr);
  const pw=await sh(()=>{const e=document.getElementById('aot-world').shadowRoot.querySelector('.side.pip');return e?Math.round(e.getBoundingClientRect().width):0;});
- ok('Pip four times bigger on the recipe page (384 px)',pw===384,pw);
+ ok('Pip twice the original size on the recipe page (192 px, half of v0.1.2)',pw===192,pw);
+ // nothing half-built: while the page loads, no cut-out and no night disc; then picture and Pip fade in together (review 17 Nov)
+ await sh(()=>document.documentElement.classList.add('theme-night'));
+ const cold=await sh(()=>Object.keys(window.AOT.REC).filter(k=>!window.AOT.done.has(k)&&/acquacotta|glogg|eggnog|potato|apfel/.test(k)===false)[5]);
+ await p.route('**/recipe/'+cold+'*',async r=>{await new Promise(z=>setTimeout(z,1200));r.continue();});
+ await sh(c=>location.hash='recipe/'+c,cold);await p.waitForTimeout(400);
+ const ld=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),sd=f.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),img:!!f.querySelector('img.main'),ph:!!f.querySelector('.main.ph'),h:Math.round(f.getBoundingClientRect().height),side:sd?getComputedStyle(sd).visibility:'none'};});
+ await p.waitForTimeout(2500);
+ const lt=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),m=f.querySelector('img.main'),sd=f.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),main:m&&m.classList.contains('ok')&&getComputedStyle(m).opacity,side:sd&&sd.classList.contains('ok')&&getComputedStyle(sd).visibility,h:Math.round(f.getBoundingClientRect().height)};});
+ await p.unroute('**/recipe/'+cold+'*');await sh(()=>document.documentElement.classList.remove('theme-night'));
+ ok('recipe loading: picture place kept, no cut-out, no disc',!!cold&&ld.loading&&!ld.img&&ld.ph&&ld.h>=400&&ld.side==='none',ld);
+ ok('recipe loaded: picture and Pip fade in, same height (no jump)',!lt.loading&&lt.main==='1'&&lt.side==='visible'&&Math.abs(lt.h-ld.h)<=2,{cold,ld,lt});
  // Next up recipe: the main site hides method, dashboard, playlist, stamp
  await sh(()=>location.hash='recipe/apfelstrudel');await p.waitForTimeout(1200);
  const nu=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {steps:R.querySelectorAll('.steps li').length,dash:R.querySelectorAll('.dash > div').length,note:(R.querySelector('.note h3')||{textContent:''}).textContent,play:!!R.querySelector('.play')};});
