@@ -55,3 +55,27 @@
 .it img{opacity:0;transition:opacity .35s}
 .it img.on{opacity:1}
 @media (prefers-reduced-motion:reduce){.it img{transition:none}}
+
+/* ---------- world switch: corner button (Figma 857:3981 "AoT · World corner button (C)", chosen 16 Nov; v0.1.4) ----------
+   Button and wordmark sit on the line of the Classic header copy, at the same place as on the main site:
+   66 px from the top on wide screens, 58.5 px on tablets, 46 px on phones (centre of the live Classic logo); 24 / 16 px from the right. */
+:host{--line:66px;--wsw-r:24px}
+@media (max-width:991px){:host{--line:58.5px}}
+@media (max-width:767px){:host{--line:46px;--wsw-r:16px}}
+@media (max-height:500px){:host{--line:34px;--wsw-r:16px}}
+.tl{top:calc(var(--line) - 13px + env(safe-area-inset-top,0px))}
+@media (max-width:640px){.tl{top:calc(var(--line) - 11px + env(safe-area-inset-top,0px))}}
+.tr{top:calc(var(--line) - 22px + env(safe-area-inset-top,0px));right:max(var(--wsw-r),env(safe-area-inset-right,0px))}
+#straight{top:calc(var(--line) - 17px + env(safe-area-inset-top,0px))}
+a.wm{color:inherit;text-decoration:none;border-radius:4px}
+.wsw{position:relative}
+.wsw-btn{width:44px;height:44px;box-sizing:border-box;border-radius:50%;display:grid;place-items:center;color:var(--ink);background:var(--glass);border:1px solid var(--glass-edge);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);box-shadow:0 6px 16px -8px rgba(22,6,1,.18)}
+.wsw-btn svg{display:block;width:22px;height:22px}
+.wsw-menu{position:absolute;right:0;top:52px;width:170px;box-sizing:border-box;padding:6px;display:flex;flex-direction:column;gap:2px;background:var(--raised);border:1px solid var(--hair);border-radius:14px;box-shadow:0 14px 30px -14px rgba(22,6,1,.25)}
+.wsw-menu[hidden]{display:none}
+.wsw-menu a{display:flex;align-items:center;gap:10px;height:38px;box-sizing:border-box;padding:9px 14px 9px 10px;border-radius:10px;color:var(--ink);text-decoration:none;font-family:var(--sans);font-weight:600;font-size:14px;line-height:18px;letter-spacing:.02em}
+.wsw-menu a svg{display:block;flex:none;width:20px;height:20px;color:var(--muted)}
+.wsw-menu a[aria-current]{background:var(--limone);color:var(--on-limone)}
+.wsw-menu a[aria-current] svg{color:var(--on-limone)}
+@media (hover:hover){.wsw-menu a:not([aria-current]):hover{background:var(--hair)}}
+.wsw-menu a:focus-visible{outline-offset:-2px}

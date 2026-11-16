@@ -75,8 +75,55 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await sh(()=>location.hash='recipe/sgroppino');await p.waitForTimeout(1000);
  const er=await sh(()=>!!document.getElementById('aot-world').shadowRoot.querySelector('[data-retry]'));
  ok('a missing page shows a calm note with "Try again"',er,er);
+ // world switch (corner button, v0.1.4): same place as in Classic, centred on the header line with the wordmark
+ const SW=()=>sh(()=>{const R=document.getElementById('aot-world').shadowRoot,g=id=>R.getElementById(id),b=g('wswBtn').getBoundingClientRect(),w=g('wm').getBoundingClientRect();
+   const cur=R.querySelector('#wswMenu [aria-current]');return {bx:Math.round(innerWidth-b.right),by:+(b.top+b.height/2).toFixed(1),bw:Math.round(b.width),wy:+(w.top+w.height/2).toFixed(1),wm:g('wm').getAttribute('href'),
+   open:!g('wswMenu').hidden,exp:g('wswBtn').getAttribute('aria-expanded'),cur:cur&&cur.dataset.w,classic:g('wswClassic').getAttribute('href'),cosmos:g('wswCosmos').getAttribute('href'),list:g('wswList').getAttribute('href'),
+   ic:!!g('wswIc').querySelector('svg'),hash:location.hash,mode:window.AOT.S.mode,level:window.AOT.S.level,label:g('wswBtn').getAttribute('aria-label')};});
+ await sh(()=>location.hash='lemon');await p.waitForTimeout(700);
+ let w1=await SW();
+ ok('switch: round 44 px button 24 px from the right, centred on the 66 px line',w1.bw===44&&w1.bx===24&&Math.abs(w1.by-66)<=1,w1);
+ ok('switch: wordmark centred on the same line and leads to the Cosmos start',Math.abs(w1.wy-66)<=1.5&&w1.wm==='#world',w1);
+ ok('switch: closed, shows Cosmos, links keep the place (Lemon)',!w1.open&&w1.exp==='false'&&w1.ic&&w1.cur==='cosmos'&&w1.classic==='/ingredient/lemon'&&w1.list==='#lemon-list'&&/Cosmos/.test(w1.label),w1);
+ await p.click('#wswBtn');await p.waitForTimeout(150);
+ const w2=await SW();
+ const mb=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,m=R.getElementById('wswMenu').getBoundingClientRect(),b=R.getElementById('wswBtn').getBoundingClientRect();return {gap:Math.round(m.top-b.bottom),right:Math.round(b.right-m.right),w:Math.round(m.width),rows:[...R.querySelectorAll('#wswMenu a')].map(a=>a.textContent)};});
+ ok('switch: menu opens under the button (Classic · Cosmos · List)',w2.open&&w2.exp==='true'&&mb.gap===8&&mb.right===0&&mb.w===170&&mb.rows.join()==='Classic,Cosmos,List',{w2,mb});
+ await p.click('#wswList');await p.waitForTimeout(600);
+ let w3=await SW();
+ ok('switch: List keeps the place (#lemon-list), menu closes, logo leads to the list start',w3.hash==='#lemon-list'&&!w3.open&&w3.cur==='list'&&w3.wm==='#list'&&w3.cosmos==='#lemon',w3);
+ await sh(()=>location.hash='list');await p.waitForTimeout(500);
+ w3=await SW();
+ ok('switch: all ingredients ↔ /ingredients',w3.classic==='/ingredients'&&w3.cosmos==='#world',w3);
+ await sh(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await p.waitForTimeout(900);
+ let w4=await SW();
+ ok('switch: stays on the recipe page, Classic opens the same recipe',w4.level==='recipe'&&w4.bw===44&&w4.classic==='/recipe/lemon-and-thyme-vin-de-citron'&&w4.cur==='list',w4);
+ await p.click('#wswBtn');await p.click('#wswCosmos');await p.waitForTimeout(200);
+ w4=await SW();
+ ok('switch on the recipe: Cosmos keeps the recipe and only changes the way back',w4.hash==='#recipe/lemon-and-thyme-vin-de-citron'&&w4.mode==='world'&&w4.cur==='cosmos'&&!w4.open,w4);
+ await p.click('#back');await p.waitForTimeout(600);
+ ok('… and back leads to the Lemon row',await sh(()=>location.hash)==='#lemon');
+ await p.click('#wswBtn');await p.keyboard.press('Escape');await p.waitForTimeout(100);
+ const esc=await SW();
+ await p.click('#wswBtn');await p.mouse.click(700,760);await p.waitForTimeout(150);
+ const outside=await SW();
+ ok('switch: Escape and a click outside close the menu',!esc.open&&!outside.open&&outside.hash==='#lemon',{esc:esc.open,outside:outside.open,hash:outside.hash});
  ok('no errors from /world',errs.length===0,errs.slice(0,3));
  await c.close();
+ // entering from the Classic switch: ?view=list opens the List view at the same place, else one level up
+ const ent=await b.newContext({viewport:{width:1280,height:800}});const ep=await ent.newPage();const eerr=[];ep.on('pageerror',e=>eerr.push(e.message));
+ const at=async u=>{await ep.goto(BASE+u);await ep.waitForTimeout(1000);return ep.evaluate(()=>({S:{mode:window.AOT.S.mode,level:window.AOT.S.level,w:window.AOT.S.w&&window.AOT.S.w.s},url:location.pathname+location.search+location.hash,
+   cur:(document.getElementById('aot-world').shadowRoot.querySelector('#wswMenu [aria-current]')||{dataset:{}}).dataset.w}));};
+ let e1=await at('/world/?view=list&aot-debug#recipe/lemon-and-thyme-vin-de-citron');
+ ok('from Classic: recipe opens in List, view parameter removed',e1.S.level==='recipe'&&e1.S.mode==='sorted'&&e1.cur==='list'&&!/view=/.test(e1.url),e1);
+ e1=await at('/world/?view=list&aot-debug#no-such-recipe-xyz');
+ ok('from Classic: unknown place → start of the List',e1.S.level==='ing'&&e1.S.mode==='sorted',e1);
+ e1=await at('/world/?aot-debug#truffle-list');
+ ok('from Classic: ingredient without recipes → all ingredients (List)',e1.S.level==='ing'&&e1.S.mode==='sorted',e1);
+ e1=await at('/world/?aot-debug#truffle');
+ ok('from Classic: ingredient without recipes → all ingredients (Cosmos)',e1.S.level==='ing'&&e1.S.mode==='world',e1);
+ ok('entry: no errors',eerr.length===0,eerr.slice(0,3));
+ await ent.close();
  // phone: tap a recipe in the row, then the recipe opens
  const m=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});const q=await m.newPage();const merr=[];q.on('pageerror',e=>merr.push(e.message));
  await q.goto(BASE+'/world/#lemon');await q.waitForTimeout(1200);
@@ -109,6 +156,8 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await q.evaluate(()=>document.getElementById('aot-world').shadowRoot.querySelector('.more .arr[data-dir="1"]').click());await q.waitForTimeout(800);
  const s1=await q.evaluate(()=>document.getElementById('aot-world').shadowRoot.querySelector('.more .track').scrollLeft);
  ok('phone: More with has left and right arrows that move the row',s0.arrows.length===2&&s0.arrows.every(w=>w>=40)&&s1>s0.sl,{s0,s1});
+ const ps=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot,b=R.getElementById('wswBtn').getBoundingClientRect(),w=R.getElementById('wm').getBoundingClientRect();return {bx:Math.round(innerWidth-b.right),by:+(b.top+b.height/2).toFixed(1),wy:+(w.top+w.height/2).toFixed(1),bw:Math.round(b.width)};});
+ ok('phone: switch 16 px from the right, button and wordmark on the 46 px line',ps.bx===16&&ps.bw===44&&Math.abs(ps.by-46)<=1&&Math.abs(ps.wy-46)<=1.5,ps);
  ok('phone: no errors',merr.length===0,merr.slice(0,3));
  await m.close();
  // reduced motion starts in the list

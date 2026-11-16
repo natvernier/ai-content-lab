@@ -82,9 +82,6 @@ button{font:inherit;color:inherit;background:none;border:0;padding:0;cursor:poin
 .lvl b{display:block;font-family:var(--serif);font-weight:400;font-size:30px;line-height:1}
 .lvl small{color:var(--muted);font-size:13px}
 .tr{top:calc(var(--m)*.75 - 4px + env(safe-area-inset-top,0px));right:max(var(--m),env(safe-area-inset-right,0px));display:flex;gap:8px}
-.tog{display:flex;padding:4px;border-radius:999px;height:48px;box-sizing:border-box}
-.tog button{width:40px;height:40px;border-radius:50%;display:grid;place-items:center;color:var(--muted)}
-.tog button[aria-pressed="true"]{background:var(--limone);color:var(--on-limone)}
 .round{width:48px;height:48px;border-radius:50%;display:grid;place-items:center}
 .bl{left:calc(max(var(--m),env(safe-area-inset-left,0px)) - 4px);bottom:0;width:calc(var(--lamp)*.64);height:var(--lamp)}
 .bl svg{width:100%;height:100%;overflow:visible}

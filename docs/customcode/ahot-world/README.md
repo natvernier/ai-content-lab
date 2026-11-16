@@ -44,7 +44,7 @@ The script must sit in the **page footer**: it runs before the site footer bundl
 
 Webflow cannot bind image fields to attributes, so the three images come as hidden `<img data-aot-i>` (ingredient card cut-out), `<img data-aot-d>` (dish cut-out) and `<img data-aot-cb>` (dish + Pip) inside the item: lazy and never loaded while the wrapper is hidden; empty ones (`w-dyn-bind-empty`, placeholder) are ignored. The recipe lists have no filter: recipes without a main ingredient are skipped by the script. Page settings: `noindex`, excluded from the sitemap.
 
-Addresses: `/world#world`, `/world#list`, `/world#<ingredient>`, `/world#<ingredient>-list`, `/world#recipe/<slug>`.
+Addresses: `/world#world`, `/world#list`, `/world#<ingredient>`, `/world#<ingredient>-list`, `/world#recipe/<slug>`; `?view=list` opens a recipe (or a missing place) in the List view.
 
 ## Recipe reader (selectors of the main recipe template, read 15 Nov 2026)
 
@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 24 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 49 checks, incl. the main site's real site-wide code
 ```
 
-Current release (15 Nov 2026): v0.1.3, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afa2766f4cd507ac24e2cbc_aot-world-0.1.3.js`, registered script `aotworld` 0.1.3 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+Current release (16 Nov 2026): v0.1.4, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb8d0cd4b4d83d6d3cb43a_aot-world-0.1.4.js`, registered script `aotworld` 0.1.4 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+
+v0.1.4 (16 Nov): world switch, the corner button chosen by Nathalie (Figma 857:3981): Classic · Cosmos · List in one round button top right, in place of the two-way toggle; it stays on the recipe page too. Same place in the other world, else one level up, else the start (all ingredients → /ingredients, an ingredient → /ingredient/<slug>, a recipe → /recipe/<slug>; on the recipe page Cosmos/List keep the recipe and only change where "back" leads). Button and wordmark sit on the Classic header line (66 px from the top, 58.5 px on tablets, 46 px on phones; 24 / 16 px from the right). The wordmark is a link to the start of its own world (#world or #list). `/world?view=list#…` (from the Classic switch) opens the List view; the parameter is removed after reading. The Classic side: [`../ahot-switch`](../ahot-switch).
 
 v0.1.3 (15 Nov): street lamp (Mary Poppins, Figma 834:1834) instead of the floor lamp; world on touch: first tap shows the label, then the picture or the label opens; lists: one tap on the name or on the preview picture opens (no inline step); More with …: arrows on phones and tablets too.
 

@@ -9,14 +9,19 @@
 <button id="straight" class="pill glass" hidden>Straight ahead</button>
 
 <div class="hud tl">
-  <div class="wm">A Hat of Thyme</div>
+  <a class="wm" id="wm" href="#world">A Hat of Thyme</a>
   <button id="back" class="pill glass" hidden>← Ingredients</button>
   <div id="lvl" class="lvl" hidden><b></b><small></small></div>
 </div>
 <div class="hud tr">
-  <div class="tog glass" role="group" aria-label="View">
-    <button id="tSorted" aria-pressed="false" aria-label="Show as list" title="Show as list"><svg width="18" height="16" viewBox="0 0 18 16" fill="currentColor" aria-hidden="true"><circle cx="1.6" cy="2.5" r="1.6"/><rect x="5" y="1.7" width="13" height="1.6" rx=".8"/><circle cx="1.6" cy="8" r="1.6"/><rect x="5" y="7.2" width="13" height="1.6" rx=".8"/><circle cx="1.6" cy="13.5" r="1.6"/><rect x="5" y="12.7" width="13" height="1.6" rx=".8"/></svg></button>
-    <button id="tWorld" aria-pressed="true" aria-label="Show as world" title="Show as world"><svg width="26" height="18" viewBox="0 0 26 18" fill="none" stroke="currentColor" aria-hidden="true"><ellipse cx="13" cy="9" rx="12" ry="4" stroke-width="1.3" transform="rotate(-20 13 9)"/><circle cx="13" cy="9" r="5.5" stroke-width="1.5" fill="var(--glass)"/><circle cx="23.6" cy="5" r="1.8" fill="currentColor" stroke="none"/></svg></button>
+  <!-- World switch: corner button with menu (Figma 857:3981, chosen 16 Nov). Same place in Classic, Cosmos and List. -->
+  <div class="wsw" id="wsw">
+    <button class="wsw-btn" id="wswBtn" type="button" aria-expanded="false" aria-controls="wswMenu" title="Switch world"><span id="wswIc" aria-hidden="true"></span></button>
+    <nav class="wsw-menu" id="wswMenu" aria-label="Worlds" hidden>
+      <a id="wswClassic" data-w="classic" href="/ingredients"></a>
+      <a id="wswCosmos" data-w="cosmos" href="#world"></a>
+      <a id="wswList" data-w="list" href="#list"></a>
+    </nav>
   </div>
   <button class="round glass" id="menu" aria-label="Menu"><svg width="16" height="12" viewBox="0 0 16 12" fill="currentColor" aria-hidden="true"><rect y="0" width="16" height="2" rx="1"/><rect y="5" width="16" height="2" rx="1"/><rect y="10" width="16" height="2" rx="1"/></svg></button>
 </div>

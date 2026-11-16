@@ -65,7 +65,9 @@ $('lamp').onclick=()=>{const night=!htmlEl.classList.contains('theme-night');htm
 const rmQuery=matchMedia('(prefers-reduced-motion: reduce)');
 const conn=navigator.connection||{},lean=!!conn.saveData||/(^|-)2g/.test(conn.effectiveType||'');
 const idle=window.requestIdleCallback?f=>requestIdleCallback(f,{timeout:1200}):f=>setTimeout(f,250);
-const S={level:'ing',mode:'world',w:null,blur:true,seed:(Math.random()*1e9)|0,last:{}};
+const S={level:'ing',mode:'world',w:null,r:null,blur:true,seed:(Math.random()*1e9)|0,last:{}};
+/* Coming from the Classic world switch: /world?view=list#… opens the List view (v0.1.4). The parameter is read once and removed. */
+let viewList=false;try{const u=new URL(location.href);if(u.searchParams.get('view')==='list'){viewList=true;S.mode='sorted';u.searchParams.delete('view');history.replaceState(history.state,'',u.pathname+u.search+u.hash);}}catch(e){}
 let items=[],D=9600,WX=2600,FAR=3600,NEAR=70,hover=null,selected=null,lastToast=0,lastInput=0,interacted=false,tagW=0;
 const cam={x:0,z:0},tgt={x:0,z:0};
 let rowMode=false,rowX=0,rowT=0,rowS=300,rowGap=80,rowSettled=null;
@@ -246,20 +248,20 @@ list.addEventListener('click',e=>{
 });
 
 /* ---------- routing ---------- */
-const tog=R.querySelector('.tog');
 function route(){
-  aiClose();
+  aiClose();wswOpen(false);
   const h=decodeURIComponent(location.hash.replace(/^#/,''));
   if(h.startsWith('recipe/')&&REC[h.slice(7)]){showRecipe(REC[h.slice(7)]);return;}
-  rp.hidden=true;tog.style.visibility='';$('back').textContent='← Ingredients';
+  rp.hidden=true;S.r=null;$('back').textContent='← Ingredients';
   A.classList.remove('is-recipe');R.querySelectorAll('.rpfade').forEach(n=>n.hidden=true);
   let m;
   if(h==='list'){S.level='ing';S.mode='sorted';S.w=null;}
   else if(h==='world'){S.level='ing';S.mode='world';S.w=null;}
   else if((m=/^(.+)-list$/.exec(h))&&BYS[m[1]]&&BYS[m[1]].c){S.level='dish';S.mode='sorted';S.w=BYS[m[1]];}
   else if(BYS[h]&&BYS[h].c){S.level='dish';S.mode='world';S.w=BYS[h];}
-  else{S.level='ing';S.mode=reduced()?'sorted':'world';S.w=null;}
-  $('tWorld').setAttribute('aria-pressed',String(S.mode==='world'));$('tSorted').setAttribute('aria-pressed',String(S.mode==='sorted'));
+  /* unknown address, an ingredient without recipes or a recipe that is not in the world: one level up, i.e. the start, in the view asked for */
+  else{S.level='ing';S.mode=(/-list$/.test(h)||viewList||reduced())?'sorted':'world';S.w=null;}
+  viewList=false;wswSync();
   $('back').hidden=S.level!=='dish';
   const lv=$('lvl');lv.hidden=!(S.level==='dish'&&S.mode==='world');if(S.w){lv.querySelector('b').textContent=S.w.n;lv.querySelector('small').textContent=plural(S.w.c,'recipe','recipes');}
   world.hidden=S.mode!=='world';list.hidden=S.mode!=='sorted';$('hint').hidden=S.mode!=='world'||interacted;
@@ -268,8 +270,6 @@ function route(){
   if(S.mode==='world')buildWorld();else buildList();
   if(S.level==='dish'&&S.mode==='world'){const last=S.last[S.w.s];const i=last?S.w.rec.findIndex(d=>d.s===last):-1;if(i>=0){rowT=rowX=i*rowStep();kick();}}
 }
-$('tWorld').onclick=()=>{location.hash=S.level==='dish'?S.w.s:'world';};
-$('tSorted').onclick=()=>{location.hash=S.level==='dish'?S.w.s+'-list':'list';};
 $('back').onclick=()=>{
   if(S.level==='recipe'){const r=REC[decodeURIComponent(location.hash).replace('#recipe/','')];if(r){location.hash=r.w.s+(S.mode==='sorted'?'-list':'');return;}}
   location.hash=S.mode==='sorted'?'list':'world';};
@@ -323,8 +323,8 @@ function parseRecipe(htmlText){
 function steps(h){const d=D0.createElement('div');d.innerHTML=h||'';let li=[...d.querySelectorAll('li')];if(!li.length)li=[...d.querySelectorAll('p')];return li.map((n,i)=>'<li><span>'+String(i+1).padStart(2,'0')+'</span><div>'+n.innerHTML+'</div></li>').join('');}
 let recipeToken=0;
 function showRecipe(r){
-  S.level='recipe';S.last[r.w.s]=r.s;
-  world.hidden=true;list.hidden=true;rp.hidden=false;$('hint').hidden=true;$('lvl').hidden=true;tog.style.visibility='hidden';
+  S.level='recipe';S.r=r;S.last[r.w.s]=r.s;viewList=false;
+  world.hidden=true;list.hidden=true;rp.hidden=false;$('hint').hidden=true;$('lvl').hidden=true;wswSync();
   $('back').hidden=false;$('back').textContent='← '+r.w.n;
   A.classList.add('is-recipe');R.querySelectorAll('.rpfade').forEach(n=>n.hidden=false);
   const token=++recipeToken;
@@ -409,6 +409,48 @@ R.addEventListener('keydown',e=>{const b=aiBtn(e.target);if(b&&(e.key==='Enter'|
   if(aiCur&&(e.key==='Escape'||e.key==='Esc')){const was=aiCur;aiClose();if(aiCard.contains(e.target))was.focus();e.stopPropagation();}},true);
 D0.addEventListener('click',e=>{if(aiCur&&!e.composedPath().includes(host))aiClose();});
 rp.addEventListener('scroll',()=>{if(aiCur)requestAnimationFrame(aiPlace);},{passive:true});
+
+/* ---------- world switch: Classic · Cosmos · List (corner button, Figma 857:3981, v0.1.4) ----------
+   Rule (user flow 851:3694): same place in the other world, else one level up, else its start.
+   Cosmos ↔ List keep the place (all ingredients, one ingredient, one recipe). Classic: all ingredients → /ingredients,
+   one ingredient → /ingredient/<slug>, one recipe → /recipe/<slug>. The logo leads to the start of its own world. */
+const IC={
+ classic:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3.75" y="3.75" width="7" height="7" rx="1.75"/><rect x="13.25" y="3.75" width="7" height="7" rx="1.75"/><rect x="3.75" y="13.25" width="7" height="7" rx="1.75"/><rect x="13.25" y="13.25" width="7" height="7" rx="1.75"/></svg>',
+ cosmos:'<svg viewBox="0 0 25 24" fill="none" stroke="currentColor"><path stroke-width="1.25" d="M10.85 7.83C13.91 6.71 16.82 6.13 19.02 6.07C20.13 6.03 21.02 6.14 21.66 6.35C22.31 6.56 22.59 6.85 22.69 7.11C22.78 7.37 22.75 7.77 22.39 8.35C22.04 8.93 21.42 9.58 20.55 10.27C18.83 11.64 16.22 13.05 13.15 14.17C10.09 15.29 7.18 15.88 4.98 15.94C3.87 15.97 2.98 15.86 2.34 15.65C1.69 15.44 1.41 15.15 1.31 14.89C1.22 14.63 1.25 14.23 1.61 13.65C1.96 13.07 2.58 12.42 3.45 11.73C5.17 10.36 7.78 8.95 10.85 7.83Z"/><circle cx="12" cy="11" r="4.75" stroke-width="1.5"/><circle cx="22.78" cy="6.9" r="1.75" fill="currentColor" stroke="none"/></svg>',
+ list:'<svg viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="6.5" r="1.5"/><rect x="8.5" y="5.75" width="12" height="1.5" rx=".75"/><circle cx="5" cy="12" r="1.5"/><rect x="8.5" y="11.25" width="12" height="1.5" rx=".75"/><circle cx="5" cy="17.5" r="1.5"/><rect x="8.5" y="16.75" width="12" height="1.5" rx=".75"/></svg>'};
+const WNAME={classic:'Classic',cosmos:'Cosmos',list:'List'};
+const wsw=$('wsw'),wswBtn=$('wswBtn'),wswMenu=$('wswMenu'),wswLinks=[...wswMenu.querySelectorAll('a')];
+wswLinks.forEach(a=>{a.innerHTML=IC[a.dataset.w]+'<span>'+WNAME[a.dataset.w]+'</span>';});
+function wswSync(){
+  const cur=S.mode==='sorted'?'list':'cosmos',enc=encodeURIComponent;
+  $('wswIc').innerHTML=IC[cur];
+  wswBtn.setAttribute('aria-label','World: '+WNAME[cur]+'. Switch world');
+  const at=S.level==='recipe'&&S.r?'recipe/'+S.r.s:null;
+  $('wswClassic').href=S.level==='recipe'&&S.r?'/recipe/'+enc(S.r.s):S.level==='dish'&&S.w?'/ingredient/'+enc(S.w.s):'/ingredients';
+  $('wswCosmos').href='#'+(at||(S.level==='dish'&&S.w?S.w.s:'world'));
+  $('wswList').href='#'+(at||(S.level==='dish'&&S.w?S.w.s+'-list':'list'));
+  wswLinks.forEach(a=>{if(a.dataset.w===cur)a.setAttribute('aria-current','page');else a.removeAttribute('aria-current');});
+  $('wm').href=S.mode==='sorted'?'#list':'#world';
+}
+function wswOpen(on){
+  if(!wswMenu)return;wswMenu.hidden=!on;wswBtn.setAttribute('aria-expanded',String(!!on));
+}
+wswBtn.addEventListener('click',()=>{const on=wswMenu.hidden;wswOpen(on);if(on){const c=wswMenu.querySelector('[aria-current]')||wswLinks[0];try{if(wswBtn.matches(':focus-visible'))c.focus();}catch(e){}}});
+wswMenu.addEventListener('click',e=>{
+  const a=e.target.closest('a');if(!a)return;
+  /* the recipe page is the same page in Cosmos and List: switching keeps it and only changes where "back" leads */
+  if(S.level==='recipe'&&a.dataset.w!=='classic'){e.preventDefault();S.mode=a.dataset.w==='list'?'sorted':'world';wswSync();wswOpen(false);wswBtn.focus();return;}
+  wswOpen(false);
+});
+wsw.addEventListener('keydown',e=>{
+  if(wswMenu.hidden)return;
+  if(e.key==='Escape'||e.key==='Esc'){e.preventDefault();e.stopPropagation();wswOpen(false);wswBtn.focus();return;}
+  if(e.key==='ArrowDown'||e.key==='ArrowUp'||e.key==='Home'||e.key==='End'){
+    e.preventDefault();e.stopPropagation();const i=wswLinks.indexOf(R.activeElement),n=wswLinks.length;
+    const j=e.key==='Home'?0:e.key==='End'?n-1:e.key==='ArrowDown'?(i+1+n)%n:(i<0?n-1:(i-1+n)%n);wswLinks[j].focus();}
+});
+wsw.addEventListener('focusout',e=>{const t=e.relatedTarget;if(t&&!wsw.contains(t))wswOpen(false);});
+D0.addEventListener('pointerdown',e=>{if(!wswMenu.hidden&&!e.composedPath().includes(wsw))wswOpen(false);},true);
 
 /* ---------- go ---------- */
 addEventListener('hashchange',route);
