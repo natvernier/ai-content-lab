@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 51 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 56 checks, incl. the main site's real site-wide code
 ```
 
-Current release (17 Nov 2026): v0.1.6, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb9c2953cc8401a23c1dc2_aot-world-0.1.6.js`, registered script `aotworld` 0.1.6 (SRI sha384), on the World page (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+Current release (17 Nov 2026): v0.1.7, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afba3490297774b771309f2_aot-world-0.1.7.js`, registered script `aotworld` 0.1.7 (SRI sha384), on the World page (the start page), footer; published to staging only.
+
+v0.1.7 (Nathalie's review, 17 Nov): recipe page of an ingredient with few recipes: "More with …" shows the other recipes once when they fit (no copies, no arrows; endless only when the cards overflow); with two recipes the pager shows only "Next" (Previous would be the same recipe).
 
 v0.1.6 (17 Nov): the World page is the start page (`/`), Classic lives at `/classic` (Nathalie's choice). The script was already path-agnostic; only the fallback link (when the view cannot start) leads to `/classic` when served at `/`. Addresses: `/#world`, `/#list`, `/#<ingredient>`, `/#<ingredient>-list`, `/#recipe/<slug>`, `/?view=list#…`; old `/world…` addresses are forwarded by the Classic switch script.
 

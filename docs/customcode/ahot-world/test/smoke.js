@@ -67,6 +67,14 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await p.unroute('**/recipe/'+cold+'*');await sh(()=>document.documentElement.classList.remove('theme-night'));
  ok('recipe loading: picture place kept, no cut-out, no disc',!!cold&&ld.loading&&!ld.img&&ld.ph&&ld.h>=400&&ld.side==='none',ld);
  ok('recipe loaded: picture and Pip fade in, same height (no jump)',!lt.loading&&lt.main==='1'&&lt.side==='visible'&&Math.abs(lt.h-ld.h)<=2,{cold,ld,lt});
+ // few recipes in one ingredient (review 17 Nov): the other recipe once, no arrows, no duplicate "Previous"
+ const few=await sh(()=>{const I=window.AOT.ING.filter(g=>g.rec&&g.rec.length);const two=I.find(g=>g.rec.length===2),three=I.find(g=>g.rec.length===3);return {two:two&&two.rec[0].s,three:three&&three.rec[0].s,tn:two&&two.s,thn:three&&three.s};});
+ const moreOf=async slug=>{await sh(x=>location.hash='recipe/'+x,slug);await p.waitForTimeout(1300);return sh(()=>{const R=document.getElementById('aot-world').shadowRoot;const ar=R.querySelector('.more .head .r');
+   return {cards:R.querySelectorAll('.more .mcard').length,names:[...R.querySelectorAll('.more .mcard b span')].map(b=>b.textContent),arrows:ar?!ar.hidden:null,prev:!!R.querySelector('.pager button:first-child span')&&/Previous/.test(R.querySelector('.pager').textContent),next:/Next/.test((R.querySelector('.pager')||{textContent:''}).textContent),pos:(R.querySelector('.pager .pos')||{}).textContent};});};
+ const m2=await moreOf(few.two);
+ ok('2 recipes: the other one shown once, no arrows, only "Next"',m2.cards===1&&m2.arrows===false&&!m2.prev&&m2.next&&/ 1 of 2$/.test(m2.pos||''),{few,m2});
+ const m3=await moreOf(few.three);
+ ok('3 recipes (wide screen): both others once, no repeats, no arrows',m3.cards===2&&new Set(m3.names).size===2&&m3.arrows===false&&m3.prev&&m3.next,{few,m3});
  // Next up recipe: the main site hides method, dashboard, playlist, stamp
  await sh(()=>location.hash='recipe/apfelstrudel');await p.waitForTimeout(1200);
  const nu=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {steps:R.querySelectorAll('.steps li').length,dash:R.querySelectorAll('.dash > div').length,note:(R.querySelector('.note h3')||{textContent:''}).textContent,play:!!R.querySelector('.play')};});

@@ -357,9 +357,10 @@ function buildRecipe(r,x,refill){
   if(L.length>1&&i>=0){
     const seq=[];for(let k=1;k<L.length;k++)seq.push(L[(i+k)%L.length]);
     const one=seq.map(y=>'<div class="mcard"><button class="mitem" data-rec="'+esc(y.s)+'"><span class="cut">'+(y.img?'<img src="'+esc(y.img)+'" alt="" loading="lazy">':'')+'</span><b><span>'+esc(y.n)+'</span></b><small>'+(y.i!=null?plural(y.i,'ingredient','ingredients'):'')+'</small></button>'+(y.img?aiPill('generated','tl'):'')+'</div>').join('');
-    moreH='<section class="more"><div class="head"><span class="k">More with '+esc(w.n)+'</span><span class="r"><button class="arr" data-dir="-1" aria-label="Previous recipes">‹</button><button class="arr" data-dir="1" aria-label="Next recipes">›</button></span></div><div class="track" data-n="'+seq.length+'">'+one+one+one+'</div></section>';
+    moreH='<section class="more"><div class="head"><span class="k">More with '+esc(w.n)+'</span><span class="r"><button class="arr" data-dir="-1" aria-label="Previous recipes">‹</button><button class="arr" data-dir="1" aria-label="Next recipes">›</button></span></div><div class="track" data-n="'+seq.length+'">'+one+'</div></section>';
     const prev=L[(i-1+L.length)%L.length],next=L[(i+1)%L.length];
-    pagerH='<nav class="pager"><button data-rec="'+esc(prev.s)+'"><span>← Previous</span><b>'+esc(prev.n)+'</b></button><span class="pos">'+esc(w.n)+' · '+(i+1)+' of '+L.length+'</span><button data-rec="'+esc(next.s)+'"><span>Next</span><b>'+esc(next.n)+' →</b></button></nav>';
+    /* two recipes: previous and next would be the same one, so only "Next" (review 17 Nov) */
+    pagerH='<nav class="pager">'+(L.length===2?'<span class="none" aria-hidden="true"></span>':'<button data-rec="'+esc(prev.s)+'"><span>← Previous</span><b>'+esc(prev.n)+'</b></button>')+'<span class="pos">'+esc(w.n)+' · '+(i+1)+' of '+L.length+'</span><button data-rec="'+esc(next.s)+'"><span>Next</span><b>'+esc(next.n)+' →</b></button></nav>';
   }
   const noteLine=loading?'':(err?'<p class="rp-note">This recipe could not be loaded right now.<button data-retry="'+esc(r.s)+'">Try again</button></p>':'');
   rp.innerHTML='<article class="rp'+(loading?' is-loading':'')+'"><header class="rp-hero"><div class="rp-intro">'+(x.kicker?'<p class="kick">'+esc(x.kicker)+'</p>':'')+'<h1>'+esc(x.name||r.n)+'</h1>'+(r.p?'<p class="place">'+esc(r.p)+'</p>':'')+(x.source?'<p class="src"><span>Source</span><b>'+esc(x.source)+'</b></p>':'')+noteLine+'</div>'+
@@ -375,11 +376,16 @@ function buildRecipe(r,x,refill){
     const st=im=>!im?'none':im.complete?(im.naturalWidth?'ok':'bad'):'wait';
     const show=()=>{const a=st(m),b=st(si);if(a==='ok')m.classList.add('ok');if(sd&&b==='ok'&&a!=='wait')sd.classList.add('ok');};
     [m,si].forEach(im=>{if(im){im.addEventListener('load',show);im.addEventListener('error',show);}});show();}
+  /* More with …: endless only when the cards do not fit; a few cards are shown once, without arrows (review 17 Nov: one recipe was shown three times) */
   const tr=rp.querySelector('.track');
-  if(tr){const n=+tr.dataset.n,its=tr.children,pad=()=>parseFloat(getComputedStyle(tr).scrollPaddingLeft)||0;
-    const setW=()=>its[n].offsetLeft-its[0].offsetLeft;
-    requestAnimationFrame(()=>{tr.style.scrollBehavior='auto';tr.scrollLeft=its[n].offsetLeft-tr.offsetLeft-pad();});
-    let to=0;tr.addEventListener('scroll',()=>{clearTimeout(to);to=setTimeout(()=>{const wd=setW();if(tr.scrollLeft<wd*0.5){tr.style.scrollBehavior='auto';tr.scrollLeft+=wd;}else if(tr.scrollLeft>wd*1.5){tr.style.scrollBehavior='auto';tr.scrollLeft-=wd;}},140);},{passive:true});}
+  if(tr){const n=+tr.dataset.n,arrows=rp.querySelector('.more .head .r'),pad=()=>parseFloat(getComputedStyle(tr).scrollPaddingLeft)||0;
+    requestAnimationFrame(()=>{
+      if(tr.scrollWidth<=tr.clientWidth+2){if(arrows)arrows.hidden=true;tr.classList.add('fits');return;}
+      const one=tr.innerHTML;tr.innerHTML=one+one+one;const its=tr.children;
+      const setW=()=>its[n].offsetLeft-its[0].offsetLeft;
+      tr.style.scrollBehavior='auto';tr.scrollLeft=its[n].offsetLeft-tr.offsetLeft-pad();
+      let to=0;tr.addEventListener('scroll',()=>{clearTimeout(to);to=setTimeout(()=>{const wd=setW();if(tr.scrollLeft<wd*0.5){tr.style.scrollBehavior='auto';tr.scrollLeft+=wd;}else if(tr.scrollLeft>wd*1.5){tr.style.scrollBehavior='auto';tr.scrollLeft-=wd;}},140);},{passive:true});
+    });}
   if(refill)rp.scrollTop=st;
   if(!loading&&!err&&L.length>1&&i>=0)prefetch([L[(i+1)%L.length].s,L[(i-1+L.length)%L.length].s]);
 }
