@@ -72,7 +72,9 @@ python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # lo
 python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 51 checks, incl. the main site's real site-wide code
 ```
 
-Current release (17 Nov 2026): v0.1.5, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb91aa44b1c5a90348076d_aot-world-0.1.5.js`, registered script `aotworld` 0.1.5 (SRI sha384), page /world (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+Current release (17 Nov 2026): v0.1.6, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb9c2953cc8401a23c1dc2_aot-world-0.1.6.js`, registered script `aotworld` 0.1.6 (SRI sha384), on the World page (6af9fe88fe7c8e4cef50b50c), footer; published to staging only.
+
+v0.1.6 (17 Nov): the World page is the start page (`/`), Classic lives at `/classic` (Nathalie's choice). The script was already path-agnostic; only the fallback link (when the view cannot start) leads to `/classic` when served at `/`. Addresses: `/#world`, `/#list`, `/#<ingredient>`, `/#<ingredient>-list`, `/#recipe/<slug>`, `/?view=list#…`; old `/world…` addresses are forwarded by the Classic switch script.
 
 v0.1.5 (Nathalie's review, 17 Nov): recipe page: while the page text loads, the picture place stays empty (no cut-out first); the picture fades in once loaded, and Pip with his night disc fades in only after it, so the disc never shows alone; Pip half the size (192 px on wide screens, 130 px on phones, where he sits at the picture's left edge).
 
