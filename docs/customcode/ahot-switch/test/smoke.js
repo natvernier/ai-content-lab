@@ -2,11 +2,13 @@
 // The same files are served under a staging host and under the live host, so the live guard is tested as well.
 // Run: python3 test/make_mock.py <site_code_pages.json> test/lamp-embed-1.2.html && cp dist/aot-switch.js test/mock/ && node test/smoke.js
 const {chromium}=require('playwright');const fs=require('fs'),path=require('path');
-const MOCK=path.join(__dirname,'mock'),STAGE='https://ahot-staging.webflow.io',LIVE='https://www.ahatofthyme.com';
-const serve=async ctx=>{for(const h of [STAGE,LIVE])await ctx.route(h+'/**',r=>{let u=new URL(r.request().url()).pathname;let f=path.join(MOCK,u);
-  if(!path.extname(f))f=path.join(f,'index.html');if(!fs.existsSync(f))return r.fulfill({status:404,body:'nf'});
-  r.fulfill({status:200,contentType:f.endsWith('.js')?'application/javascript':'text/html; charset=utf-8',body:fs.readFileSync(f)});});
+const STAGE='https://ahot-staging.webflow.io',LIVE='https://www.ahatofthyme.com';
+/* serves test/mock (today: Classic start at /, World at /world) or test/mock-new (World at /, Classic at /classic); unknown paths get the 404 page, as on Webflow */
+const serve=async(ctx,dir='mock')=>{const MOCK=path.join(__dirname,dir);for(const h of [STAGE,LIVE])await ctx.route(h+'/**',r=>{let u=decodeURIComponent(new URL(r.request().url()).pathname);let f=path.join(MOCK,u);
+  if(!path.extname(f))f=path.join(f,'index.html');let st=200;if(!fs.existsSync(f)){f=path.join(MOCK,'404','index.html');st=404;if(!fs.existsSync(f))return r.fulfill({status:404,body:'nf'});}
+  r.fulfill({status:st,contentType:f.endsWith('.js')?'application/javascript':'text/html; charset=utf-8',body:fs.readFileSync(f)});});
   await ctx.route(/fonts\.(googleapis|gstatic)\.com|cdn\.prod\.website-files\.com/,r=>r.abort());};
+const exists=(dir,href)=>{const u=new URL(href,STAGE);const f=path.join(__dirname,dir,decodeURIComponent(u.pathname),'index.html');return fs.existsSync(f);};
 (async()=>{
  const b=await chromium.launch();const out={},fails=[];
  const ok=(n,c,d)=>{out[n]=c?'ok':'FAIL '+JSON.stringify(d);if(!c)fails.push(n);};
@@ -70,6 +72,45 @@ const serve=async ctx=>{for(const h of [STAGE,LIVE])await ctx.route(h+'/**',r=>{
    if(mob){await q.tap('#aot-switch >> .btn');await q.waitForTimeout(150);const o=await geo(q);
      ok(`${w}: menu fits on the screen`,o.menu&&o.menu.l>=8&&o.menu.r<=w,o.menu);}
    await m.close();}
+ // ---------- new structure: World is the start page (/), Classic start at /classic ----------
+ for(const host of [STAGE,LIVE]){
+   const n=await b.newContext({viewport:{width:1440,height:900}});await serve(n,'mock-new');const np=await n.newPage();np.on('pageerror',e=>errs.push('new: '+e.message));
+   const tag=host===LIVE?'new structure, live host':'new structure, staging';
+   await np.goto(host+'/');await np.waitForTimeout(300);let g=await geo(np);
+   ok(`${tag}: / is the World, no Classic switch there`,!g.host&&await np.evaluate(()=>!!document.getElementById('aot-world')),g);
+   const at2=async u=>{await np.goto(host+u);await np.waitForTimeout(300);const x=await geo(np);return x;};
+   g=await at2('/classic');
+   ok(`${tag}: Classic start /classic has the switch; Classic row is /classic, Cosmos /#world, List /#list`,g.host&&g.links.map(l=>l.w+'='+l.href).join()==='classic=/classic,cosmos=/#world,list=/#list',g.links);
+   g=await at2('/ingredient/lemon');
+   ok(`${tag}: ingredient → /#lemon and /#lemon-list`,g.links.map(l=>l.href).join()==='/classic,/#lemon,/#lemon-list',g.links);
+   g=await at2('/recipe/citron-presse');
+   ok(`${tag}: recipe → /#recipe/… and /?view=list#recipe/…`,g.links.map(l=>l.href).join()==='/classic,/#recipe/citron-presse,/?view=list#recipe/citron-presse',g.links);
+   const all=[];for(const u of ['/classic','/ingredient/lemon','/recipe/citron-presse','/impressum','/ingredients']){const x=await at2(u);x.links.forEach(l=>all.push(l.href));}
+   const bad=all.filter(h=>!exists('mock-new',h));
+   ok(`${tag}: every switch link lands on a page that exists (no 404)`,bad.length===0,{bad,all:[...new Set(all)]});
+   await np.goto(host+'/world#lemon');await np.waitForTimeout(600);
+   ok(`${tag}: an old /world#lemon address forwards to /#lemon`,new URL(np.url()).pathname==='/'&&new URL(np.url()).hash==='#lemon',np.url());
+   await n.close();
+ }
+ // new structure, phone: bottom bar and phone menu mark Start on /classic and lead there
+ {const n=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await serve(n,'mock-new');const np=await n.newPage();np.on('pageerror',e=>errs.push('new phone: '+e.message));
+   await np.goto(STAGE+'/classic');await np.waitForTimeout(700);
+   const nv=await np.evaluate(()=>{const st=document.querySelector('[data-bnav-tab=start]'),mo=document.querySelector('[data-bnav-tab=more]');const nd=[...document.querySelectorAll('.nd-c')].map(a=>({h:a.getAttribute('href'),cur:a.classList.contains('is-cur'),t:a.textContent.trim()}));
+     const css=[...document.querySelectorAll('style')].map(s=>s.textContent).join('');return {start:st&&st.classList.contains('is-active'),startCur:st&&st.getAttribute('aria-current'),startHref:st&&st.getAttribute('href'),more:mo&&mo.classList.contains('is-active'),nd,stampRule:css.indexOf('a .lt-stamp,a .status-stamp.is-teaser{display:none')>=0};});
+   const ndStart=nv.nd.find(x=>/Start/.test(x.t));
+   ok('new structure, phone: phone menu Start leads to /classic and is marked there',ndStart&&ndStart.h==='/classic'&&ndStart.cur,nv.nd);
+   ok('new structure, phone: hidden bottom bar (fallback) also leads to /classic',nv.startHref==='/classic',nv);
+   ok('new structure: start-page stamp rule applies on /classic',!nv.stampRule,nv.stampRule);
+   await np.goto(STAGE+'/impressum');await np.waitForTimeout(500);
+   const nv2=await np.evaluate(()=>[...document.querySelectorAll('.nd-c.is-cur')].map(a=>a.getAttribute('href')));
+   ok('new structure, phone: other pages keep their own mark (Impressum: Start not marked)',nv2.indexOf('/classic')<0,nv2);
+   await n.close();}
+ // today's structure with the new site code: everything as before
+ {const n=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await serve(n,'mock');const np=await n.newPage();
+   await np.goto(LIVE+'/');await np.waitForTimeout(600);
+   const ov=await np.evaluate(()=>{const nd=[...document.querySelectorAll('.nd-c')].map(a=>a.getAttribute('href')+(a.classList.contains('is-cur')?'*':''));return {nd,sw:!!document.getElementById('aot-switch')};});
+   ok('today\'s live structure with the new site code: phone menu Start is / and marked, no switch',ov.nd[0]==='/*'&&!ov.sw,ov);
+   await n.close();}
  ok('no errors',errs.length===0,errs.slice(0,4));
  await b.close();
  console.log(JSON.stringify(out,null,1));console.log(fails.length?'FAILED: '+fails.length:'ALL OK');process.exit(fails.length?1:0);

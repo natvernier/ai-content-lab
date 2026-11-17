@@ -135,6 +135,16 @@ const BASE=process.env.BASE||'http://localhost:8790';
  ok('from Classic: ingredient without recipes → all ingredients (Cosmos)',e1.S.level==='ing'&&e1.S.mode==='world',e1);
  ok('entry: no errors',eerr.length===0,eerr.slice(0,3));
  await ent.close();
+ // World as the start page (17 Nov): the same page served at / (test/mock/index.html is a copy of /world)
+ const rootc=await b.newContext({viewport:{width:1280,height:800}});const rq=await rootc.newPage();const rerr=[];rq.on('pageerror',e=>rerr.push(e.message));
+ await rq.goto(BASE+'/?aot-debug#lemon');await rq.waitForTimeout(1200);
+ const r1=await rq.evaluate(()=>({level:window.AOT.S.level,w:window.AOT.S.w&&window.AOT.S.w.s,classic:document.getElementById('aot-world').shadowRoot.getElementById('wswClassic').getAttribute('href'),wm:document.getElementById('aot-world').shadowRoot.getElementById('wm').getAttribute('href')}));
+ ok('World at /: #lemon opens the Lemon row, Classic leads to /ingredient/lemon, logo to #world',r1.level==='dish'&&r1.w==='lemon'&&r1.classic==='/ingredient/lemon'&&r1.wm==='#world',r1);
+ await rq.goto(BASE+'/?view=list&aot-debug#recipe/citron-presse');await rq.waitForTimeout(1200);
+ const r2=await rq.evaluate(()=>({level:window.AOT.S.level,mode:window.AOT.S.mode,url:location.pathname+location.search+location.hash}));
+ ok('World at /: ?view=list opens the recipe in List, address cleaned to /#recipe/…',r2.level==='recipe'&&r2.mode==='sorted'&&/^\/\?aot-debug=?#recipe\/citron-presse$/.test(r2.url),r2);
+ ok('World at /: no errors',rerr.length===0,rerr.slice(0,3));
+ await rootc.close();
  // phone: tap a recipe in the row, then the recipe opens
  const m=await b.newContext({viewport:{width:390,height:844},deviceScaleFactor:2,isMobile:true,hasTouch:true});const q=await m.newPage();const merr=[];q.on('pageerror',e=>merr.push(e.message));
  await q.goto(BASE+'/world/#lemon');await q.waitForTimeout(1200);

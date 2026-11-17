@@ -1,0 +1,689 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Citron pressé · A Hat of Thyme</title><style>
+:root{--_colour---ground:#FFF4D5;--_colour---raised:#FFFDF3;--_colour---paper:#FFFDF3;--_colour---ink:#160601;--_colour---ink-muted:#3F2C2D;--_colour---hairline:#E4D5B4;--_colour---edge:#B9A489;
+--_colour---glass-fill:rgba(255,253,243,.85);--_colour---glass-edge:rgba(255,255,255,.7);--_colour---limone:#FFE21A;--_colour---focus-ring:#004AAC;--_colour---accent:#004AAC}
+html.theme-night{--_colour---ground:#14100C;--_colour---raised:#1E1812;--_colour---paper:#1E1812;--_colour---ink:#F6EEDC;--_colour---ink-muted:#BCAC95;--_colour---hairline:#2C241B;--_colour---edge:#4A4034;
+--_colour---glass-fill:rgba(20,16,12,.8);--_colour---glass-edge:rgba(255,255,255,.14);--_colour---limone:#E2BE4A;--_colour---focus-ring:#E2BE4A}
+body{margin:0;font-family:Barlow,"Helvetica Neue",Arial,sans-serif;color:var(--_colour---ink);background:var(--_colour---ground)}
+.site-header{position:sticky;top:0;z-index:50;display:flex;align-items:center;gap:22px;padding:28px 130px;backdrop-filter:blur(18px);background-color:var(--_colour---ground);border-bottom:1px solid var(--_colour---hairline)}
+.wordmark{display:flex;margin-right:auto;flex-direction:column;align-items:flex-start;gap:14px;color:var(--_colour---ink);text-decoration:none}
+.wordmark-name{font-family:"Libre Bodoni",Georgia,serif;font-size:40px;line-height:50px;font-style:italic;font-weight:400}
+.wordmark-sub{font-family:Barlow,Arial,sans-serif;color:var(--_colour---ink-muted);font-size:11px;line-height:13px;font-weight:600;letter-spacing:.18em;text-transform:uppercase}
+.site-nav{display:flex;gap:18px}
+.nav-link{font-size:15px;line-height:20px;font-weight:600;text-decoration:none;color:var(--_colour---ink)}
+.theme-switch{display:block;width:24px;height:24px;padding:0;flex:0 0 auto;border-radius:50%;background-image:linear-gradient(90deg,#160601 50%,#FFFDF3 50%);transform:rotate(-20deg);color:var(--_colour---ink);font-size:0;line-height:0;cursor:pointer;border:1.5px solid #160601}
+@media (max-width:991px){.site-header{padding:20px 32px}}
+@media (max-width:767px){.site-header{padding:16px 20px;flex-wrap:wrap;column-gap:16px;row-gap:12px}.site-nav{width:100%;order:3;gap:16px;overflow-x:auto}.wordmark{gap:10px}.wordmark-name{font-size:30px;line-height:38px}.wordmark-sub{display:block;font-size:10px;line-height:12px;letter-spacing:.16em}}
+main{padding:60px 130px}main p{max-width:640px;font-size:18px;line-height:1.6}
+@media (max-width:991px){main{padding:40px 32px}}@media (max-width:767px){main{padding:24px 20px}}
+</style><style>
+body{background:var(--_colour---ground,#FFF4D5);-webkit-font-smoothing:antialiased;margin:0}
+.rt-memory p{margin:0 0 16px}
+.rt-body p,.rt-note p{margin:0}
+.rt-ingredients h6{margin:20px 0 4px;font:400 14px/20px Barlow,sans-serif;color:var(--_colour---ink-muted)}
+.rt-ingredients h6:first-child{margin-top:0}
+.rt-ingredients ul{list-style:none;margin:0;padding:0}
+.rt-ingredients li{display:flex;align-items:center;gap:10px;padding:8px 0;border-bottom:1px solid var(--_colour---hairline)}
+.rt-ingredients li strong{flex:none;width:64px;font:600 20px/20px 'Barlow Condensed',sans-serif}
+.rt-ingredients li em{margin-left:auto;padding:4px 14px;border-radius:12px;background:var(--_colour---ground);font:normal 600 13px/16px Barlow,sans-serif;letter-spacing:.26px;color:var(--_colour---ink-muted)}
+.rt-method ol{list-style:none;counter-reset:step;display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:18px;margin:8px 0 0;padding:0}
+.rt-method li{counter-increment:step;position:relative;padding:8px 0 8px 36px}
+.rt-method li::before{content:counter(step);position:absolute;left:0;top:4px;font:600 34px/36px 'Barlow Condensed',sans-serif;color:var(--_colour---accent)}
+.rt-method li em{display:block;margin-top:2px;font:italic 400 16px/23px 'Libre Bodoni',Georgia,serif;color:var(--_colour---accent)}
+@media (max-width:991px){.rt-method ol{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:767px){.rt-method ol{grid-template-columns:1fr}}
+.record.is-playing{animation:lt-spin 3s linear infinite}
+@keyframes lt-spin{to{transform:rotate(360deg)}}
+[data-story-photos] .print{touch-action:none;user-select:none}
+[data-story-photos] .is-dragging .print{cursor:grabbing;box-shadow:0 24px 40px -12px rgba(0,0,0,.35)}
+.print-item:has(.print-img.w-dyn-bind-empty){display:none}
+/* served vs next up / planned */
+.untested-badge,.plan-label,.notify-box,.illu-caption{display:none}
+.glass-sheet[data-state="Served"] .illu-photo{display:none}
+.glass-sheet:is([data-state="Next up"],[data-state="Planned"]) .untested-badge{display:inline-flex}
+.glass-sheet:is([data-state="Next up"],[data-state="Planned"]) .plan-label,.glass-sheet:is([data-state="Next up"],[data-state="Planned"]) .illu-caption{display:block}
+.glass-sheet:is([data-state="Next up"],[data-state="Planned"]) .notify-box{display:flex}
+/* story photos now show in every state (only hidden when empty) */
+.glass-sheet:is([data-state="Next up"],[data-state="Planned"]) :is(.note-label,.playlist,.dashboard,.method,.status-stamp,.dish-photo){display:none}
+/* teasers: show the illustration when there is no result photo yet */
+.teaser-photo.w-dyn-bind-empty,.module-photo.w-dyn-bind-empty{display:none!important}
+.teaser-photo:not(.w-dyn-bind-empty)~[data-illu],.module-photo:not(.w-dyn-bind-empty)~[data-illu]{display:none!important}
+[data-illu]{object-fit:cover;object-position:50% 50%;background-color:var(--_colour---raised,#FFFDF3)}
+.teaser-photo,.module-photo{object-fit:cover;object-position:50% 50%}
+.module-row{scroll-snap-type:x proximity;scrollbar-width:thin;cursor:grab}
+.module-row.is-grabbing{cursor:grabbing;scroll-snap-type:none;user-select:none}
+.module-row>.w-dyn-item{flex:none;scroll-snap-align:start}
+.module-row>.w-dyn-item:nth-child(3n+2){padding-top:64px}
+.module-row>.w-dyn-item:nth-child(3n){padding-top:160px}
+.module[data-size="S"]{width:260px}.module[data-size="L"]{width:420px}.module[data-size="XL"]{width:560px}
+.module-memory{display:none}
+.module[data-type="Story-first"] .module-memory,.module[data-type="Playlist-only"] .module-memory{display:flex}
+.module[data-type="Story-first"] .module-photo,.module[data-type="Playlist-only"] .module-photo{display:none}
+.module[data-type="Next-up"] .module-photo{border:none;background-color:var(--_colour---raised);box-shadow:none;object-fit:cover;object-position:50% 50%}
+.module[data-type="Next-up"] .module-photo[data-illu]{border:none;object-fit:cover}
+.module[data-size="S"] .module-photo{aspect-ratio:1/.83}.module[data-size="XL"] .module-photo{aspect-ratio:4/3}
+[data-tab].is-active{color:var(--_colour---ink);border-bottom-color:var(--_colour---accent)}
+.w-dyn-item.is-filtered{display:none}
+/* ingredient filter row (Recipes page) */
+.ingredient-chip{background-color:var(--_colour---raised,#FFFDF3);color:var(--_colour---ink,#160601)}
+/* ingredient cards: sketch melts into the dark ground at night (inverted, screen blend) */
+.theme-night .ingredient-ghost{filter:grayscale(1) invert(1) contrast(1.35) sepia(.4) brightness(.9);mix-blend-mode:screen;opacity:.6}
+/* ingredient cards: on hover only the polaroid frame (with its text) lifts; the sketch and the picture inside the window stay put (counter-motion) */
+.ingredient-swatch,.ingredient-cutout{transition:transform 220ms ease,box-shadow 220ms ease}
+.ingredient-card:hover .ingredient-swatch,.ingredient-card:focus-visible .ingredient-swatch{transform:translateY(-6px);box-shadow:0 16px 24px -10px rgba(60,40,10,.38)}
+.ingredient-card:hover .ingredient-cutout,.ingredient-card:focus-visible .ingredient-cutout{transform:translateY(6px)}
+@media (max-width:767px){.module,.module[data-size]{width:78vw}.module-row>.w-dyn-item:nth-child(n){padding-top:0}}
+@media (prefers-reduced-motion:reduce){.record.is-playing{animation:none}.ingredient-swatch,.ingredient-cutout{transition:none}}
+</style>
+<script>(function(){try{var m=localStorage.getItem('lt-theme')||'mood',h=new Date().getHours();var n=m==='night'||(m==='mood'&&((window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)||h>=20||h<7));if(n)document.documentElement.classList.add('theme-night')}catch(e){}})();</script>
+<style id="lt-bnav-css">
+/* BOTTOM NAV · mobile only (<768px) · 26 Oct 2026, staged. Markup lives in the Site footer component (.bnav / .bnav-sheet). */
+:root{--bn-start:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 10.5L12 4L20 10.5V19.5C20 19.7652 19.8946 20.0196 19.7071 20.2071C19.5196 20.3946 19.2652 20.5 19 20.5H14.5V14.5H9.5V20.5H5C4.73478 20.5 4.48043 20.3946 4.29289 20.2071C4.10536 20.0196 4 19.7652 4 19.5V10.5Z'/%3E%3C/svg%3E");--bn-start-a:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 10.5L12 4L20 10.5V19.5C20 19.7652 19.8946 20.0196 19.7071 20.2071C19.5196 20.3946 19.2652 20.5 19 20.5H14.5V14.5H9.5V20.5H5C4.73478 20.5 4.48043 20.3946 4.29289 20.2071C4.10536 20.0196 4 19.7652 4 19.5V10.5Z'/%3E%3C/svg%3E");--bn-recipes:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19.8C13.6 18.5 15.8 18 20 18.2V5C15.8 4.8 13.6 5.3 12 6.6C10.4 5.3 8.2 4.8 4 5V18.2C8.2 18 10.4 18.5 12 19.8ZM12 6.6V19.8'/%3E%3C/svg%3E");--bn-recipes-a:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M12 19.8C13.6 18.5 15.8 18 20 18.2V5C15.8 4.8 13.6 5.3 12 6.6C10.4 5.3 8.2 4.8 4 5V18.2C8.2 18 10.4 18.5 12 19.8ZM12 6.6V19.8'/%3E%3C/svg%3E");--bn-crossword:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18.5 4H5.5C4.67157 4 4 4.67157 4 5.5V18.5C4 19.3284 4.67157 20 5.5 20H18.5C19.3284 20 20 19.3284 20 18.5V5.5C20 4.67157 19.3284 4 18.5 4Z'/%3E%3Cpath d='M9.33 4V20M14.67 4V20M4 9.33H20M4 14.67H20'/%3E%3C/svg%3E");--bn-crossword-a:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M18.5 4H5.5C4.67157 4 4 4.67157 4 5.5V18.5C4 19.3284 4.67157 20 5.5 20H18.5C19.3284 20 20 19.3284 20 18.5V5.5C20 4.67157 19.3284 4 18.5 4Z'/%3E%3Cpath d='M9.33 4V20M14.67 4V20M4 9.33H20M4 14.67H20'/%3E%3C/svg%3E");--bn-more:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 7H19.5M4.5 12H19.5M4.5 17H19.5'/%3E%3C/svg%3E");--bn-more-a:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4.5 7H19.5M4.5 12H19.5M4.5 17H19.5'/%3E%3C/svg%3E");--bn-chev:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23000' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M9.5 6L15.5 12L9.5 18'/%3E%3C/svg%3E")}
+.bnav,.bnav-sheet,.bnav-scrim{display:none}
+@media (max-width:767px){
+.site-nav{display:none!important}
+.site-footer{z-index:60}
+body{padding-bottom:calc(64px + env(safe-area-inset-bottom))}
+.bnav{display:flex;position:fixed;left:0;right:0;bottom:0;z-index:900;padding:0 4px env(safe-area-inset-bottom);background:var(--_colour---glass-fill,rgba(255,253,243,.85));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border-top:1px solid var(--_colour---hairline)}
+.bnav-tab{flex:1 1 0;position:relative;height:64px;display:flex;flex-direction:column;align-items:center;gap:4px;padding-top:11px;box-sizing:border-box;color:var(--_colour---ink-muted);text-decoration:none;font:600 11px/14px Barlow,sans-serif;letter-spacing:.02em;-webkit-tap-highlight-color:transparent}
+.bnav-tab.is-active{color:var(--_colour---ink)}
+.bnav-tab.is-active::before{content:"";position:absolute;top:0;left:50%;width:20px;height:3px;margin-left:-10px;border-radius:2px;background:var(--_colour---accent)}
+html.bnav-open .bnav-tab.is-active:not([data-bnav-tab=more]){color:var(--_colour---ink-muted)}html.bnav-open .bnav-tab.is-active:not([data-bnav-tab=more])::before{display:none}
+.bnav-tab:focus-visible{outline:2px solid var(--_colour---focus-ring,#004aac);outline-offset:-4px;border-radius:8px}
+.bnav-ic{display:block;width:24px;height:24px;background:currentColor;-webkit-mask:var(--i) center/24px 24px no-repeat;mask:var(--i) center/24px 24px no-repeat}
+.bnav-tab[data-bnav-tab=start] .bnav-ic{--i:var(--bn-start)}.bnav-tab[data-bnav-tab=start].is-active .bnav-ic{--i:var(--bn-start-a)}
+.bnav-tab[data-bnav-tab=recipes] .bnav-ic{--i:var(--bn-recipes)}.bnav-tab[data-bnav-tab=recipes].is-active .bnav-ic{--i:var(--bn-recipes-a)}
+.bnav-tab[data-bnav-tab=crossword] .bnav-ic{--i:var(--bn-crossword)}.bnav-tab[data-bnav-tab=crossword].is-active .bnav-ic{--i:var(--bn-crossword-a)}
+.bnav-tab[data-bnav-tab=more] .bnav-ic{--i:var(--bn-more)}.bnav-tab[data-bnav-tab=more].is-active .bnav-ic{--i:var(--bn-more-a)}
+.bnav-scrim{display:block;position:fixed;inset:0;z-index:898;background:rgba(20,16,12,.38);opacity:0;visibility:hidden;transition:opacity .25s,visibility 0s linear .25s}
+.bnav-sheet{display:block;position:fixed;left:0;right:0;bottom:calc(64px + env(safe-area-inset-bottom));z-index:899;box-sizing:border-box;max-height:calc(100vh - 140px);overflow:auto;padding:10px 24px 20px;border-radius:16px 16px 0 0;background:var(--_colour---glass-fill,rgba(255,253,243,.85));-webkit-backdrop-filter:blur(26px);backdrop-filter:blur(26px);box-shadow:0 -18px 60px -24px rgba(40,25,5,.45);transform:translateY(calc(100% + 90px));visibility:hidden;transition:transform .32s cubic-bezier(.2,.7,.2,1),visibility 0s linear .32s}
+html.bnav-open .bnav-scrim{opacity:1;visibility:visible;transition:opacity .25s}
+html.bnav-open .bnav-sheet{transform:none;visibility:visible;transition:transform .32s cubic-bezier(.2,.7,.2,1)}
+html.theme-night .bnav-sheet{box-shadow:inset 0 1px 0 var(--_colour---hairline),0 -18px 60px -24px rgba(0,0,0,.6)}
+.bnav-handle{width:36px;height:5px;margin:1px auto 14px;border-radius:3px;background:var(--_colour---edge,#b9a489)}
+.bnav-eyebrow{font:600 11px/13px Barlow,sans-serif;letter-spacing:.16em;text-transform:uppercase;color:var(--_colour---ink-muted)}
+.bnav-links{display:flex;flex-direction:column;padding-top:8px}
+.bnav-row{display:flex;align-items:center;justify-content:space-between;height:52px;font:400 22px/28px 'Libre Bodoni',Georgia,serif;color:var(--_colour---ink);text-decoration:none}
+.bnav-row::after{content:"";flex:none;width:16px;height:16px;background:var(--_colour---ink-muted);-webkit-mask:var(--bn-chev) center/16px 16px no-repeat;mask:var(--bn-chev) center/16px 16px no-repeat}
+.bnav-row.is-current{color:var(--_colour---accent)}
+.bnav-row+.bnav-row{border-top:1px solid var(--_colour---hairline)}
+.bnav-legal{display:flex;gap:20px;padding-top:16px}
+.bnav-legal-link{font:600 12px/14px Barlow,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:var(--_colour---ink-muted);text-decoration:underline;text-underline-offset:3px}
+}
+@media (max-width:767px) and (prefers-reduced-motion:reduce){.bnav-sheet,.bnav-scrim,html.bnav-open .bnav-sheet{transition:none}}
+</style>
+<script>/* bottom nav: active tab + More sheet */
+(function(){var d=document,R=d.documentElement,p=location.pathname.replace(/\/+$/,'')||'/';
+var t=p==='/'?'start':/^\/crossword/.test(p)?'crossword':/^\/(recipes|recipe|tag)(\/|$)/.test(p)?'recipes':'more';
+function init(){var nav=d.querySelector('[data-bnav]');if(!nav)return;
+[].forEach.call(nav.querySelectorAll('[data-bnav-tab]'),function(a){var on=a.getAttribute('data-bnav-tab')===t;a.classList.toggle('is-active',on);if(on&&t!=='more')a.setAttribute('aria-current','page')});
+[].forEach.call(d.querySelectorAll('.bnav-sheet a'),function(a){var h=(a.getAttribute('href')||'').replace(/\/+$/,'');if(h&&h!=='/'&&(p===h||p.indexOf(h+'/')===0||p.indexOf(h.replace(/s$/,'')+'/')===0))a.classList.add('is-current')});
+var more=nav.querySelector('[data-bnav-tab=more]'),sheet=d.querySelector('.bnav-sheet'),scrim=d.querySelector('.bnav-scrim');if(!more||!sheet)return;
+function set(o){R.classList.toggle('bnav-open',o);more.setAttribute('aria-expanded',o);more.classList.toggle('is-active',o||t==='more');sheet.setAttribute('aria-hidden',!o)}
+set(false);
+more.addEventListener('click',function(e){e.preventDefault();set(!R.classList.contains('bnav-open'))});
+if(scrim)scrim.addEventListener('click',function(){set(false)});
+d.addEventListener('keydown',function(e){if(e.key==='Escape')set(false)});
+var y0=null;sheet.addEventListener('touchstart',function(e){y0=e.touches[0].clientY},{passive:true});
+sheet.addEventListener('touchend',function(e){if(y0!=null&&e.changedTouches[0].clientY-y0>50)set(false);y0=null},{passive:true});
+window.addEventListener('pageshow',function(){set(false)})}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',init);else init()})();
+</script>
+<style id="lt-vt-css">
+/* VARIED TEASER STYLES · Figma 439:512 · 26 Oct 2026, staged. Markup is built by the page scripts teaservaried* (Next up, Served). */
+[data-vt]>.lt-px,[data-vt]>img,[data-vt]>.why-note,[data-vt] .status-stamp,.nu-card[data-vt]::before{display:none!important}
+.vt-x{display:block;position:relative;container-type:inline-size}
+.vt-cutout{aspect-ratio:259/230}
+.vt-disc{position:absolute;left:13.1%;top:9.6%;width:73.4%;aspect-ratio:1;border-radius:50%;background:var(--_colour---raised,#fffdf3);transition:transform .35s ease}
+html.theme-night .vt-disc{background:#fff4d5}
+a:hover .vt-disc{transform:translateY(-4px)}
+.vt-cutout img{position:absolute!important;display:block!important;left:4.6%;top:25.2%;width:77.2%!important;height:70.4%!important;max-width:none;margin:0;object-fit:contain;object-position:50% 100%;background:none!important;box-shadow:none!important;transform:none!important}
+.vt-pol{display:flex;flex-direction:column;gap:6px;padding:12px 12px 14px;background:var(--_colour---raised,#fffdf3);box-shadow:0 10px 22px -10px rgba(93,73,27,.3);transition:transform .35s ease}
+a:hover .vt-pol{transform:translateY(-4px)}
+.vt-pol .lt-px{display:block!important;box-shadow:none!important;margin:0}
+html.theme-night .vt-x.vt-note .vt-pol .lt-fx.lt-px{display:block!important}
+.vt-pol img{display:block!important}
+.vt-hand{font:400 26px/24px Corinthia,cursive;color:var(--_colour---accent,#004aac)}
+@media (prefers-reduced-motion:reduce){.vt-disc,.vt-pol{transition:none}}
+.vt-rec{position:relative;aspect-ratio:259/200}
+.vt-vin{position:absolute;left:23.9%;top:1%;width:75.7%;aspect-ratio:1;border-radius:50%;border:1px solid #b9a489;box-sizing:border-box;background:radial-gradient(circle,#fff4d5 0 2%,#ffe21a 2.5% 18%,transparent 18.5%),repeating-radial-gradient(circle,#2b1b14 0 4px,#3b2a20 4.5px 5px,#2b1b14 5.5px 10px);transition:transform .5s ease}
+.vt-lab{position:absolute;left:31.6%;top:31.6%;width:36.8%;aspect-ratio:1;border-radius:50%;display:flex;align-items:center;justify-content:center}
+.vt-lab img{display:block!important;position:static!important;width:72%!important;height:auto!important;transform:none!important;margin:0;background:none!important;box-shadow:none!important}
+a:hover .vt-vin{transform:translateX(10%) rotate(40deg)}
+.vt-slv{position:absolute;left:0;top:4%;width:55.6%;height:92%;box-sizing:border-box;padding:18px 14px 16px;background:#fffdf3;border:1px solid #e4d5b4;box-shadow:0 10px 22px -10px rgba(93,73,27,.3);color:#160601;display:flex;flex-direction:column;justify-content:flex-end;gap:8px}
+.vt-slv b{font:600 13px/16px Barlow,sans-serif;letter-spacing:.02em;text-transform:uppercase}
+.vt-slv em{font:italic 400 clamp(13px,6.9cqw,18px)/1.22 'Libre Bodoni',Georgia,serif;overflow:hidden;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical}
+.vt-lab .ail,.vt-stp .ail,.vt-big .ail{scale:.75;transform-origin:0 0}
+.vt-meta{display:flex;align-items:center;gap:12px;margin-top:12px;font:400 14px/20px Barlow,sans-serif;color:var(--_colour---ink-muted)}
+.vt-play{display:inline-flex;align-items:center;gap:6px;padding:5px 12px 5px 10px;border:1px solid var(--_colour---ink);border-radius:999px;color:var(--_colour---ink);font:600 13px/16px Barlow,sans-serif;letter-spacing:.02em;cursor:pointer}
+.vt-play::before{content:"";border:4.5px solid transparent;border-left:7px solid currentColor;border-right:0}
+.vt-play:hover,.vt-play:focus-visible{background:var(--_colour---ink);color:var(--_colour---ground)}
+.vt-mem{display:flex;flex-direction:column;gap:14px;padding-bottom:14px;border-bottom:1px solid var(--_colour---hairline)}
+.vt-mem>b{font:600 13px/16px Barlow,sans-serif;letter-spacing:.02em;text-transform:uppercase;color:var(--_colour---ink-muted)}
+.vt-mh{font:italic 400 clamp(20px,11.6cqw,30px)/1.2 'Libre Bodoni',Georgia,serif;color:var(--_colour---ink)}
+.vt-mem>em{margin-top:-6px;font:italic 400 15px/22px 'Libre Bodoni',Georgia,serif;color:var(--_colour---ink-muted)}
+.vt-print{display:block;width:58%;padding:3cqw 3cqw 4cqw;background:#fffdf3;transform:rotate(3deg);box-shadow:0 10px 22px -10px rgba(93,73,27,.3)}
+.vt-print img{display:block;width:100%;aspect-ratio:134/140;object-fit:cover}
+.vt-print em{display:block;margin-top:4px;font:italic 400 13px/18px 'Libre Bodoni',serif;color:#160601}
+.vt-son{position:relative}
+.vt-son .lt-px{display:block!important}
+.vt-date{position:absolute;right:3%;bottom:-3%;z-index:7;width:40%;aspect-ratio:1;border-radius:50%;box-sizing:border-box;border:1.5px solid var(--_colour---ink);background:var(--_colour---raised);color:var(--_colour---ink);transform:rotate(-8deg);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.vt-date b{font:600 clamp(9px,5cqw,13px)/1.2 Barlow,sans-serif;letter-spacing:.06em;text-transform:uppercase}
+.vt-date em{font:italic 400 clamp(15px,8.5cqw,22px)/1.2 'Libre Bodoni',serif}
+@media (prefers-reduced-motion:reduce){.vt-vin{transition:none}}
+.vt-post{aspect-ratio:259/196}
+.vt-post .vt-hand{position:absolute;font-size:clamp(17px,10cqw,26px);line-height:.93}
+.vt-pm{position:absolute;width:37cqw;color:var(--_colour---ink)}
+.vt-env{position:absolute;left:1.5%;top:6%;width:97%;height:88%;box-sizing:border-box;padding:3.1cqw;transform:rotate(-1.5deg);background:repeating-linear-gradient(-45deg,#d5392a 0 2.7cqw,#fffdf3 0 4.25cqw,#1c3a78 0 6.95cqw,#fffdf3 0 8.5cqw);box-shadow:0 10px 22px -10px rgba(93,73,27,.3)}
+.vt-pap{position:relative;height:100%;background:#fffdf3;color:#160601}
+.vt-pap>b{position:absolute;left:3.9cqw;top:3.9cqw;font:600 clamp(7px,3.5cqw,9px)/1.2 Barlow,sans-serif;letter-spacing:.08em;text-transform:uppercase;color:#1c3a78}
+.vt-k{position:absolute;left:3.9cqw;top:27.8cqw;max-width:52%;font:600 clamp(9px,5cqw,13px)/1.2 Barlow,sans-serif;text-transform:uppercase}
+.vt-pap .vt-hand{left:3.9cqw;top:34.7cqw;width:52%;color:#004aac}
+.vt-pap .vt-pm{left:46cqw;top:19.3cqw;transform:rotate(-8deg);color:#160601}
+.vt-stp,.vt-big{display:block;box-sizing:border-box;background:linear-gradient(#ffe21a 0 0) content-box,#fffdf3;-webkit-mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle 1.35cqw,#0000 97%,#000) -1.9cqw -1.9cqw/3.86cqw 3.86cqw;mask:linear-gradient(#000 0 0) content-box,radial-gradient(circle 1.35cqw,#0000 97%,#000) -1.9cqw -1.9cqw/3.86cqw 3.86cqw}
+.vt-stp{position:absolute;right:5cqw;top:3.9cqw;width:24cqw;aspect-ratio:62/74;padding:2.3cqw;transform:rotate(3deg)}
+.vt-post img[data-cutout]{display:block!important;position:static!important;width:100%!important;height:auto!important;max-height:100%;object-fit:contain;transform:none!important;margin:0;background:none!important;box-shadow:none!important}
+.vt-bw{position:absolute;left:45.6%;top:7.1%;width:49.4%;filter:drop-shadow(0 8px 10px rgba(93,73,27,.28));transform:rotate(2.5deg)}
+.vt-big{aspect-ratio:128/164;padding:2.3cqw;display:flex;flex-direction:column;justify-content:space-between}
+.vt-big b{padding:0 2cqw 3cqw;font:600 clamp(8px,4.2cqw,11px)/1.2 Barlow,sans-serif;letter-spacing:.06em;text-transform:uppercase;color:#160601}
+.vt-x.vt-post>.vt-pm{left:24%;top:1%;transform:rotate(-12deg)}
+.vt-x.vt-post>.vt-hand{left:2.3%;top:39.8%;width:40%;transform:rotate(-4deg);color:var(--_colour---accent)}
+.vt-ip{position:absolute;left:7.7%;top:2%;width:75.7%;box-sizing:border-box;padding:3.1cqw 3.1cqw 1.5cqw;background:#fffdf3;box-shadow:0 10px 22px -10px rgba(93,73,27,.3);transform:rotate(-2deg)}
+.vt-ip .lt-px{display:block!important;aspect-ratio:180/140!important;width:100%!important;box-shadow:none!important}
+.vt-ip .vt-hand{position:static;display:block;padding:1cqw 1.5cqw 0;color:#004aac}
+.vt-ring{position:absolute;left:64%;top:26.5%;width:33.2%;aspect-ratio:1;box-sizing:border-box;border:2.2px solid #004aac;border-radius:50%;opacity:.85;transform:rotate(-14deg);display:flex;flex-direction:column;align-items:center;justify-content:center;color:#004aac}
+.vt-ring::before{content:"";position:absolute;inset:9%;border:1px solid #004aac;border-radius:50%}
+.vt-ring b{font:600 clamp(7px,3.9cqw,10px)/1.2 Barlow,sans-serif;letter-spacing:.08em;text-transform:uppercase;text-align:center}
+/* night: keep the cream disc behind cut-outs inside the picture box (Next up, Home) */
+html.theme-night .nu-card:has(.nu-illu[data-cutout]:not(.w-dyn-bind-empty))::before{left:6%;width:88%}
+html.theme-night .nu-backlog-item[data-mx~=l] .nu-card:has(.nu-illu[data-cutout]:not(.w-dyn-bind-empty))::before{left:15%;width:70%}
+html.theme-night .nu-backlog-item[data-mx~=p] .nu-card:has(.nu-illu[data-cutout]:not(.w-dyn-bind-empty))::before{left:5.6%;width:97%}
+html.theme-night a:has(>.illustration-slot.is-cutout)::before{left:6%;width:88%}
+</style><script>/* lthead 1.0.6 (17 Nov 2026): 1.0.6: the Classic start can live at /classic (World is the start page): the start-page stamp rule applies there too. Nothing else changed. lthead 1.0.5 (10 Nov 2026): site-wide head scripts in one file, same order as before: classguard, ltheadcss, ltreveal, ltlib, nucardprehide, ingzerohide, refinenohint, dishnightcircle, teaserimg, ltpager. */
+/* == classguard == */
+try{
+/* classguard 1.0.0 (10 Nov 2026): classList.add / remove only write when something actually changes. Several page scripts re-add or re-remove classes inside their own change watchers; each no-op write still counted as a change and restarted them, every frame. Behaviour is identical, only the empty writes are skipped. */
+(function(){var P=window.DOMTokenList&&DOMTokenList.prototype;if(!P||P.__ltg)return;P.__ltg=1;var A=P.add,R=P.remove;
+P.add=function(){var a=[];for(var i=0;i<arguments.length;i++)if(!this.contains(arguments[i]))a.push(arguments[i]);if(a.length)A.apply(this,a)};
+P.remove=function(){var a=[];for(var i=0;i<arguments.length;i++)if(this.contains(arguments[i]))a.push(arguments[i]);if(a.length)R.apply(this,a)}})();
+;}catch(e){console.error('lthead',e)}
+/* == ltheadcss == */
+try{
+/* ltheadcss 1.0.2 (8 Nov 2026), site head. 1.0.2: on phones the course tabs sit in one swipeable row; Refine moves to the left and stays put while the tabs scroll; a soft fade with an arrow on the right shows there is more (tabscroll in ltbundle hides it at the end).
+   1.0.1 (7 Nov 2026): All small CSS rules in one file, applied before the first paint.
+   Replaces: nostatsoutsidekpi 1.0.0, teasermotioncss 1.0.2, footerpad 1.0.0 (site head); teaserstandard 1.1.0 and recipeshintclearfix 1.0.0 (ltbundle); homenextupnosource 1.0.1 and nextupnosource 1.0.0 (page bundles).
+   New: (1) cards decide watercolour vs dish cut-out from the first paint, so only one of the two images loads (cutoutview later adds .lt-cut with the same result);
+        (2) /recipes shows only its first 8 cards until the list logic is ready (no images loading for cards 9-100);
+        (4, 1.0.1) phones: a recipe with "Result photo · mobile" shows that small pre-blurred copy as background and the sheet skips its live blur;
+        (3) recipes without a result photo: the sheet is a plain colour (#FFFBEF day, #14100C night) instead of a blur over a flat background (same look, no GPU work). */
+(function(){var p=location.pathname.replace(/\/+$/,'')||'/',c='';
+/* nostatsoutsidekpi */ c+='.micro-stats,.mi-stats{display:none!important}';
+/* teasermotioncss 1.0.2 */ c+='@property --lt-cm{syntax:"<length>";inherits:true;initial-value:0px}html.lt-anim .lt-rv .lt-px{clip-path:none!important}.lt-fx{position:relative;overflow:hidden;display:block;width:100%;box-shadow:0 10px 22px -10px #5d491b12;transition:transform .35s ease,--lt-cm .35s ease}.lt-fx>img{position:absolute!important;left:-1px!important;top:-4px!important;width:calc(100% + 2px)!important;height:calc(100% + 8px)!important;max-width:none!important;margin:0!important;aspect-ratio:auto!important;object-fit:cover;box-shadow:none!important;transform:translate3d(0,var(--lt-cm,0px),0)!important;transition:none!important}a:hover .lt-fx,a:focus-visible .lt-fx{transform:translateY(-4px);--lt-cm:4px}.module>.lt-fx{aspect-ratio:1;margin-bottom:6px}[data-mx~=p] .lt-fx{aspect-ratio:4/5!important}[data-mx~=l] .lt-fx{aspect-ratio:5/4!important}.lt-fx~[data-illu]{display:none!important}.theme-night .nu-card:has(.nu-illu[data-cutout]:not(.w-dyn-bind-empty)) .lt-fx{display:none!important}.theme-night .nu-card .nu-illu[data-cutout]{transform:none!important}a:has(>.lt-stamp){position:relative}.lt-stamp{z-index:3}@media (hover:hover){a .lt-stamp{opacity:0;transform:translateY(4px);transition:opacity .2s,transform .2s;pointer-events:none}a:hover .lt-stamp,a:focus-visible .lt-stamp{opacity:1;transform:none}}@media (prefers-reduced-motion:reduce){.lt-fx{transition:none}a:hover .lt-fx{transform:none;--lt-cm:0px}}html.lt-anim2 .lt-rv2{opacity:0;translate:0 24px;scale:.96;transition:opacity .7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),translate .85s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms),scale .85s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms)}html.lt-anim2 .lt-rv2.is-in{opacity:1;translate:0 0;scale:1}.rf-toggle[aria-expanded=false]{background:var(--_colour---ground)}'+(!/^\/(classic\/?)?$/.test(location.pathname)?'@media (hover:none){a .lt-stamp,a .status-stamp.is-teaser{display:none!important}}':'');
+/* footerpad 1.0.0 */ c+='@media (max-width:767px){body,html.nd body{padding-bottom:0!important}.site-footer{padding-bottom:calc(40px + 64px + env(safe-area-inset-bottom))!important}html.nd .site-footer{padding-bottom:calc(40px + 96px + env(safe-area-inset-bottom))!important}}';
+/* teaserstandard 1.1.0 + homenextupnosource + nextupnosource: no source or meta lines on teasers */ c+='a[data-module] .teaser-source,a.module[data-module] .meta-line,.teaser .teaser-source,.nu-card .teaser-source{display:none!important}';
+/* recipeshintclearfix */ c+='.hint-bar.is-on,.clear-link.is-on{background:transparent!important}';
+/* first paint (new) */ c+=':where(.overview .module,.teaser)>img:where([data-cutout]){display:none}:where(.overview .module,.teaser):where(:not([data-vt])):where(:has(>img[data-cutout]:not(.w-dyn-bind-empty))):where(:not(:has(img:not([data-illu]):not([data-cutout]):not(.w-dyn-bind-empty))))>img[data-illu]{display:none!important}:where(.overview .module,.teaser):where(:not([data-vt])):where(:has(>img[data-cutout]:not(.w-dyn-bind-empty))):where(:not(:has(img:not([data-illu]):not([data-cutout]):not(.w-dyn-bind-empty))))>img[data-cutout]{display:block;width:100%;height:auto;aspect-ratio:1;object-fit:contain;object-position:50% 100%}body:has(.recipe-bg-img:not([data-bg-m]).w-dyn-bind-empty) .glass-sheet{-webkit-backdrop-filter:none!important;backdrop-filter:none!important;background-color:#FFFBEF!important}html.theme-night body:has(.recipe-bg-img:not([data-bg-m]).w-dyn-bind-empty) .glass-sheet{background-color:#14100C!important}';
+/* phone background (1.0.1) */ c+='.recipe-bg>[data-bg-m]{display:none}@media (max-width:767px){.recipe-bg:has(>[data-bg-m]:not(.w-dyn-bind-empty))>.recipe-bg-img:not([data-bg-m]){display:none}.recipe-bg>[data-bg-m]:not(.w-dyn-bind-empty){display:block}body:has(.recipe-bg>[data-bg-m]:not(.w-dyn-bind-empty)) .glass-sheet{-webkit-backdrop-filter:none!important;backdrop-filter:none!important}}';
+if(p==='/recipes')c+='main:not(:has(.rf-toggle:not(.rf-stub))) .recipes-slot .w-dyn-items>.w-dyn-item:nth-child(n+9){display:none}';
+c+='@media (max-width:767px){[role=tablist].tabs{flex-wrap:nowrap!important;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;overscroll-behavior-x:contain;-webkit-overflow-scrolling:touch;column-gap:28px;align-items:center}[role=tablist].tabs::-webkit-scrollbar{display:none}[role=tablist].tabs>*{flex:none}[role=tablist].tabs>.rf-toggle{order:-1;position:sticky;left:0;z-index:3;margin-left:0!important;box-shadow:16px 0 10px 4px var(--_colour---ground),0 0 0 9px var(--_colour---ground)}[role=tablist].tabs>.rf-toggle:not([aria-expanded=true]){background-color:var(--_colour---ground)}[role=tablist].tabs::after{content:"\\203A";order:99;position:sticky;right:0;flex:none;align-self:stretch;display:flex;align-items:center;justify-content:flex-end;width:44px;margin-left:-28px;padding-right:2px;background:linear-gradient(to right,transparent,var(--_colour---ground) 55%);color:var(--_colour---ink-muted);font:400 22px/1 Barlow,sans-serif;pointer-events:none;transition:opacity .2s}[role=tablist].tabs.ts-end::after,[role=tablist].tabs.ts-fit::after{opacity:0}}';
+var s=document.createElement('style');s.id='lt-head-css';s.textContent=c;document.head.appendChild(s)})();
+;}catch(e){console.error('lthead',e)}
+/* == ltreveal == */
+try{
+/* ltreveal 1.0.1 (3 Nov 2026; 1.0.1, 10 Nov: classes only written when they change. Hidden list items had their class rewritten every frame, which kept the page busy and made scrolling stutter.), site head: one entrance animation for Home and all overview pages (replaces the four page scripts). Headline from the left, header image / featured recipe from the right, the rest rises in one after another; lower rows reveal while scrolling; items shown later (tabs, Refine, Show more) cascade the same way. The start position applies from the first paint (no flash); shown anyway after 3 s if this script stops. Off for reduced motion and in the Designer. */
+(function(){var D=document,R=D.documentElement;if(/(^|\.)webflow\.com$/i.test(location.hostname)||matchMedia('(prefers-reduced-motion: reduce)').matches)return;
+var L='h1,.list-title,.overview-title,.hero-title',RT='.hero-card,.featured-slot',SEL='.list-head>*,.overview-text>*,.hero-text>*,.hero-card,.featured-slot,.search-form,.tabs:not(.nu-tabs) [data-tab],.refine,.state-row,.hint-bar,.section-head,.row-head,.recipes-slot .w-dyn-item,.nu-feature-item,.nu-backlog-item,.recent-slot .w-dyn-item,.next-row .w-dyn-item,.ingredients-slot .w-dyn-item,.row .module-row>.w-dyn-item,.tag-slot .teaser-grid>.w-dyn-item',T='.7s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms)',U='.85s cubic-bezier(.2,.7,.2,1) var(--rv-d,0ms)';
+R.classList.add('lt-anim');var s=D.createElement('style');
+s.textContent='html.lt-anim body{overflow-x:clip}html.lt-anim main :is('+SEL+'):not(.lt-rv){opacity:0;translate:0 24px;scale:.96;animation:ltRvF 0s 3s forwards}html.lt-anim main :is('+SEL+'):is('+L+'):not(.lt-rv){translate:-72px 0;scale:1}html.lt-anim main :is('+RT+'):not(.lt-rv){translate:80px 0;scale:1}@keyframes ltRvF{to{opacity:1;translate:0 0;scale:1}}html.lt-anim .lt-rv{opacity:0;translate:0 24px;scale:.96}html.lt-anim .lt-rv.lt-left{translate:-72px 0;scale:1}html.lt-anim .lt-rv.lt-right{translate:80px 0;scale:1}.lt-rv{transition:opacity '+T+',translate '+U+',scale '+U+'}html.lt-anim .lt-rv.is-in{opacity:1;translate:0 0;scale:1}';D.head.appendChild(s);
+function go(){var main=D.querySelector('main')||D.body,io=window.IntersectionObserver?new IntersectionObserver(function(es){var k=0;es.forEach(function(e){if(!e.isIntersecting)return;delete e.target.dataset.io;e.target.style.setProperty('--rv-d',(k++*70)+'ms');e.target.classList.add('is-in');io.unobserve(e.target)})},{threshold:.08,rootMargin:'0px 0px -5% 0px'}):null;
+function show(a){var d=0;a.forEach(function(n){n.style.setProperty('--rv-d',Math.min(d,1100)+'ms');d+=n.matches('.w-dyn-item')?70:110});requestAnimationFrame(function(){requestAnimationFrame(function(){a.forEach(function(n){n.classList.add('is-in')})})})}
+function sweep(){var now=[];[].forEach.call(main.querySelectorAll(SEL),function(n){if(!n.classList.contains('lt-rv'))n.classList.add('lt-rv');if(n.matches(L)){if(!n.classList.contains('lt-left'))n.classList.add('lt-left')}else if(n.matches(RT)&&!n.classList.contains('lt-right'))n.classList.add('lt-right');
+if(n.offsetParent===null){if(n.classList.contains('is-in'))n.classList.remove('is-in');if(n.dataset.io){delete n.dataset.io;if(io)io.unobserve(n)}return}if(n.classList.contains('is-in')||n.dataset.io)return;if(n.getBoundingClientRect().top<innerHeight||!io)now.push(n);else{n.dataset.io='1';io.observe(n)}});if(now.length)show(now)}
+sweep();var p=0;new MutationObserver(function(){if(!p){p=1;requestAnimationFrame(function(){p=0;sweep()})}}).observe(main,{attributes:true,attributeFilter:['class'],subtree:true,childList:true});
+setTimeout(function(){[].forEach.call(main.querySelectorAll('.lt-rv:not(.is-in)'),function(n){if(n.offsetParent!==null&&n.getBoundingClientRect().top<innerHeight&&!n.dataset.io)n.classList.add('is-in')})},4000)}
+if(D.readyState==='loading')D.addEventListener('DOMContentLoaded',go);else go()})();
+;}catch(e){console.error('lthead',e)}
+/* == ltlib == */
+try{
+/* ltLib 1.2 (3 Nov 2026): recipe, tag and ingredient data from /lt-data (native CMS lists). R[s]={c,s,m,k,h-stub}. Cached 10 min. */
+(function(){var Q=function(d,s){return[].slice.call(d.querySelectorAll(s))};
+function C(K,mk){var P=null;return function(cb){if(!P)P=new Promise(function(res){var c=null;try{c=JSON.parse(sessionStorage.getItem(K)||'null')}catch(e){}if(c&&c.R&&Date.now()-c.at<6e5)return res(c);mk(function(o){if(o){o.at=Date.now();try{sessionStorage.setItem(K,JSON.stringify(o))}catch(e){}}res(o)})});P.then(cb)}}
+var X=' made-together hidden-prize after-midnight-mass lit-at-the-table breaks-a-fast ';
+window.ltLib=C('lt-lib-v4',function(done){fetch('/lt-data',{credentials:'same-origin'}).then(function(r){return r.text()}).then(function(t){var d=new DOMParser().parseFromString(t,'text/html'),D={t:{},i:{},k:[],r:{}},o={D:D,MI:{},R:{}},ki={},rg={};
+Q(d,'[data-tg]').forEach(function(e){var r=e.getAttribute('data-rg');if(r)rg[r]=1});
+Q(d,'[data-tg]').forEach(function(e){var s=e.getAttribute('data-tg'),g=(e.getAttribute('data-g')||'').toLowerCase(),r=e.getAttribute('data-rg');D.t[s]=[e.getAttribute('data-n')||s,X.indexOf(' '+s+' ')>-1?'ritual':r?'country:'+r:!g&&rg[s]?'region':!g||g=='ingredient'?'kitchen':g]});
+Q(d,'[data-ig]').forEach(function(e){D.i[e.getAttribute('data-ig')]=e.getAttribute('data-n')||''});
+Q(d,'[data-r]').forEach(function(e){var s=e.getAttribute('data-r'),k=e.getAttribute('data-k')||'',mi=e.getAttribute('data-mi');if(!s||o.R[s])return;o.R[s]={c:(e.getAttribute('data-c')||'').toLowerCase(),s:e.getAttribute('data-s')||'',m:e.getAttribute('data-m')||'',k:k,h:'<a data-stamp="'+k.replace(/&/g,'&amp;').replace(/"/g,'&quot;')+'"></a>'};if(mi)o.MI[s]=mi;
+D.r[s]=(e.getAttribute('data-fk')||'').split(/\s+/).filter(Boolean).map(function(x){if(!(x in ki)){ki[x]=D.k.length;D.k.push(x)}return ki[x]})});
+done(o)}).catch(function(){done(null)})});})();
+;}catch(e){console.error('lthead',e)}
+/* == nucardprehide == */
+try{
+/* nucardprehide 1.2.0 (3 Nov 2026): Next up cards. (1) Hides the square watercolour until the cut-out script has run (no flash on load; shown after 3 s if that script never runs). (2) Exactly one visible AI pill per card: cut-out cards that use the disc layout (data-vt) get the same cut-out pill as the others; the general pills there are hidden. (3) The cut-out pill sits top left like on Home, the stamp below it. */
+(function(){var d=document,s=d.createElement('style');s.textContent='.nu-card:not(.lt-cut):not([data-vt])>img[data-illu]{opacity:0;animation:ltNuPre 0s 3s forwards}@keyframes ltNuPre{to{opacity:1}}.nu-card>.ail:not(.is-off)~.ail{display:none!important}.nu-card[data-vt] .ail{display:none!important}.nu-card[data-vt]>.ail-cx{display:block;position:absolute;z-index:6;line-height:0}.nu-card>.ail-cx{top:10px!important;left:10px!important}';d.head.appendChild(s);
+function pos(c,p){var x=c.querySelector(':scope>.vt-x')||c;p.style.left=((x===c?0:x.offsetLeft)+10)+'px';p.style.top=((x===c?0:x.offsetTop)+10)+'px'}
+function run(){if(!window.ltAiPill)return;d.querySelectorAll('.nu-card[data-vt]').forEach(function(c){var p=c.querySelector(':scope>.ail-cx');if(!p){if(getComputedStyle(c).position==='static')c.style.position='relative';p=ltAiPill('ail-cx');c.appendChild(p)}pos(c,p)})}
+var t;function later(){clearTimeout(t);t=setTimeout(run,150)}
+addEventListener('load',function(){run();setTimeout(run,800);new MutationObserver(later).observe(d.documentElement,{subtree:true,attributes:true,attributeFilter:['data-vt']})});addEventListener('resize',later)})();
+;}catch(e){console.error('lthead',e)}
+/* == ingzerohide == */
+try{
+/* ingzerohide 1.0.0 (8 Nov 2026, Nathalie): an ingredient with 0 recipes is hidden everywhere it is listed (/ingredients, Home, More ingredients). Reads the bound data-count on the card, so it follows the CMS Recipe count by itself. */
+(function(){var s=document.createElement('style');s.textContent='a.ingredient-card[data-count="0"],.w-dyn-item:has(>a.ingredient-card[data-count="0"]){display:none!important}';document.head.appendChild(s)})();
+;}catch(e){console.error('lthead',e)}
+/* == refinenohint == */
+try{
+/* refinenohint 1.0.0 (8 Nov 2026, Nathalie): the Refine hint ("Add #X and N recipes remain. Greyed-out filters would leave nothing ...") is removed on every page. */
+(function(){var s=document.createElement('style');s.textContent='.hint-bar,[data-hint]{display:none!important}';document.head.appendChild(s)})();
+;}catch(e){console.error('lthead',e)}
+/* == dishnightcircle == */
+try{
+/* 9 Nov 2026: night mode, cut-out teasers and modules (.lt-cut). The painted dish shadow spilled past the cream circle at the bottom corners. The circle now fills the box (overrides the inline --lt-cs set by the page bundles) and the illustration fades out at its edge, so nothing lilac sits on the dark page. Images unchanged. */(function(){var s=document.createElement('style');s.textContent='html.theme-night :not(.nu-card).lt-cut>img[data-cutout]{--lt-cs:100% 100% !important;-webkit-mask-image:radial-gradient(circle closest-side at 50% 50%,#000 95%,transparent 100%);mask-image:radial-gradient(circle closest-side at 50% 50%,#000 95%,transparent 100%)}';document.head.appendChild(s)})();
+;}catch(e){console.error('lthead',e)}
+/* == teaserimg == */
+try{
+(function(){var S='https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/',R=/^[0-9a-f]{24}_([0-9a-f]{24}_[^\/]+)\.jpe?g$/i,C=/(^|\s)(teaser-photo|module-photo|pc-image)(\s|$)/;
+function fx(i){if(i.__tv||!C.test(i.className)||i.getAttribute('srcset'))return;var o=i.getAttribute('src')||'',m=o.split('?')[0].split('/').pop().match(R);if(!m)return;i.__tv=1;var n=m[1];try{n=decodeURIComponent(n)}catch(e){}var b=S+n.replace(/%/g,'%25'),p5=b+'-p-500.jpg',p8=b+'-p-800.jpg';
+i.addEventListener('error',function(){if(i.getAttribute('src')!==o)i.setAttribute('src',o)});
+i.addEventListener('load',function(){var s=i.getAttribute('src');if(s===o)return;var w=i.clientWidth*(window.devicePixelRatio||1);if(w>820)i.setAttribute('src',o);else if(w>520&&s===p5)i.setAttribute('src',p8)});
+i.setAttribute('src',p5)}
+function sc(n){if(n.nodeType!==1)return;if(n.tagName==='IMG')fx(n);else [].forEach.call(n.querySelectorAll('img'),fx)}
+new MutationObserver(function(l){l.forEach(function(r){[].forEach.call(r.addedNodes,sc)})}).observe(document.documentElement,{childList:true,subtree:true});
+document.addEventListener('DOMContentLoaded',function(){sc(document.body)})})();
+;}catch(e){console.error('lthead',e)}
+/* == ltpager == */
+try{
+/* ltpager 1.0.2 (10 Nov 2026, Nathalie; 1.0.1: button centred like Next up; 1.0.2: classes only written when they change; faster count): lists show 24 recipes, then "Show 24 more" (like /next-up). /recipes, /served, tag, ingredient and source pages. Works with tabs and Refine: whatever they filter (is-filtered) is left alone; a new filter starts again at 24. The older Show more on /recipes and /served is opened and hidden, so this one counts. Source pages first load every page of the list (100 per page). */
+(function(){var P=location.pathname,N=24;if(!/^\/(recipes|served)\/?$|^\/(tag|ingredient|source)\//.test(P))return;
+var st=document.createElement('style');st.textContent='.pg-cut{display:none!important}.lt-more{display:table;margin:48px auto 0}.w-pagination-wrapper:empty{display:none}';document.head.appendChild(st);
+function setup(g){if(g.__pg)return;g.__pg=1;var lim=N,sig='',p=0,b=document.createElement('a');b.href='#';b.className='button-outline show-more lt-more';b.style.display='none';var L=g.closest('.w-dyn-list')||g;L.parentNode.insertBefore(b,L.nextSibling);
+b.addEventListener('click',function(e){e.preventDefault();lim+=N;run()});
+function run(){p=0;var ch=g.children,n=0,f=null,i,x;for(i=0;i<ch.length;i++){x=ch[i];if(!x.classList.contains('is-filtered')){n++;if(!f)f=x}}var a=f&&f.querySelector('a'),k=n+'|'+(a&&a.getAttribute('href'));if(k!==sig){sig=k;lim=N}
+var c=0;for(i=0;i<ch.length;i++){x=ch[i];var cut=false;if(!x.classList.contains('is-filtered')){cut=c>=lim;c++}if(x.classList.contains('pg-cut')!==cut)x.classList.toggle('pg-cut',cut)}
+var r=n-lim;b.style.display=r>0?'':'none';if(r>0)b.textContent=r>N?'Show '+N+' more':'Show the other '+r}
+new MutationObserver(function(){if(!p){p=1;requestAnimationFrame(run)}}).observe(g,{childList:true,subtree:true,attributes:true,attributeFilter:['class']});run();return g}
+function mx(g){var i=0;[].forEach.call(g.children,function(it){i++;var v=[];if(i%2===0)v.push('st');if(i%5===2)v.push('p');if(i%5===4)v.push('l');it.setAttribute('data-mx',v.join(' '))})}
+function loadAll(g,S){var L=g.closest('.w-dyn-list'),pg=L&&L.querySelector('.w-pagination-wrapper'),nx=pg&&pg.querySelector('a.w-pagination-next'),seen={};if(!nx)return;pg.style.display='none';
+(function step(u){if(seen[u])return mx(g);seen[u]=1;fetch(u,{credentials:'same-origin'}).then(function(r){return r.text()}).then(function(t){var d=new DOMParser().parseFromString(t,'text/html'),g2=d.querySelector(S);if(!g2)return mx(g);
+[].forEach.call(g2.children,function(n){var c=document.importNode(n,true);[].forEach.call(c.querySelectorAll('a[data-module][data-slug]'),function(a){a.setAttribute('href','/recipe/'+a.getAttribute('data-slug'))});g.appendChild(c)});
+var n2=(g2.closest('.w-dyn-list')||d).querySelector('a.w-pagination-next'),h=n2&&n2.getAttribute('href');if(h)step(new URL(h,location.href).href);else mx(g)}).catch(function(){mx(g)})})(nx.href)}
+function native(){var m=document.querySelector('[data-show-more]');if(!m||!/^\/(recipes|served)\/?$/.test(P))return;st.textContent+='[data-show-more]:not(.lt-more){display:none!important}';var w=m.parentNode;
+function op(){var n=w.querySelector('[data-show-more]');if(n&&n.style.display!=='none')n.click()}new MutationObserver(op).observe(w,{childList:true,subtree:true,attributes:true,attributeFilter:['style']});op()}
+function init(){native();['.recipes-slot .teaser-grid','.tag-slot .teaser-grid','.overview .row .module-row'].forEach(function(s){var g=document.querySelector(s);if(g&&setup(g)&&/^\/source\//.test(P))loadAll(g,s)})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
+;}catch(e){console.error('lthead',e)}
+</script></head><body><header class="site-header"><a class="wordmark" href="/classic"><div class="wordmark-name">A Hat of Thyme</div><div class="wordmark-sub">a personal recipe library</div></a><nav class="site-nav"><a class="nav-link" href="/classic">Home</a><a class="nav-link" href="/recipes">Recipes</a><a class="nav-link" href="/crossword">Crossword</a></nav><a class="theme-switch" href="#" data-lamp="1">Theme</a><div class="lt-lamp-embed w-embed"><style id="lt-lamp-css">
+/* THEME LAMP 1.2 (1 Nov 2026): bulb on a cord, Pip below. Hover: bulb drops. Click: day/night. Shrunk header: only the bulb. */
+.site-header .theme-switch.lt-has-lamp{position:static;align-self:center;width:calc(var(--lt-lamp-h,133px)*.5414);height:24px;margin:0;padding:0;border:0;border-radius:0;background:none;transform:none;font-size:0;line-height:0;color:inherit;cursor:pointer;-webkit-tap-highlight-color:transparent}
+.site-header .theme-switch.lt-has-lamp:hover{transform:none}
+.lt-lamp{position:absolute;top:0;height:var(--lt-lamp-h,133px);width:calc(var(--lt-lamp-h,133px)*.5414);display:block;overflow:visible;pointer-events:none}
+.lt-lamp svg{display:block;width:100%;height:100%;overflow:visible}
+.lt-lamp .lt-hit{pointer-events:all;fill:transparent}
+.lt-lamp .lt-ink{fill:var(--_colour---ink,#160601)}
+.lt-lamp .lt-line{fill:none;stroke:var(--_colour---ink,#160601)}
+.lt-lamp .lt-glass{fill:var(--_colour---paper,#FFFDF3);stroke:var(--_colour---ink,#160601);transition:fill .45s ease}
+.lt-lamp .lt-bulb{transition:transform .28s cubic-bezier(.3,.7,.3,1.2)}
+.lt-lamp .lt-light{opacity:0;transition:opacity .45s ease,transform .28s cubic-bezier(.3,.7,.3,1.2)}
+.theme-switch.lt-has-lamp:hover .lt-bulb,.theme-switch.lt-has-lamp:focus-visible .lt-bulb,.theme-switch.lt-has-lamp:hover .lt-bulbglow,.theme-switch.lt-has-lamp:focus-visible .lt-bulbglow{transform:translateY(6px)}
+html.theme-night .lt-lamp .lt-light{opacity:1}
+html.theme-night .lt-lamp .lt-glass{fill:#FBE3A0}
+.theme-switch.lt-has-lamp:focus-visible{outline:none}
+.theme-switch.lt-has-lamp:focus-visible .lt-lamp{outline:2px solid var(--_colour---focus-ring,#004AAC);outline-offset:2px;border-radius:6px}
+.lt-lamp-embed{display:none}
+.lt-lamp .lt-cord,.lt-lamp .lt-pip{transition:opacity .2s ease}
+html.hdr-min .site-header .theme-switch.lt-has-lamp{width:65px}
+html.hdr-min .lt-lamp{width:65px;overflow:hidden}
+html.hdr-min .lt-lamp svg{width:65px;height:120px}
+html.hdr-min .lt-lamp .lt-cord,html.hdr-min .lt-lamp .lt-pip,html.hdr-min .lt-lamp g.lt-pool{opacity:0}
+html.hdr-min .lt-lamp .lt-bulb,html.hdr-min .lt-lamp .lt-bulbglow{transform:translateY(-22px)}
+html.hdr-min .theme-switch.lt-has-lamp:hover .lt-bulb,html.hdr-min .theme-switch.lt-has-lamp:hover .lt-bulbglow{transform:translateY(-17px)}
+@media (prefers-reduced-motion:reduce){.lt-lamp .lt-bulb,.lt-lamp .lt-light,.lt-lamp .lt-glass,.lt-lamp .lt-cord,.lt-lamp .lt-pip{transition:none}}
+</style>
+<template id="lt-lamp-tpl"><span class="lt-lamp" aria-hidden="true"><svg viewBox="0 0 72 133" preserveAspectRatio="xMidYMin meet" focusable="false">
+<defs><radialGradient id="lt-lamp-g"><stop offset="0" stop-color="#FBE3A0" stop-opacity=".75"/><stop offset=".55" stop-color="#FBE3A0" stop-opacity=".3"/><stop offset="1" stop-color="#FBE3A0" stop-opacity="0"/></radialGradient></defs>
+<rect class="lt-hit" x="0" y="0" width="72" height="133"/>
+<g class="lt-light lt-pool"><ellipse cx="36" cy="128.5" rx="26" ry="4.5" fill="url(#lt-lamp-g)"/><circle cx="36" cy="101" r="31" fill="url(#lt-lamp-g)" opacity=".75"/></g>
+<g class="lt-light lt-bulbglow"><circle cx="36" cy="58" r="24" fill="url(#lt-lamp-g)"/></g>
+<g class="lt-cord"><rect class="lt-ink" x="30" y="0" width="12" height="3" rx="1.5"/><rect class="lt-ink" x="35.25" y="0" width="1.5" height="45"/></g>
+<g class="lt-bulb"><rect class="lt-ink" x="32" y="38" width="8" height="7" rx="1"/>
+<g transform="translate(26 44)"><path class="lt-glass" stroke-width="1.25" stroke-linejoin="round" d="M6.5 5C6.4 6.6 5.8 7.8 4.6 9 2.8 10.8 1 13.1 1 16.4 1 21.1 4.8 25 10 25s9-3.9 9-8.6c0-3.3-1.8-5.6-3.6-7.4C14.2 7.8 13.6 6.6 13.5 5Z"/><path class="lt-line" stroke-width=".9" stroke-linejoin="round" stroke-linecap="round" d="M8 5v3.5L9.2 13 10 10.8l.8 2.2L12 8.5V5"/><path class="lt-ink" d="M6.5.8h7V5h-7Z"/></g></g>
+<!-- test stand-in: Pip as a plain shape (the live embed carries a PNG of Pip at the same place and size) -->
+<rect class="lt-pip" x="27" y="92" width="18" height="40" rx="9" fill="#E8C23A"/>
+</svg></span></template>
+<script>
+(function(){
+var d=document,R=d.documentElement,KEY='lt-theme';
+function night(){return R.classList.contains('theme-night')}
+function label(a){var n=night();a.setAttribute('aria-label',n?'Switch to day':'Switch to night');a.setAttribute('aria-pressed',n?'true':'false')}
+function init(){
+var hdr=d.querySelector('.site-header'),tpl=d.getElementById('lt-lamp-tpl');if(!hdr||!tpl)return;
+var a=hdr.querySelector('[data-lamp]');if(!a||a.classList.contains('lt-has-lamp'))return;
+a.textContent='';a.appendChild(tpl.content.cloneNode(true));a.classList.add('lt-has-lamp');a.setAttribute('role','button');
+function size(){hdr.style.setProperty('--lt-lamp-h',hdr.clientHeight+'px')}
+size();if(window.ResizeObserver)new ResizeObserver(size).observe(hdr,{box:'border-box'});hdr.addEventListener('transitionend',size);addEventListener('resize',size);
+label(a);
+a.addEventListener('click',function(e){e.preventDefault();var n=!night();R.classList.toggle('theme-night',n);try{localStorage.setItem(KEY,n?'night':'day')}catch(x){}label(a)});
+a.addEventListener('keydown',function(e){if(e.key===' '||e.key==='Spacebar'){e.preventDefault();a.click()}});
+if(window.MutationObserver)new MutationObserver(function(){label(a)}).observe(R,{attributes:true,attributeFilter:['class']});
+}
+init();if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',init);
+})();
+</script>
+</div></header><main><h1>Citron pressé</h1><p>Citron pressé. Paragraph 1 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 2 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 3 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 4 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 5 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 6 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 7 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 8 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 9 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 10 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 11 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 12 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 13 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 14 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 15 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 16 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 17 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 18 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 19 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 20 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 21 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 22 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 23 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 24 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 25 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 26 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 27 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 28 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 29 of the stand-in content, long enough to scroll the page and let the header shrink.</p><p>Citron pressé. Paragraph 30 of the stand-in content, long enough to scroll the page and let the header shrink.</p></main><div class="site-footer"><nav class="bnav" data-bnav="1"><a class="bnav-tab" data-bnav-tab="start" href="/classic"><span class="bnav-ic"></span>Start</a><a class="bnav-tab" data-bnav-tab="recipes" href="/recipes"><span class="bnav-ic"></span>Recipes</a><a class="bnav-tab" data-bnav-tab="crossword" href="/crossword"><span class="bnav-ic"></span>Crossword</a><a class="bnav-tab" data-bnav-tab="more" href="#" aria-controls="bnav-sheet" aria-expanded="false"><span class="bnav-ic"></span>More</a></nav><div class="bnav-scrim"></div><div class="bnav-sheet" id="bnav-sheet"><div class="bnav-links"><a class="bnav-row" href="/ingredients">Ingredients</a><a class="bnav-row" href="/about">About</a></div></div></div><script>
+/* =====================================================================
+   AI LABEL · Lemons & thyme · v1.0 (25 Oct 2026, staged)
+   EDIT THE AI LABEL TEXTS HERE. One change here updates every label on
+   the site (pill name for screen readers, overlay card, alt-text prefix).
+   ===================================================================== */
+window.LT_AI_LABEL = {
+  generated: {
+    title:  "AI-generated watercolour",
+    detail: "Nano Banana Pro via Higgsfield. Pip and the dish illustrations are painted by AI from my prompts.",
+    alt:    "AI-generated watercolour: "
+  },
+  edited: {
+    title:  "My photograph, edited with AI",
+    detail: "Light and background rebuilt with Nano Banana Pro. The food is shown as I cooked it.",
+    alt:    "AI-edited photo: "
+  },
+  linkText: "How I use AI →",
+  linkHref: "/how-i-use-ai"
+};
+/* Story photos (polaroids): end the caption with  | AI  (edited photo),
+   | AI-generated  (generated) or  | Photo: Name  (credit, no pill).
+   No marker = no label. The marker is removed from the visible caption.
+   ===== nothing to edit below this line ===== */
+(function(){
+if(window.__ltAiLabel)return;window.__ltAiLabel=1;
+var C=window.LT_AI_LABEL,doc=document,E=[],done=new WeakSet(),mine=new WeakSet(),raf=0,praf=0,card,cT,cD,cA,cur=null,pinned=false,hideT=0;
+var css='.ail{position:absolute;z-index:6;display:block;line-height:0;pointer-events:auto}.ail.is-off{display:none}'+
+'.ail-below{z-index:301;transform:translateX(-50%)}'+
+'.ail-btn{all:unset;box-sizing:border-box;display:inline-block;padding:3px 7px;border-radius:5px;border:1px solid var(--_colour---glass-edge,rgba(255,255,255,.7));background:var(--_colour---glass-fill,rgba(255,253,243,.85));-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);color:var(--_colour---ink,#160601);font:600 11px/13px Barlow,sans-serif;letter-spacing:.08em;cursor:pointer;transition:background-color .15s,color .15s,border-color .15s}'+
+'.ail-btn::before{content:"AI"}'+
+'.ail-btn:hover,.ail-btn[aria-expanded="true"]{background:var(--_colour---ink,#160601);color:var(--_colour---ground,#FFF4D5);border-color:var(--_colour---ink,#160601)}'+
+'.ail-btn:focus-visible{outline:2px solid var(--_colour---focus-ring,#004AAC);outline-offset:2px}'+
+'.ail-cap{display:flex;align-items:center;gap:8px}.ail-cap-text{min-width:0}.ail-cap .ail{position:static;flex:none;margin-left:auto}'+
+'.ail-credit{flex:none;margin-left:auto;font:400 11px/14px Barlow,sans-serif;letter-spacing:.02em;opacity:.7;white-space:nowrap}'+
+/* polaroids stay light paper in both themes, so the pill keeps its day colours there */
+'.print .ail-btn{--_colour---glass-fill:rgba(255,253,243,.85);--_colour---glass-edge:rgba(22,6,1,.16);--_colour---ink:#160601;--_colour---ground:#FFF4D5}'+
+'#lt-ai-card{position:fixed;left:0;top:0;z-index:10000;box-sizing:border-box;width:264px;max-width:calc(100vw - 16px);padding:12px 14px;border-radius:10px;border:1px solid var(--_colour---edge,#B9A489);background:var(--_colour---raised,#FFFDF3);box-shadow:0 14px 30px -14px rgba(40,25,5,.45),0 2px 6px -2px rgba(40,25,5,.12);color:var(--_colour---ink,#160601);text-align:left;opacity:0;visibility:hidden;transform:translateY(-4px);transition:opacity .16s ease,transform .16s ease,visibility 0s linear .16s}'+
+'#lt-ai-card.is-open{opacity:1;visibility:visible;transform:none;transition:opacity .16s ease,transform .16s ease}'+
+'#lt-ai-card .ail-t{margin:0;font:600 14px/18px Barlow,sans-serif;color:var(--_colour---ink,#160601)}'+
+'#lt-ai-card .ail-d{margin:4px 0 8px;font:400 13px/1.35 Barlow,sans-serif;color:var(--_colour---ink-muted,#3F2C2D)}'+
+'#lt-ai-card .ail-a{font:600 13px/16px Barlow,sans-serif;color:var(--_colour---accent,#004AAC);text-decoration:none}'+
+'#lt-ai-card .ail-a:hover{text-decoration:underline;text-underline-offset:3px}'+
+'#lt-ai-card .ail-a:focus-visible{outline:2px solid var(--_colour---focus-ring,#004AAC);outline-offset:2px;border-radius:2px}'+
+'@media (prefers-reduced-motion:reduce){.ail-btn,#lt-ai-card,#lt-ai-card.is-open{transition:none}#lt-ai-card{transform:none}}';
+function el(t,c,x){var e=doc.createElement(t);if(c)e.className=c;if(x!=null)e.textContent=x;return e}
+if(!doc.getElementById('lt-ai-label-css')){var st=el('style');st.id='lt-ai-label-css';st.textContent=css;doc.head.appendChild(st)}
+function vis(n){return !!(n&&n.getClientRects().length&&n.offsetWidth>1)}
+function kindOf(img){if(img.hasAttribute('data-illu')||img.hasAttribute('data-cutout'))return'generated';return /\s(dish-photo|teaser-photo|module-photo|featured-photo|is-photo)\s/.test(' '+img.className+' ')?'edited':'generated'}
+function skip(img){return img.classList.contains('w-dyn-bind-empty')||!!img.closest('.mi-data,.pip-source,[data-mi-src],.w-dyn-empty,.w-condition-invisible,[aria-hidden="true"],#lt-ai-card')}
+function setAlt(img,kind){var a=img.getAttribute('alt')||'';if(!a.trim()||/\bAI\b/.test(a))return;img.setAttribute('alt',C[kind].alt+a)}
+function pill(kind,align){var w=el('span','ail'),b=el('button','ail-btn');b.type='button';b.setAttribute('aria-label','AI – '+C[kind].title);b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','lt-ai-card');b.setAttribute('aria-haspopup','dialog');b.setAttribute('data-ail-kind',kind);if(align)b.setAttribute('data-ail-align',align);w.appendChild(b);mine.add(w);return w}
+/* which images get a label: [selector, host, anchor, corner] (first match wins) */
+var R=[
+['.print-large img',function(i){return i.closest('.print-large')},null,'right'],
+['.parallax-frame img',function(i){return i.closest('.parallax-frame')},function(i,h){return h}],
+['.ingredient-cutout',function(i){return i.closest('.ingredient-swatch')||i.parentElement},function(i){return i.closest('.ingredient-window')||i}],
+['.pc-image',function(i){return i.closest('.pc-card')||i.parentElement}],
+['.mi-media img',function(i){return i.closest('.mi-media')}],
+['.teaser-photo,.module-photo,.featured-photo,.nu-illu,.illustration-slot,.header-image',function(i){return i.parentElement}]
+];
+function off(a,h){var x=0,y=0,n=a;while(n&&n!==h){x+=n.offsetLeft;y+=n.offsetTop;n=n.offsetParent;if(n&&n!==h){x+=n.clientLeft;y+=n.clientTop}}return n===h?{x:x,y:y}:{x:0,y:0}}
+var ro=window.ResizeObserver?new ResizeObserver(sched):null;
+function watch(n){if(!n)return;if(ro)ro.observe(n);if(n.tagName==='IMG'&&!n.complete)n.addEventListener('load',sched)}
+function sched(){if(!raf)raf=requestAnimationFrame(refresh)}
+var hid=new WeakMap(),hn=0;
+function refresh(){raf=0;var used={};E.forEach(function(e){var a=e.anchor,on=vis(e.img)&&vis(a);e.wrap.classList.toggle('is-off',!on);if(!on)return;
+if(e.below){e.wrap.style.top=(a.offsetTop+a.offsetHeight+6)+'px';e.wrap.style.left=(a.offsetLeft+a.offsetWidth/2)+'px';return}
+var p=a===e.host?{x:0,y:0}:off(a,e.host),w=a===e.host?e.host.clientWidth:a.offsetWidth;
+e.wrap.style.top=(p.y+10)+'px';
+if(e.right){e.wrap.style.left='auto';e.wrap.style.right=(e.host.clientWidth-(p.x+w)+10)+'px'}else{e.wrap.style.right='auto';e.wrap.style.left=(p.x+10)+'px'}
+/* two visible images stacked in one frame (e.g. illustration + cut-out) get one pill */
+if(!hid.has(e.host))hid.set(e.host,++hn);var k=hid.get(e.host)+'|'+e.wrap.style.top+'|'+e.wrap.style.left+'|'+e.wrap.style.right;if(used[k])e.wrap.classList.add('is-off');else used[k]=1});
+if(cur)place()}
+function scan(){
+if(!card&&doc.body)makeCard();
+[].forEach.call(doc.querySelectorAll('.ail'),function(w){if(!mine.has(w)&&w.parentNode)w.parentNode.removeChild(w)});
+[].forEach.call(doc.querySelectorAll('[data-story-photos] .print-caption:not([data-ail])'),function(cap){cap.setAttribute('data-ail','1');
+var t=(cap.textContent||'').trim(),m=t.match(/\s*\|\s*(ai-generated|ai|photo:\s*.+?)\s*$/i);if(!m)return;
+var tok=m[1].toLowerCase();cap.textContent='';cap.classList.add('ail-cap');cap.appendChild(el('span','ail-cap-text',t.slice(0,m.index).trim()));
+if(tok.indexOf('photo:')===0){cap.appendChild(el('span','ail-credit',m[1].replace(/^photo:\s*/i,'Photo: ')));return}
+var kind=tok==='ai'?'edited':'generated',img=cap.parentNode&&cap.parentNode.querySelector('.print-img');cap.appendChild(pill(kind,'right'));if(img){done.add(img);setAlt(img,kind)}});
+[].forEach.call(doc.querySelectorAll('.mascot-top'),function(m){if(done.has(m)||skip(m)||!m.parentNode)return;done.add(m);var w=pill('generated');w.classList.add('ail-below');m.parentNode.insertBefore(w,m.nextSibling);setAlt(m,'generated');E.push({img:m,anchor:m,wrap:w,below:1});watch(m)});
+R.forEach(function(r){[].forEach.call(doc.querySelectorAll(r[0]),function(img){if(img.tagName!=='IMG'||done.has(img)||skip(img))return;var h=r[1](img);if(!h)return;done.add(img);
+var kind=kindOf(img),a=r[2]?r[2](img,h):img;if(getComputedStyle(h).position==='static')h.style.position='relative';
+var w=pill(kind,r[3]);h.appendChild(w);setAlt(img,kind);E.push({img:img,host:h,anchor:a,wrap:w,right:r[3]==='right'});watch(img);watch(h);if(a!==img&&a!==h)watch(a)})});
+sched()}
+/* overlay card: one shared card, opened by hover, click/tap or keyboard focus */
+function makeCard(){card=el('div');card.id='lt-ai-card';card.setAttribute('role','dialog');card.setAttribute('aria-modal','false');card.setAttribute('aria-labelledby','lt-ai-card-t');
+cT=el('p','ail-t');cT.id='lt-ai-card-t';cD=el('p','ail-d');cA=el('a','ail-a');card.appendChild(cT);card.appendChild(cD);card.appendChild(cA);doc.body.appendChild(card);
+card.addEventListener('pointerenter',function(){clearTimeout(hideT)});
+card.addEventListener('pointerleave',function(e){if(e.pointerType==='mouse'&&!pinned)later()})}
+function open(b,pin){clearTimeout(hideT);if(!card)makeCard();if(cur&&cur!==b){cur.setAttribute('aria-expanded','false');pinned=false}
+cur=b;if(pin)pinned=true;var k=C[b.getAttribute('data-ail-kind')]||C.generated;cT.textContent=k.title;cD.textContent=k.detail;cA.textContent=C.linkText;cA.href=C.linkHref;
+b.setAttribute('aria-expanded','true');card.classList.add('is-open');place()}
+function close(){clearTimeout(hideT);if(cur)cur.setAttribute('aria-expanded','false');cur=null;pinned=false;if(card)card.classList.remove('is-open')}
+function later(){clearTimeout(hideT);hideT=setTimeout(close,180)}
+function place(){praf=0;if(!cur||!card)return;var r=cur.getBoundingClientRect();if(!r.width){close();return}
+var w=card.offsetWidth,h=card.offsetHeight,vw=doc.documentElement.clientWidth,vh=window.innerHeight,g=6,m=8;
+var x=cur.getAttribute('data-ail-align')==='right'?r.right-w:r.left;if(x+w>vw-m)x=r.right-w;if(x<m)x=m;if(x+w>vw-m)x=Math.max(m,vw-m-w);
+var y=r.bottom+g;if(y+h>vh-m&&r.top-g-h>=m)y=r.top-g-h;card.style.left=Math.round(x)+'px';card.style.top=Math.round(y)+'px'}
+function nextFocus(b){var l=[].slice.call(doc.querySelectorAll('a[href],button,input,select,textarea,[tabindex]')).filter(function(n){return n.tabIndex>=0&&!n.disabled&&vis(n)&&!card.contains(n)});var i=l.indexOf(b);(i>-1&&l[i+1]?l[i+1]:b).focus()}
+function btn(t){return t&&t.closest?t.closest('.ail-btn'):null}
+doc.addEventListener('pointerdown',function(e){if(btn(e.target))e.stopPropagation()},true);
+doc.addEventListener('click',function(e){var b=btn(e.target);if(b){e.preventDefault();e.stopPropagation();if(cur===b&&pinned)close();else open(b,true);return}if(cur&&card&&!card.contains(e.target))close()},true);
+doc.addEventListener('pointerover',function(e){if(e.pointerType!=='mouse')return;var b=btn(e.target);if(!b)return;clearTimeout(hideT);if(cur!==b&&!pinned)open(b)});
+doc.addEventListener('pointerout',function(e){if(e.pointerType!=='mouse')return;var b=btn(e.target);if(b&&cur===b&&!pinned&&!(e.relatedTarget&&(b.contains(e.relatedTarget)||card.contains(e.relatedTarget))))later()});
+doc.addEventListener('focusin',function(e){var b=btn(e.target),fv=true;if(!b||cur===b)return;try{fv=b.matches(':focus-visible')}catch(x){}if(fv)open(b)});
+doc.addEventListener('focusout',function(e){if(!cur)return;var t=e.relatedTarget;if(!t||t===cur||card.contains(t))return;if(e.target===cur||card.contains(e.target))close()});
+doc.addEventListener('keydown',function(e){if(!cur)return;var b=cur,inCard=card.contains(e.target);
+if(e.key==='Escape'||e.key==='Esc'){close();if(inCard)b.focus();return}
+if(e.key!=='Tab')return;
+if(e.target===b){if(e.shiftKey)close();else{e.preventDefault();cA.focus()}}
+else if(inCard){e.preventDefault();if(e.shiftKey)b.focus();else{close();nextFocus(b)}}});
+window.addEventListener('scroll',function(){if(cur&&!praf)praf=requestAnimationFrame(place)},{passive:true,capture:true});
+window.addEventListener('resize',sched);window.addEventListener('load',function(){scan();setTimeout(sched,600)});
+var mt=0;if(window.MutationObserver)new MutationObserver(function(){clearTimeout(mt);mt=setTimeout(scan,120)}).observe(doc.body,{childList:true,subtree:true});
+if(doc.readyState==='loading')doc.addEventListener('DOMContentLoaded',scan);else scan();
+})();
+</script>
+<script>
+(function(){
+var root=document.documentElement,KEY='lt-theme';
+/* first visit (or legacy 'mood'): follows the device setting, else evening/night hours; one click sets day or night explicitly */
+function night(m){if(m==='night')return true;if(m==='day')return false;var h=new Date().getHours();return (window.matchMedia&&matchMedia('(prefers-color-scheme: dark)').matches)||h>=20||h<7}
+function apply(m){var n=night(m);root.classList.toggle('theme-night',n);document.querySelectorAll('[data-theme-switch]').forEach(function(b){b.textContent='Theme: '+(n?'night':'day');b.setAttribute('aria-label','Theme: '+(n?'night':'day')+'. Click to switch to '+(n?'day':'night')+'.')})}
+var mode='auto';try{mode=localStorage.getItem(KEY)||'auto'}catch(e){}
+apply(mode);
+document.addEventListener('click',function(e){var b=e.target.closest('[data-theme-switch]');if(!b)return;e.preventDefault();mode=root.classList.contains('theme-night')?'day':'night';try{localStorage.setItem(KEY,mode)}catch(err){}apply(mode)});
+var reduce=window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches;
+/* background parallax */
+var img=document.querySelector('[data-parallax-img]');
+if(img&&!reduce){var ticking=false;var upd=function(){var max=img.offsetHeight-window.innerHeight;var doc=document.documentElement.scrollHeight-window.innerHeight;var p=doc>0?window.scrollY/doc:0;img.style.transform='translate3d(0,'+(-p*Math.max(max,0))+'px,0)';ticking=false};window.addEventListener('scroll',function(){if(!ticking){ticking=true;requestAnimationFrame(upd)}},{passive:true});window.addEventListener('resize',upd);upd()}
+/* record spins while playing */
+document.querySelectorAll('[data-playlist]').forEach(function(a){var r=a.querySelector('[data-record]');a.addEventListener('click',function(e){e.preventDefault();var href=a.getAttribute('href');var playing=r&&r.classList.toggle('is-playing');if(playing&&href&&href!=='#')window.open(href,'_blank','noopener')})});
+/* draggable story photos: moved to the Recipes Template page footer code */
+/* lists: course tabs, search, show more, counts */
+var mods=[].slice.call(document.querySelectorAll('[data-module]'));
+if(mods.length){var tabs=[].slice.call(document.querySelectorAll('[data-tab]'));var input=document.querySelector('[data-search-input]');var more=document.querySelector('[data-show-more]');var empty=document.querySelector('[data-empty-note]');var PAGE=8,state={tab:'all',q:'',open:false};
+var course=function(m){return (m.getAttribute('data-course')||'').toLowerCase()};
+var cnt={all:mods.length};mods.forEach(function(m){var c=course(m);if(c)cnt[c]=(cnt[c]||0)+1});
+document.querySelectorAll('[data-total-count],[data-row-count]').forEach(function(n){n.textContent=mods.length});
+tabs.forEach(function(t){var n=t.querySelector('.tab-count');if(n)n.textContent=cnt[t.getAttribute('data-tab')]||0;t.setAttribute('role','tab')});
+var render=function(){var shown=0;mods.forEach(function(m){var it=m.closest('.w-dyn-item')||m;var ok=(state.tab==='all'||course(m)===state.tab)&&(!state.q||m.textContent.toLowerCase().indexOf(state.q)>-1);if(ok)shown++;var cut=more&&!state.open&&shown>PAGE;it.classList.toggle('is-filtered',!ok||cut)});
+tabs.forEach(function(x){var on=x.getAttribute('data-tab')===state.tab;x.classList.toggle('is-active',on);x.setAttribute('aria-selected',on)});
+if(more){more.style.display=(!state.open&&shown>PAGE)?'':'none';if(!state.open)more.textContent='Show the other '+(shown-PAGE)}
+if(empty)empty.style.display=shown?'none':''};
+tabs.forEach(function(t){t.addEventListener('click',function(e){e.preventDefault();state.tab=t.getAttribute('data-tab');render()})});
+if(input){var f=input.closest('form');if(f)f.addEventListener('submit',function(e){e.preventDefault()});var p=new URLSearchParams(location.search).get('q');if(p){input.value=p;state.q=p.toLowerCase()}input.addEventListener('input',function(){state.q=input.value.trim().toLowerCase();render()})}
+if(more)more.addEventListener('click',function(e){e.preventDefault();state.open=true;render()});
+render()}
+/* drag to scroll the horizontal rows with a mouse */
+document.querySelectorAll('.module-row').forEach(function(row){var down=false,sx=0,sl=0,moved=false;row.addEventListener('pointerdown',function(e){if(e.pointerType!=='mouse')return;down=true;moved=false;sx=e.clientX;sl=row.scrollLeft});row.addEventListener('pointermove',function(e){if(!down)return;var dx=e.clientX-sx;if(Math.abs(dx)>4){moved=true;row.classList.add('is-grabbing')}row.scrollLeft=sl-dx});var end=function(){down=false;setTimeout(function(){row.classList.remove('is-grabbing')},0)};row.addEventListener('pointerup',end);row.addEventListener('pointerleave',end);row.addEventListener('click',function(e){if(moved){e.preventDefault();moved=false}},true)});
+})();
+</script><script>/* ltbundle 1.3.3 (17 Nov 2026): 1.3.3: World is the start page, the Classic start can live at /classic: phonetilt also on /classic and never on the World page (#aot-world); phone menu D: Start leads to the Classic start read from the header logo and is marked there. Nothing else changed. ltbundle 1.3.2 (11 Nov 2026): 1.3.2: phonetilt 1.3.0 (only Home + recipe pages; Main ingredient circle photo and illustration tilt). ltbundle 1.3.1 (8 Nov 2026): 1.3.1: phonetilt also on /ingredients (its separate phonetilt 1.0.3 removed). ltcountsnotify-1.0.0, fixitemlinkstwo-1.0.0, cktogglestyle-1.0.0, cktogglelogic-1.0.0, ailabelfixteasersbloopers-1.0.0, headerbar-2.0.0, ailabelsamesize-1.0.0, teaserframes-1.1.0, teaserstamps-1.0.0, teaserparallax-1.2.0, phonetilt-1.2.0, navdicons-1.0.0, navdcss-1.0.1, navdcss2-1.0.2, navdbuild-1.0.0, navd-1.0.0, tabscroll-1.0.0 in one file. 1.3.0: headerbar 2.0.0 replaces headershrinkstickytabs 1.3.0 + headerhide 1.0.0 (stutter when the header shrinks or slides away on phones); phonetilt 1.2.0 (stronger, polaroids tilt again, also on source pages); navdcss2 1.0.2 (no page-wide restyle on address-bar resize); new tabscroll 1.0.0 (one swipeable tab row on phones). 1.2.0: teaserparallax 1.2.0 and phonetilt 1.1.0 only touch cards near the screen. */
+/* --- ltcountsnotify-1.0.0.js --- */
+try{
+document.addEventListener('DOMContentLoaded',function(){document.querySelectorAll('[data-count-list]').forEach(function(l){var n=l.querySelectorAll('.w-dyn-item').length;document.querySelectorAll('[data-count-target="'+l.getAttribute('data-count-list')+'"]').forEach(function(t){t.textContent=n})});var f=document.querySelector('.notify-form');if(f){var h=document.querySelector('h1');var i=f.querySelector('input[name="recipe"]');if(!i){i=document.createElement('input');i.type='hidden';i.name='recipe';f.appendChild(i)}if(h)i.value=h.textContent.trim()}});
+}catch(e){console.warn('[ltbundle] ltcountsnotify-1.0.0',e)}
+/* --- fixitemlinkstwo-1.0.0.js --- */
+try{
+(function(){function fix(){document.querySelectorAll('a[data-slug]').forEach(function(a){var h=a.getAttribute('href')||'';var m=/^\/?detail_([a-z0-9-]+)$/.exec(h);var s=a.getAttribute('data-slug');if(m&&s){a.setAttribute('href','/'+m[1]+'/'+s)}});document.querySelectorAll('.ingredient-count').forEach(function(c){if(/^1\s*recipes$/i.test(c.textContent.trim())&&c.lastElementChild){c.lastElementChild.textContent='recipe'}})}fix();document.addEventListener('DOMContentLoaded',fix);window.addEventListener('load',fix)})();
+}catch(e){console.warn('[ltbundle] fixitemlinkstwo-1.0.0',e)}
+/* --- cktogglestyle-1.0.0.js --- */
+try{
+(function(){var s=document.createElement('style');s.id='ck-style';s.textContent='.ck-switch{display:inline-flex!important;align-items:center;gap:8px!important;margin:0;padding:2px 0!important;border:0!important;background:none!important;cursor:pointer;text-align:left;font:400 13px/16px Barlow,sans-serif!important;color:var(--_colour---ink-muted)!important}.ck-switch .ck-switch-label,.ck-switch .ck-switch-label *{font:inherit!important;color:inherit!important;margin:0!important}.ck-switch .ck-track{position:relative!important;display:block!important;flex:none;width:34px!important;height:18px!important;border-radius:9px!important;background:var(--_colour---edge)!important;border:0!important;padding:0!important;margin:0!important;transition:background-color .2s ease}.ck-switch .ck-knob{position:absolute!important;top:2px!important;left:2px!important;width:14px!important;height:14px!important;border-radius:50%!important;background:var(--_colour---paper)!important;border:0!important;margin:0!important;transform:none!important;transition:transform .2s ease,background-color .2s ease}.ck-switch[aria-pressed=true] .ck-track{background:var(--_colour---ink)!important}.ck-switch[aria-pressed=true] .ck-knob{transform:translateX(16px)!important;background:var(--_colour---limone)!important}.ck-switch:focus-visible{outline:2px solid var(--_colour---focus-ring);outline-offset:3px;border-radius:4px}.glass-sheet.ck-on section.method{display:none!important}.glass-sheet.ck-on section.chefs-kiss{display:flex!important;opacity:1!important;animation:ckin .35s ease}.glass-sheet:not(.ck-on) section.chefs-kiss{display:none!important}.glass-sheet.ck-off section.method{animation:ckin .35s ease}@keyframes ckin{from{opacity:0;translate:0 8px}to{opacity:1;translate:0 0}}@media (prefers-reduced-motion:reduce){.ck-switch .ck-track,.ck-switch .ck-knob{transition:none!important}.glass-sheet section{animation:none!important}}';document.head.appendChild(s)})();
+}catch(e){console.warn('[ltbundle] cktogglestyle-1.0.0',e)}
+/* --- cktogglelogic-1.0.0.js --- */
+try{
+(function(){function init(){var s=document.querySelector('.glass-sheet');if(!s||!document.querySelector('.ck-switch'))return;
+[].forEach.call(document.querySelectorAll('.ck-switch'),function(b){var c=b.cloneNode(true);c.removeAttribute('data-wf-target');c.setAttribute('type','button');b.parentNode.replaceChild(c,b)});
+function set(on,user){s.classList.toggle('ck-on',on);s.classList.toggle('ck-off',!on&&user);
+[].forEach.call(s.querySelectorAll('.ck-switch'),function(x){x.setAttribute('aria-pressed',on?'true':'false')});
+[].forEach.call(s.querySelectorAll('section.method,section.chefs-kiss'),function(e){e.style.removeProperty('opacity');e.style.removeProperty('transform');e.style.removeProperty('display')});
+if(!user)return;var sec=s.querySelector(on?'section.chefs-kiss':'section.method');if(!sec)return;
+var b=sec.querySelector('.ck-switch');if(b)b.focus({preventScroll:true});
+if(sec.getBoundingClientRect().top<0)sec.scrollIntoView({block:'start'})}
+document.addEventListener('click',function(e){var b=e.target&&e.target.closest&&e.target.closest('.ck-switch');if(!b)return;e.preventDefault();e.stopImmediatePropagation();set(!s.classList.contains('ck-on'),true)},true);
+set(false,false)}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',init);else init()})();
+}catch(e){console.warn('[ltbundle] cktogglelogic-1.0.0',e)}
+/* --- ailabelfixteasersbloopers-1.0.0.js --- */
+try{
+(function(){var s=document.createElement('style');s.textContent='.lt-px>.ail{top:10px!important}.ail-x{position:absolute;top:10px;left:10px;z-index:6;line-height:0}';document.head.appendChild(s);function add(){var C=(window.LT_AI_LABEL||{}).generated||{};document.querySelectorAll('.blooper-frame').forEach(function(f){if(f.querySelector('.ail-x'))return;var w=document.createElement('span');w.className='ail-x';var b=document.createElement('button');b.type='button';b.className='ail-btn';b.setAttribute('data-ail-kind','generated');b.setAttribute('aria-label','AI – '+(C.title||'AI-generated'));b.setAttribute('aria-expanded','false');b.setAttribute('aria-controls','lt-ai-card');b.setAttribute('aria-haspopup','dialog');w.appendChild(b);if(getComputedStyle(f).position==='static')f.style.position='relative';f.appendChild(w)})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',add);else add();window.addEventListener('load',add)})();
+}catch(e){console.warn('[ltbundle] ailabelfixteasersbloopers-1.0.0',e)}
+/* --- headerbar-2.0.0.js --- */
+try{
+/* headerbar 2.0.0 (8 Nov 2026): headershrinkstickytabs 1.3.0 and headerhide 1.0.0 in one script, same look. The header heights (full and shrunk) are measured once (load, fonts, width change) and handed to the tab bar directly. Nothing writes page-wide CSS variables while scrolling any more: 1.3.0/1.0.0 wrote the header height on the whole page on every frame while the header shrank or slid away, so the browser restyled every element and phones stuttered at that moment. All position reads happen before the class changes, once per frame. */
+(function(){var d=document,R=d.documentElement,h=d.querySelector('.site-header'),M=matchMedia('(max-width:767px)'),rm=matchMedia('(prefers-reduced-motion: reduce)').matches,s=d.createElement('style');
+s.textContent='.site-header{transition:padding .25s,margin-bottom .25s}.site-header .wordmark{transition:gap .25s}.site-header .wordmark-name{transition:font-size .25s,line-height .25s}.site-header .wordmark-sub{transition:opacity .2s,max-height .25s;max-height:20px;overflow:hidden}html.hdr-min .site-header{padding-top:12px;padding-bottom:12px;margin-bottom:var(--hdr-d,0px)}html.hdr-min .site-header .wordmark{gap:0}html.hdr-min .site-header .wordmark-name{font-size:26px;line-height:32px}html.hdr-min .site-header .wordmark-sub{opacity:0;max-height:0}@media (max-width:767px){html.hdr-min .site-header .wordmark-name{font-size:22px;line-height:28px}}html.hdr-nt .site-header,html.hdr-nt .site-header *{transition:none!important}[role=tablist].tabs{position:sticky;top:var(--hb-full,56px)}html.hdr-min [role=tablist].tabs{top:var(--hb-min,56px)}[role=tablist].tabs.is-stuck{z-index:40;background:var(--_colour---ground);box-shadow:0 0 0 100vmax var(--_colour---ground);clip-path:inset(0 -100vmax)}'
++'@media (max-width:767px){.site-header{transition:padding .25s,margin-bottom .25s,transform .3s cubic-bezier(.2,.7,.2,1)}html.hh-hide .site-header{transform:translateY(-100%);transition:padding .25s,margin-bottom .25s,transform .26s cubic-bezier(.4,0,.2,1)}.tabs{top:var(--hb-full,93px)!important;transition:top .3s cubic-bezier(.2,.7,.2,1)}html.hdr-min .tabs{top:var(--hb-min,93px)!important}html.hh-hide .tabs{top:0!important;transition:top .26s cubic-bezier(.4,0,.2,1)}'+(rm?'.site-header,.tabs,html.hh-hide .site-header,html.hh-hide .tabs{transition:none!important}':'')+'}';
+d.head.appendChild(s);
+var on=false,y0=scrollY,acc=0,tk=0,lw=0,mq=0;
+function meas(){if(!h)return;lw=innerWidth;var was=R.classList.contains('hdr-min');R.classList.add('hdr-nt');R.classList.remove('hdr-min');var a=h.offsetHeight;R.classList.add('hdr-min');var b=h.offsetHeight;if(!was)R.classList.remove('hdr-min');h.offsetHeight;R.classList.remove('hdr-nt');
+h.style.setProperty('--hdr-d',Math.max(0,a-b)+'px');d.querySelectorAll('.tabs').forEach(function(t){t.style.setProperty('--hb-full',a+'px');t.style.setProperty('--hb-min',b+'px')})}
+function keep(){return R.classList.contains('bnav-open')||!!(h&&h.contains(d.activeElement))||!!d.querySelector('.rf-toggle[aria-expanded=true]')}
+function frame(){tk=0;var y=scrollY,dy=y-y0,i;y0=y;
+var hb=h?h.getBoundingClientRect().bottom:56,T=d.querySelectorAll('[role=tablist].tabs'),tp=[];for(i=0;i<T.length;i++)tp.push(T[i].getBoundingClientRect().top);
+if(!on&&y>140){on=true;R.classList.add('hdr-min')}else if(on&&y<20){on=false;R.classList.remove('hdr-min')}
+if(!M.matches||y<80||keep()){R.classList.remove('hh-hide');acc=0}else{if(dy&&(dy>0)!==(acc>0))acc=0;acc+=dy;if(acc>8)R.classList.add('hh-hide');else if(acc<-8)R.classList.remove('hh-hide')}
+for(i=0;i<T.length;i++)T[i].classList.toggle('is-stuck',y>0&&tp[i]<=hb+1)}
+function q(){if(!tk){tk=1;requestAnimationFrame(frame)}}
+addEventListener('scroll',q,{passive:true});d.addEventListener('focusin',q);
+addEventListener('resize',function(){if(innerWidth!==lw){clearTimeout(mq);mq=setTimeout(meas,150)}q()});
+addEventListener('load',meas);if(d.fonts&&d.fonts.ready)d.fonts.ready.then(meas);
+meas();frame()})();
+}catch(e){console.warn('[ltbundle] headerbar-2.0.0',e)}
+
+/* --- ailabelsamesize-1.0.0.js --- */
+try{
+(function(){function sc(el){var s=1,p=el.parentElement;while(p&&p!==document.body){var t=getComputedStyle(p).transform;if(t&&t!=='none'){try{s*=new DOMMatrix(t).a}catch(e){}}p=p.parentElement}return s}function fix(){[].forEach.call(document.querySelectorAll('.ail'),function(a){var s=sc(a);if(Math.abs(s-1)>.02&&s>0){a.style.transformOrigin=a.classList.contains('ail-below')?'50% 0':'0 0';a.style.scale=String(1/s)}else a.style.scale=''})}if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',fix);else fix();addEventListener('load',fix);addEventListener('resize',fix);setTimeout(fix,1500);setTimeout(fix,4000)})();
+}catch(e){console.warn('[ltbundle] ailabelsamesize-1.0.0',e)}
+/* --- teaserframes-1.1.0.js --- */
+try{
+/* teaserframes 1.1.0 (7 Nov 2026): also frames the photos on /recipes and /served (their photo-in-frame parallax was removed; the cards move instead). */
+(function(){if(/(^|\.)webflow\.com$/i.test(location.hostname)||/^\/recipe\//.test(location.pathname))return;
+function vis(i){return i&&i.getAttribute('src')&&!i.classList.contains('w-dyn-bind-empty')}
+function wrap(img,ar){if(!img||img.closest('.lt-px,.lt-fx'))return;var w=document.createElement('div');w.className='lt-px lt-fx';var a=ar||getComputedStyle(img).aspectRatio;if(a&&a!=='auto')w.style.aspectRatio=a;img.parentNode.insertBefore(w,img);w.appendChild(img)}
+function run(){
+[].forEach.call(document.querySelectorAll('.recipes-slot a.teaser[data-module],.tag-slot a.teaser[data-module],.overview .row a.module[data-module]'),function(a){if(a.querySelector('.lt-px'))return;var ph=a.querySelector('img.teaser-photo:not([data-illu]),img.module-photo:not([data-illu])'),il=a.querySelector('img[data-illu]');if(vis(ph))wrap(ph);else if(vis(il))wrap(il)});
+[].forEach.call(document.querySelectorAll('a.nu-card'),function(a){if(a.querySelector('.lt-fx'))return;var il=a.querySelector('img.nu-illu:not([data-cutout])');if(vis(il))wrap(il)})}
+var p=0;function q(){if(p)return;p=1;setTimeout(function(){p=0;run()},40)}
+function go(){run();var m=document.querySelector('main');if(m)new MutationObserver(q).observe(m,{childList:true,subtree:true})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,0)});else setTimeout(go,0);addEventListener('load',q)})();
+}catch(e){console.warn('[ltbundle] teaserframes-1.1.0',e)}
+/* --- teaserstamps-1.0.0.js --- */
+try{
+(function(){if(/(^|\.)webflow\.com$/i.test(location.hostname)||/^\/recipe\//.test(location.pathname))return;var O=null,asked=0;
+function dec(s){var t=document.createElement('textarea');t.innerHTML=s;return t.value}
+function run(){var need=0;[].forEach.call(document.querySelectorAll('main a.teaser,main a.module[data-module],main a.nu-card'),function(a){if(a.querySelector('.status-stamp'))return;var ph=a.querySelector('img.teaser-photo:not([data-illu]),img.module-photo:not([data-illu])');var sv=ph&&ph.getAttribute('src')&&!ph.classList.contains('w-dyn-bind-empty');var tx;
+if(sv){var s=a.getAttribute('data-slug')||(a.getAttribute('href')||'').split('?')[0].split('/').pop();tx=a.getAttribute('data-stamp');if(tx===null){if(O&&O.R[s]){var m=O.R[s].h.match(/data-stamp="([^"]*)"/);tx=m?dec(m[1]):''}else if(!O){need=1;return}}tx=tx||'Cooked and served'}else tx='Will be served soon';
+var e=document.createElement('div');e.className='status-stamp is-teaser lt-stamp';e.textContent=tx;a.appendChild(e)});
+if(need&&!asked&&window.ltLib){asked=1;ltLib(function(o){O=o||{R:{}};run()})}}
+var p=0;function q(){if(p)return;p=1;setTimeout(function(){p=0;run()},40)}
+function go(){run();var m=document.querySelector('main');if(m)new MutationObserver(q).observe(m,{childList:true,subtree:true})}
+if(document.readyState==='loading')document.addEventListener('DOMContentLoaded',function(){setTimeout(go,0)});else setTimeout(go,0)})();
+}catch(e){console.warn('[ltbundle] teaserstamps-1.0.0',e)}
+/* --- teaserparallax-1.2.0.js --- */
+try{
+/* teaserparallax 1.2.0 (8 Nov 2026): only the cards near the screen are measured and moved (IntersectionObserver); all reads first, then all writes. Was: every card on every frame, which stuttered on /recipes once all 436 cards were shown. The speed pattern per card is unchanged. */
+(function(){if(/(^|\.)webflow\.com$/i.test(location.hostname)||!/^\/(recipes|served|next-up|ingredient\/)/.test(location.pathname))return;if(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)return;if(!window.IntersectionObserver)return;
+var d=document,SEL='.recipes-slot .teaser-grid>.w-dyn-item,.nu-backlog-grid>.w-dyn-item,.overview .row .module-row>.w-dyn-item',K=[0,.09,.045],t=0,r=0,V=new Set(),IX=new Map(),seen=new WeakSet();
+function reset(it){if(it.dataset.py&&it.dataset.py!=='0'){it.style.transform='';it.dataset.py=0}}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting)V.add(e.target);else V.delete(e.target)});q()},{rootMargin:'240px 0px'});
+function reindex(){r=0;var i=0;[].forEach.call(d.querySelectorAll(SEL),function(it){if(!seen.has(it)){seen.add(it);io.observe(it)}if(it.classList.contains('is-filtered')||it.offsetParent===null){IX.delete(it);reset(it)}else IX.set(it,i++)});q()}
+function rq(){if(!r){r=1;setTimeout(reindex,80)}}
+function upd(){t=0;var vh=innerHeight,f=innerWidth<768?.5:1,a=[];
+V.forEach(function(it){if(IX.has(it))a.push([it,it.getBoundingClientRect()])});
+a.forEach(function(p){var it=p[0],b=p[1],k=K[IX.get(it)%3]*f,o=parseFloat(it.dataset.py||0),c=b.top-o+b.height/2,y=Math.round(-(c-vh/2)*k*10)/10;if(Math.abs(y)>140)y=y>0?140:-140;if(String(y)!==it.dataset.py){it.dataset.py=y;it.style.transform=y?'translate3d(0,'+y+'px,0)':''}})}
+function q(){if(!t){t=1;requestAnimationFrame(upd)}}
+function go(){reindex();var m=d.querySelector('main')||d.body;new MutationObserver(function(ms){for(var i=0;i<ms.length;i++){var x=ms[i];if(x.type==='childList'){rq();return}var n=x.target,was=/(^|\s)is-filtered(\s|$)/.test(x.oldValue||'');if(n.classList.contains('is-filtered')!==was||x.attributeName==='hidden'){rq();return}}}).observe(m,{childList:true,subtree:true,attributes:true,attributeOldValue:true,attributeFilter:['class','hidden']})}
+addEventListener('scroll',q,{passive:true});addEventListener('resize',function(){rq()});addEventListener('load',rq);d.addEventListener('click',function(){setTimeout(rq,50);setTimeout(rq,400)});
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',go);else go()})();
+}catch(e){console.warn('[ltbundle] teaserparallax-1.2.0',e)}
+
+/* --- phonetilt-1.3.0.js --- */
+/* phonetilt 1.3.0 (11 Nov 2026, Nathalie): tilt only on Home and recipe pages (/ and /recipe/); off on Recipes, Served, Next up, Ingredients, ingredient, tag and source pages. On recipe pages the Main ingredient teasers tilt too: the photo in its circle shifts (scaled 1.16 so no edge shows), the illustration on its circle turns like the other cut-outs. */
+try{
+/* phonetilt 1.2.0 (8 Nov 2026). On phones the cut-outs turn a little and the photos shift inside their frames when the phone tilts; only elements near the screen are updated, directly on the element (1.1.0). 1.2.0: about 2.4 times stronger (shift up to 12 px instead of 5, photos scaled 1.16 instead of 1.08 so no edge shows), and the ingredient polaroids (Home, ingredient and recipe pages) tilt again: they read --lt-tx/--lt-ty, which 1.1.0 no longer set; the two values now go onto those elements only. Source pages (/source/) and /ingredients use this copy too; their separate phonetilt 1.0.3 was removed. */
+(function(){var M=window.matchMedia,W=window;if(document.getElementById('aot-world')||!/^\/($|classic\/?$|recipe\/)/.test(location.pathname))return;if(!M||!M('(hover:none) and (pointer:coarse)').matches||M('(prefers-reduced-motion: reduce)').matches||!W.DeviceOrientationEvent||!W.IntersectionObserver)return;
+var d=document,R=d.documentElement,b0=null,g0=0,tx=0,ty=0,cx=0,cy=0,raf=0,on=0,MX=12,G=.85,TR='0 1 0 0deg',TX='0px',TY='0px',K=':is(.nu-illu[data-cutout],.illustration-slot,.mi-media>.mi-img:not(.is-photo))',F=':is(:is(.parallax-frame,.lt-ff,.lt-fx,.lt-px)>img,.mi-media>.mi-img.is-photo)',P=':is(.ingredient-cutout,.ingredient-ghost,.lt-dw>img)',V=new Set(),seen=new WeakSet(),mt=0,c=d.createElement('style');
+c.textContent='html.lt-tilt '+F+'{scale:1.16}html.lt-tilt body :is(.ingredient-ghost,.ingredient-cutout){scale:1.1}';d.head.appendChild(c);
+function put(el){var k=el._ltk;if(k===1){if(el.parentNode&&!el._ltp){el._ltp=1;el.parentNode.style.perspective='700px'}el.style.rotate=TR}else if(k===2){el.style.setProperty('--lt-tx',TX);el.style.setProperty('--lt-ty',TY)}else el.style.translate=TX+' '+TY}
+var io=new IntersectionObserver(function(es){es.forEach(function(e){if(e.isIntersecting){V.add(e.target);if(on)put(e.target)}else V.delete(e.target)})},{rootMargin:'240px 0px'});
+function scan(){mt=0;d.querySelectorAll(K+','+F+','+P).forEach(function(el){if(seen.has(el))return;seen.add(el);el._ltk=el.matches(P)?2:el.matches(K)?1:0;io.observe(el)})}
+function ev(e){if(e.beta==null)return;var b=e.beta,g=e.gamma,a=(screen.orientation&&screen.orientation.angle)||W.orientation||0,k;
+if(a==90||a==-270){k=b;b=-g;g=k}else if(a==-90||a==270){k=b;b=g;g=-k}
+if(b0===null){b0=b;g0=g}b0+=(b-b0)*.02;g0+=(g-g0)*.02;
+tx=Math.max(-MX,Math.min(MX,-(b-b0)*G));ty=Math.max(-MX,Math.min(MX,-(g-g0)*G));
+if(!on){on=1;R.classList.add('lt-tilt')}if(!raf)raf=requestAnimationFrame(st)}
+function st(){raf=0;cx+=(tx-cx)*.15;cy+=(ty-cy)*.15;var a=Math.sqrt(cx*cx+cy*cy),r2=a<.05?'0 1 0 0deg':(cx/a).toFixed(3)+' '+(cy/a).toFixed(3)+' 0 '+Math.min(a*.8,12).toFixed(2)+'deg',x2=cy.toFixed(1)+'px',y2=cx.toFixed(1)+'px';
+if(r2!==TR||x2!==TX||y2!==TY){TR=r2;TX=x2;TY=y2;V.forEach(put)}if(Math.abs(tx-cx)>.02||Math.abs(ty-cy)>.02)raf=requestAnimationFrame(st)}
+function go(){W.addEventListener('deviceorientation',ev,{passive:true})}
+function boot(){scan();new MutationObserver(function(){if(!mt)mt=setTimeout(scan,250)}).observe(d.body,{childList:true,subtree:true});addEventListener('load',scan)}
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',boot);else boot();
+var Q=DeviceOrientationEvent.requestPermission;if(typeof Q!=='function'){go();return}
+var s;try{s=localStorage.getItem('lt-tilt')}catch(e){}if(s==='denied')return;
+function ask(e){if(e.target.closest&&e.target.closest('a,button,input,select,textarea,label'))return;d.removeEventListener('touchend',ask,true);
+DeviceOrientationEvent.requestPermission().then(function(r){try{localStorage.setItem('lt-tilt',r)}catch(x){}if(r==='granted')go()},function(){d.addEventListener('touchend',ask,true)})}
+d.addEventListener('touchend',ask,true)})();
+}catch(e){console.warn('[ltbundle] phonetilt-1.3.0',e)}
+
+/* --- navdicons-1.0.0.js --- */
+try{
+/* navdicons 1.0.0 · icon paths for the phone nav D (Figma "Icon / Nav / …") */window.LTND={start:["M4 10.5L12 4L20 10.5V19.5C20 19.77 19.89 20.02 19.71 20.21C19.52 20.39 19.27 20.5 19 20.5H14.5V14.5H9.5V20.5H5C4.73 20.5 4.48 20.39 4.29 20.21C4.11 20.02 4 19.77 4 19.5V10.5Z"],recipes:["M12 19.8C13.6 18.5 15.8 18 20 18.2V5C15.8 4.8 13.6 5.3 12 6.6C10.4 5.3 8.2 4.8 4 5V18.2C8.2 18 10.4 18.5 12 19.8ZM12 6.6V19.8"],crossword:["M5.5 4h13c.83 0 1.5.67 1.5 1.5v13c0 .83-.67 1.5-1.5 1.5h-13c-.83 0-1.5-.67-1.5-1.5v-13C4 4.67 4.67 4 5.5 4ZM9.33 4V20M14.67 4V20M4 9.33H20M4 14.67H20"],menu:["M4.5 7H19.5M4.5 12H19.5M4.5 17H19.5"],ingredients:["4.5,4.5|M1.8 13.2C-0.8 10.6 -0.3 5.8 2.8 2.7C5.9 -0.4 10.7 -0.9 13.3 1.7M1.8 13.2C4.4 15.8 9.2 15.3 12.3 12.2C15.4 9.1 15.9 4.3 13.3 1.7M1.8 13.2L0 15M13.3 1.7L15 0M5 10C5.4 7.8 6.9 6.1 9.4 5.4"],nextup:["5,6.5|M14 7C14 10.87 10.87 14 7 14C3.13 14 0 10.87 0 7C0 3.13 3.13 0 7 0C10.87 0 14 3.13 14 7Z","10,3.5|M2 6.5L2 10L4.5 12M0 0L4 0M2 0L2 3"],served:["4,7.5|M0 9.5L16 9.5M1.5 9.5C1.5 5 4.5 2 8 2M8 2C11.5 2 14.5 5 14.5 9.5M8 2L8 0M6.5 0L9.5 0M3 12L13 12"],sources:["5,4.5|M4 15L4 0L0 0L0 15L4 15ZM4 15L8 15L8 2L4 2M8.5 2.7L12.3 1.7L15.8 14.3L12 15.3L8.5 2.7Z"],recommend:["4.5,6|M7.5 2.5L7.5 7.5M5 5L10 5M0 0L15 0L15 10L5.5 10L2 13L2 10L0 10L0 0Z"],about:["4,4|M8 7L8 12M8 4L8 4.2M8 0C12.42 0 16 3.58 16 8C16 12.42 12.42 16 8 16C3.58 16 0 12.42 0 8C0 3.58 3.58 0 8 0Z"],ai:["6,4|M6 0C6.6 4.4 7.6 5.4 12 6C7.6 6.6 6.6 7.6 6 12C5.4 7.6 4.4 6.6 0 6C4.4 5.4 5.4 4.4 6 0ZM11.5 11C11.75 12.6 12.15 13 13.5 13.25C12.15 13.5 11.75 13.9 11.5 15.5C11.25 13.9 10.85 13.5 9.5 13.25C10.85 13 11.25 12.6 11.5 11Z"],dots:["6,12|M0 0L0 0.1M6 0L6 0.1M12 0L12 0.1"],less:["6.5,9.5|M0 0L5.5 5.5L11 0"]};
+}catch(e){console.warn('[ltbundle] navdicons-1.0.0',e)}
+/* --- navdcss-1.0.1.js --- */
+try{
+/* navdcss 1.0.1 · phone nav D (Menu, More, Less), base; 1.0.1: current page = filled ink circle, light icon and label (no outline) */!function(){var i=document.createElement("style");i.textContent=".nd-w{display:none}@media (max-width:767px){html.nd .bnav,html.nd .bnav-sheet,html.nd .bnav-scrim{display:none!important}html.nd body{padding-bottom:calc(96px + env(safe-area-inset-bottom))}.nd-w{display:block;position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:900;width:64px;height:64px}.nd-s{display:block;position:fixed;inset:0;z-index:898;background:rgba(20,16,12,.38);opacity:0;visibility:hidden;transition:opacity .2s,visibility 0s .2s}html.nd-1 .nd-s,html.nd-2 .nd-s{opacity:1;visibility:visible;transition:opacity .2s}.nd-b,.nd-c{position:absolute;right:0;bottom:0;width:64px;height:64px;margin:0;padding:0;box-sizing:border-box;border-radius:50%;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:1px;background:var(--_colour---glass-fill,rgba(255,253,243,.85));-webkit-backdrop-filter:blur(18px);backdrop-filter:blur(18px);border:1px solid var(--_colour---hairline);box-shadow:0 8px 22px -12px rgba(40,25,5,.5);color:var(--_colour---ink);font:600 10px/12px Barlow,sans-serif;letter-spacing:.02em;text-decoration:none;-webkit-tap-highlight-color:transparent}.nd-b{z-index:2;gap:2px;font-size:11px;line-height:13px;cursor:pointer;transition:transform .09s}.nd-b:active{transform:scale(.94)}.nd-w svg{width:22px;height:22px;fill:none;stroke:currentColor;stroke-width:1.5;stroke-linecap:round;stroke-linejoin:round}.nd-b svg{width:24px;height:24px}.nd-c.is-cur,.nd-b.is-cur{background:var(--_colour---ink);color:var(--_colour---ground);border-color:var(--_colour---ink);-webkit-backdrop-filter:none;backdrop-filter:none}.nd-c:focus-visible,.nd-b:focus-visible{outline:2px solid var(--_colour---accent);outline-offset:2px}}",document.head.appendChild(i)}();
+}catch(e){console.warn('[ltbundle] navdcss-1.0.1',e)}
+/* --- navdcss2-1.0.2.js --- */
+
+try{
+/* navdcss2 1.0.2 · 1.0.2 (8 Nov 2026): the sizes are only rewritten when they really change (phones fire resize while the address bar hides during scrolling; every write restyled the whole page). phone nav D (Menu, More, Less), motion; 1.0.1: step and circle size shrink on short screens so all 7 circles fit */!function(){var t=document.createElement("style");t.textContent='@media (max-width:767px){.nd-c{width:var(--nd-sz,64px);height:var(--nd-sz,64px);right:calc((64px - var(--nd-sz,64px))/2);bottom:calc(var(--k)*var(--nd-st,76px) + (64px - var(--nd-sz,64px))/2);opacity:0;visibility:hidden;transform:translateY(calc(var(--k)*var(--nd-st,76px))) scale(.6);transition:transform .18s cubic-bezier(.4,0,.6,1) var(--o),opacity .18s var(--o),visibility 0s calc(var(--o) + .18s)}html.nd-1 .nd-c[data-g="1"],html.nd-2 .nd-c[data-g="2"]{opacity:1;visibility:visible;transform:none;transition:transform .26s cubic-bezier(.34,1.4,.64,1) var(--i),opacity .12s var(--i)}html.nd-1 .nd-c[data-g="2"]{transition:none;transform:translateY(calc((var(--k) - 3)*var(--nd-st,76px))) scale(.6)}html.nd-1 .nd-c[data-g="2"][data-f]{transform:scale(.92)}html.nd-2 .nd-c[data-g="1"]{transform:scale(.92);transition:transform .2s,opacity .2s,visibility 0s .2s}.nd-c .nd-sm{font-size:9px}}@media (max-width:767px) and (prefers-reduced-motion:reduce){.nd-c,html .nd-c[data-g]{transform:none!important;transition:opacity .15s,visibility 0s!important}}',document.head.appendChild(t);var R=document.documentElement;var ls='';function f(){var h=innerHeight,s=Math.min(76,Math.max(56,(h-100)/7)),z=Math.min(64,Math.max(50,s-8)),k=s.toFixed(1);if(k===ls)return;ls=k;R.style.setProperty('--nd-st',k+'px');R.style.setProperty('--nd-sz',z.toFixed(1)+'px')}f();addEventListener('resize',f)}();
+}catch(e){console.warn('[ltbundle] navdcss2-1.0.2',e)}
+
+/* --- navdbuild-1.0.0.js --- */
+try{
+/* navdbuild 1.0.0 · phone nav D: builds the button, the scrim and the circles (needs navdicons) */
+window.LTNDB=function(){var e=document,t=window.LTND,s=location.pathname.replace(/\/+$/,"")||"/";var hm=(function(){var w=e.querySelector(".site-header a.wordmark");return (w&&w.getAttribute("href")||"/").replace(/(.)\/+$/,"$1")})();var r="/"===s||hm===s?"start":/^\/crossword/.test(s)?"crossword":/^\/(recipes|recipe|tag)(\/|$)/.test(s)?"recipes":"more";function a(e){return'<svg viewBox="0 0 24 24" aria-hidden="true"'+("dots"===e?' style="stroke-width:2.4"':"")+">"+t[e].map(function(e){var t=e.split("|");return t[1]?'<path transform="translate('+t[0]+')" d="'+t[1]+'"/>':'<path d="'+e+'"/>'}).join("")+"</svg>"}var n=e.createElement("div"),i=e.createElement("div"),d=e.createElement("button"),o=e.createElement("nav"),c=[],u=!1;return n.className="nd-w",i.className="nd-s",d.type="button",d.className="nd-b",d.setAttribute("aria-controls","nd-list"),o.id="nd-list",o.setAttribute("aria-label","Main"),[[[["Start",hm,"start"],["Recipes","/recipes","recipes"],["Crossword","/crossword","crossword"]],"1"],[[["Ingredients","/ingredients","ingredients"],["Next up","/next-up","nextup"],["Served","/served","served"],["Sources","/sources","sources"],["Recommend","/recommend","recommend"],["About","/about","about"],["How I use AI","/how-i-use-ai","ai"]],"2"]].forEach(function(t){var n=t[0],i=n.length;n.forEach(function(n,d){var p,l=i-d,m=e.createElement("a"),h="1"===t[1]?n[2]===r:(p=n[1],s===p||0===s.indexOf(p+"/")||0===s.indexOf(p.replace(/s$/,"")+"/"));m.className="nd-c",m.href=n[1],m.setAttribute("data-g",t[1]),h&&(m.classList.add("is-cur"),m.setAttribute("aria-current","page"),"2"===t[1]&&(u=!0)),"2"===t[1]&&l<4&&m.setAttribute("data-f",""),m.style.cssText="--k:"+l+";--o:"+20*(i-l)+"ms;--i:"+("1"===t[1]?40*(l-1):l<4?0:80+40*(l-4))+"ms",m.innerHTML=a(n[2])+"<span"+(/^(Recommend|How)/.test(n[0])?' class="nd-sm"':"")+">"+n[0]+"</span>",o.appendChild(m),c.push(m)})}),n.appendChild(o),n.appendChild(d),e.body.appendChild(i),e.body.appendChild(n),{b:d,u:o,sc:i,C:c,sec:u,svg:a}};
+}catch(e){console.warn('[ltbundle] navdbuild-1.0.0',e)}
+/* --- navd-1.0.0.js --- */
+try{
+/* navd 1.0.0 · phones: "Menu" → primary circles ("More") → secondary circles ("Less") → back to "Menu". A tap outside the buttons, Esc or scrolling also goes back. Needs navdicons, navdbuild, navdcss, navdcss2. */
+!function(){var e=document,t=e.documentElement;function n(){if(window.LTND&&window.LTNDB&&!e.querySelector(".nd-w")){t.classList.add("nd");var n=LTNDB(),s=n.b,a=n.u,i=0,o=0,r=[["menu","Menu"],["dots","More"],["less","Less"]];d(0),s.addEventListener("click",function(e){d((i+1)%3,0===e.detail)}),e.addEventListener("click",function(e){i&&!e.target.closest(".nd-b,.nd-c")&&(e.preventDefault(),e.stopPropagation(),d(0))},!0),e.addEventListener("keydown",function(e){"Escape"===e.key&&i&&(d(0),s.focus())}),addEventListener("scroll",function(){i&&Math.abs(scrollY-o)>12&&d(0)},{passive:!0}),addEventListener("pageshow",function(){d(0)})}function d(e,d){if(i=e,t.classList.toggle("nd-1",1===e),t.classList.toggle("nd-2",2===e),t.classList.toggle("bnav-open",e>0),s.innerHTML=n.svg(r[e][0])+"<span>"+r[e][1]+"</span>",s.setAttribute("aria-expanded",e>0),s.setAttribute("aria-label",r[e][1]),s.classList.toggle("is-cur",1===e&&n.sec),n.C.forEach(function(t){var n=+t.getAttribute("data-g")===e;t.tabIndex=n?0:-1,n?t.removeAttribute("inert"):t.setAttribute("inert","")}),o=scrollY,d){var c=a.querySelector('[data-g="'+e+'"]');c&&c.focus({preventScroll:!0})}}}"loading"===e.readyState?e.addEventListener("DOMContentLoaded",n):n()}();
+}catch(e){console.warn('[ltbundle] navd-1.0.0',e)}
+/* --- tabscroll-1.0.0.js --- */
+try{
+/* tabscroll 1.0.0 (8 Nov 2026): phones, course tabs in one swipeable row (CSS in ltheadcss 1.0.2). Hides the arrow at the end of the row (ts-end) or when all tabs fit (ts-fit), and brings the active tab into view. */
+(function(){var d=document,M=matchMedia('(max-width:767px)'),L=[],t=0;
+function chk(){t=0;L.forEach(function(x){var e=x.scrollWidth-x.clientWidth;x.classList.toggle('ts-fit',e<=2);x.classList.toggle('ts-end',e>2&&x.scrollLeft>=e-2)})}
+function q(){if(!t){t=1;requestAnimationFrame(chk)}}
+function show(x){var a=x.querySelector('[data-tab].is-active,[aria-selected=true]');if(!a||!M.matches)return;var r=a.getBoundingClientRect(),b=x.getBoundingClientRect();if(r.right>b.right-40)x.scrollLeft+=r.right-b.right+56}
+function go(){L=[].slice.call(d.querySelectorAll('[role=tablist].tabs'));L.forEach(function(x){x.addEventListener('scroll',q,{passive:true});new MutationObserver(q).observe(x,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class']});show(x)});q()}
+addEventListener('resize',q);addEventListener('load',function(){L.forEach(show);q()});
+if(d.readyState==='loading')d.addEventListener('DOMContentLoaded',go);else go()})();
+}catch(e){console.warn('[ltbundle] tabscroll-1.0.0',e)}
+
+</script><script src="/aot-switch.js"></script></body></html>

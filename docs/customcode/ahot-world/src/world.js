@@ -1,6 +1,6 @@
 /* Ahead of Thyme · /world · v__VERSION__
    Source: https://github.com/natvernier/ai-content-lab/tree/main/docs/customcode/ahot-world
-   Runs only on the /world page of ahatofthyme.com. Reads the main site, never writes to it.
+   Runs only on the World page of ahatofthyme.com (/world, or the start page / once Classic has moved to /classic). Reads the main site, never writes to it.
    Everything it draws lives in one Shadow DOM root (#aot-world), so site scripts and styles cannot touch it. */
 (function(){
 'use strict';
@@ -21,7 +21,8 @@ if(D0.readyState==='loading')D0.addEventListener('DOMContentLoaded',start);else 
 function fail(){
   const h=D0.getElementById('aot-world');if(!h)return;
   const r=h.shadowRoot||h.attachShadow({mode:'open'});
-  r.innerHTML='<p style="font:16px/1.5 Barlow,sans-serif;padding:40px;max-width:520px">This view could not start. <a href="/">A Hat of Thyme</a></p>';
+  const home=location.pathname==='/'?'/classic':'/';  /* when the World is the start page, the way out is the Classic start */
+  r.innerHTML='<p style="font:16px/1.5 Barlow,sans-serif;padding:40px;max-width:520px">This view could not start. <a href="'+home+'">A Hat of Thyme</a></p>';
 }
 
 function boot(){
