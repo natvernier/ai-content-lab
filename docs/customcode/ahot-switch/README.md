@@ -5,7 +5,7 @@ Design: Figma component set "AoT · World corner button (C)" (857:3981), chosen 
 
 ## Where it runs
 
-On `*.webflow.io`, and on any host once the new structure is published: World is the start page (`/`), the Classic start lives at `/classic` (the script reads this from the Classic header logo). On today's live site (logo → `/`) it does nothing (tested: the same page under the live host gets no element, no style, no class). Since 17 Nov (v1.1.0, Nathalie: "World becomes the start page").
+On every Classic page, on staging and live (v1.2.0, 21 Nov 2026). The site was published live with the switch on 17 Nov; since 21 Nov Classic is the start page again (`/`) and the World lives at `/world`. The script reads the structure from the Classic header logo (`/` → World at `/world`; `/classic` → World at `/`), so it works with either. Old addresses of the other structure forward to `/` (`/classic` when Classic is at `/`, `/world` when the World is at `/`).
 
 ## What it adds (and nothing else)
 
@@ -37,10 +37,10 @@ Old `/world…` addresses forward to the World at `/` (same hash). The Classic r
 python3 build/build.py 1.0.0                     # dist/aot-switch.js + .min.js
 python3 test/make_mock.py site_code_pages.json test/lamp-embed-1.2.html   # stand-in of the live header + site-wide code (not in the repo)
 python3 test/make_mock.py site_code_pages.json test/lamp-embed-1.2.html new head.html lthead.js ltbundle.js   # test/mock-new: World at /, Classic at /classic
-cp dist/aot-switch.js test/mock/ && cp dist/aot-switch.js test/mock-new/ && node test/smoke.js   # 47 checks: live guard, positions, lamp, menu, links, keyboard, night, both structures, no 404 targets
+cp dist/aot-switch.js test/mock/ && cp dist/aot-switch.js test/mock-new/ && node test/smoke.js   # 48 checks: live guard, positions, lamp, menu, links, keyboard, night, both structures, no 404 targets
 ```
 
-Current release (17 Nov 2026): v1.1.0, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afb9c2b009c2050c7f8c03a_aot-switch-1.1.0.js`, registered script `aotswitch` 1.1.0 (SRI sha384), site-wide footer.
+Current release (21 Nov 2026): v1.2.0, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6b01889cff859a0d724aa3ff_aot-switch-1.2.0.js`, registered script `aotswitch` 1.2.0 (SRI sha384), site-wide footer. 1.2.0: no webflow.io-only guard any more (the switch is part of the live site); `/classic` forwards to `/` when Classic is the start page.
 
 With it (17 Nov): `lthead` 1.0.6 (start-page stamp rule also on /classic) and `ltbundle` 1.3.3 (phone menu Start = Classic start from the logo, marked there; phone tilt on /classic, never on the World page). Both behave exactly as before while the Classic start is still `/`.
 

@@ -23,7 +23,7 @@ const exists=(dir,href)=>{const u=new URL(href,STAGE);const f=path.join(__dirnam
  // ---------- live host: the script must do nothing ----------
  const lc=await b.newContext({viewport:{width:1440,height:900}});await serve(lc);const lp=await lc.newPage();lp.on('pageerror',e=>errs.push('live: '+e.message));
  for(const w of [1440,820,390]){await lp.setViewportSize({width:w,height:900});await lp.goto(LIVE+'/ingredient/lemon');await lp.waitForTimeout(500);
-   const g=await geo(lp);ok(`live ${w}: nothing added (no button, no style, no class, lamp untouched)`,!g.host&&!g.css&&!g.cls&&g.mg==='0px',g);}
+   const g=await geo(lp);ok(`live ${w}: the switch runs live too (since 21 Nov), links to /world`,g.host&&g.css&&g.cls&&g.links.map(l=>l.href).join()==='/,/world#lemon,/world#lemon-list',g);}
  const liveGeo={};for(const w of [1440,820,390]){await lp.setViewportSize({width:w,height:900});await lp.goto(LIVE+'/');await lp.waitForTimeout(400);liveGeo[w]=await geo(lp);}
  await lc.close();
  // ---------- staging, desktop ----------
@@ -109,7 +109,9 @@ const exists=(dir,href)=>{const u=new URL(href,STAGE);const f=path.join(__dirnam
  {const n=await b.newContext({viewport:{width:390,height:844},isMobile:true,hasTouch:true});await serve(n,'mock');const np=await n.newPage();
    await np.goto(LIVE+'/');await np.waitForTimeout(600);
    const ov=await np.evaluate(()=>{const nd=[...document.querySelectorAll('.nd-c')].map(a=>a.getAttribute('href')+(a.classList.contains('is-cur')?'*':''));return {nd,sw:!!document.getElementById('aot-switch')};});
-   ok('today\'s live structure with the new site code: phone menu Start is / and marked, no switch',ov.nd[0]==='/*'&&!ov.sw,ov);
+   ok('Classic at / on the live host: phone menu Start is / and marked, switch shown',ov.nd[0]==='/*'&&ov.sw,ov);
+   await np.goto(LIVE+'/classic#x');await np.waitForTimeout(600);
+   ok('Classic at /: an old /classic address forwards to /',new URL(np.url()).pathname==='/'&&new URL(np.url()).hash==='#x',np.url());
    await n.close();}
  ok('no errors',errs.length===0,errs.slice(0,4));
  await b.close();

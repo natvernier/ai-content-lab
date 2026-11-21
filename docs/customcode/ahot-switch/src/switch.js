@@ -1,9 +1,11 @@
 /* Ahead of Thyme · world switch for the Classic site · v__VERSION__
    Source: https://github.com/natvernier/ai-content-lab/tree/main/docs/customcode/ahot-switch
    Corner button with menu: Classic · Cosmos · List (Figma 857:3981 "AoT · World corner button (C)", chosen by Nathalie on 16 Nov 2026).
-   Runs on *.webflow.io, and on any host once the new structure is published (World is the start page, the Classic
-   start lives at /classic: read from the Classic header logo). On today's live site (logo → "/") it does nothing.
-   Skips the World page (#aot-world; it has its own switch). Old /world addresses forward to the World at "/" (v1.1.0).
+   Runs on every Classic page, on staging and live (v1.2.0, 21 Nov: the switch is part of the site since the live publish
+   of 17 Nov). Where things are is read from the Classic header logo: logo → "/" means Classic is the start page and the
+   World lives at /world (Nathalie's choice since 21 Nov); logo → "/classic" means the World is the start page (17–21 Nov).
+   Skips the World page (#aot-world; it has its own switch). Old addresses of the other structure forward:
+   /classic → / and /world → / (same search and hash).
    It only adds: one element inside the site header (a Shadow DOM root, so site styles cannot reach it) and one small style.
    On tablets and phones the ceiling lamp moves 48 / 52 px to the left to make room; nothing else in the header changes.
    Rule (user flow 851:3694): same place in the other world, else one level up, else its start. */
@@ -18,10 +20,11 @@ function plan(){
   if(D.getElementById('aot-world'))return false;                       /* the World page has its own switch */
   var logo=D.querySelector('.site-header a.wordmark');
   CLASSIC=((logo&&logo.getAttribute('href'))||'/').replace(/(.)\/+$/,'$1');
-  var moved=CLASSIC!=='/';                                              /* new structure: World is the start page */
-  if(!moved&&!/\.webflow\.io$/i.test(L.hostname))return false;         /* today's live site: nothing happens */
+  var moved=CLASSIC!=='/';                                              /* World is the start page (17–21 Nov structure) */
   var WB=moved?'/':'/world';
-  if(/^\/world$/i.test(P)&&(moved||/\.webflow\.io$/i.test(L.hostname))){L.replace('/'+L.search+L.hash);return false;}   /* old /world links (the World page itself returned above) */
+  /* old addresses of the other structure (the World page itself returned above): */
+  if(moved&&/^\/world$/i.test(P)){L.replace('/'+L.search+L.hash);return false;}
+  if(!moved&&/^\/classic$/i.test(P)){L.replace('/'+L.search+L.hash);return false;}
   var m,cos='#world',lst='#list',view='';
   if((m=/^\/ingredient\/([^\/]+)$/i.exec(P))){cos='#'+m[1];lst='#'+m[1]+'-list';}
   else if((m=/^\/recipe\/([^\/]+)$/i.exec(P))){cos=lst='#recipe/'+m[1];view='?view=list';}

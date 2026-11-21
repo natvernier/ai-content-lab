@@ -40,7 +40,7 @@ BNAV = ('<div class="site-footer"><nav class="bnav" data-bnav="1"><a class="bnav
         '<a class="bnav-tab" data-bnav-tab="more" href="#" aria-controls="bnav-sheet" aria-expanded="false"><span class="bnav-ic"></span>More</a></nav>'
         '<div class="bnav-scrim"></div><div class="bnav-sheet" id="bnav-sheet"><div class="bnav-links"><a class="bnav-row" href="/ingredients">Ingredients</a><a class="bnav-row" href="/about">About</a></div></div></div>')
 WORLD_STUB = '<div id="aot-world"></div><p>World stand-in</p>'
-PAGES = {'': 'Home', 'ingredient/lemon': 'Lemon', 'recipe/citron-presse': 'Citron pressé', 'impressum': 'Impressum', 'ingredients': 'Ingredients', 'world': 'World'}
+PAGES = {'': 'Home', 'ingredient/lemon': 'Lemon', 'recipe/citron-presse': 'Citron pressé', 'impressum': 'Impressum', 'ingredients': 'Ingredients', 'world': 'World', '404': 'Not found'}
 if NEW: PAGES = {'classic': 'Classic', 'ingredient/lemon': 'Lemon', 'recipe/citron-presse': 'Citron pressé', 'impressum': 'Impressum', 'ingredients': 'Ingredients', '': 'World', '404': 'Not found'}
 for path, title in PAGES.items():
     body = ''.join(f'<p>{title}. Paragraph {i + 1} of the stand-in content, long enough to scroll the page and let the header shrink.</p>' for i in range(30))
