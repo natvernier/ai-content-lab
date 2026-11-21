@@ -37,11 +37,15 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await sh(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await p.waitForTimeout(1200);
  const l3=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;const q=s=>R.querySelector(s);return {h1:q('.rp h1')&&q('.rp h1').textContent,kick:q('.kick')&&q('.kick').textContent,place:q('.place')&&q('.place').textContent,src:q('.src b')&&q('.src b').textContent,
    steps:R.querySelectorAll('.steps li').length,ing:!!(q('.ing-list')&&q('.ing-list').textContent.trim()),photoPill:q('.rp-media > .ai')&&q('.rp-media > .ai').dataset.ai,stamp:q('.stamp')&&q('.stamp').textContent,pos:q('.pager .pos')&&q('.pager .pos').textContent,
-   more:R.querySelectorAll('.mcard').length,nested:R.querySelectorAll('button .ai').length,credit:q('.credit')&&q('.credit').textContent,tags:R.querySelectorAll('.pills span').length,loading:!!q('.rp.is-loading')};});
+   more:R.querySelectorAll('.mcard').length,nested:R.querySelectorAll('button .ai').length,credit:q('.credit')&&q('.credit').textContent,tags:R.querySelectorAll('.pills span').length,loading:!!q('.rp.is-loading'),
+   dash:R.querySelectorAll('.rp .dash > div').length,v2:!!q('.rpv2'),geo:(()=>{const b=e=>e?e.getBoundingClientRect():null,t=b(q('.rp-title')),m=b(q('.rp-media')),me=b(q('.rp-top .mem')),co=b(q('.rp-cols'));return t&&m&&me&&co?{titleAbove:t.bottom<=m.top,memBeside:me.left>=m.right+40&&Math.abs(me.top-m.top)<12,colsBelow:co.top>=m.bottom+60,mw:Math.round(m.width)}:null;})(),
+   comboOnNote:!!q('.notew.has-combo .side.combo'),comboAtPhoto:!!q('.rp-media .side')};});
  ok('L3 reads the recipe page',l3.h1==='Lemon & Thyme Vin de Citron'&&l3.steps>=3&&l3.ing&&!l3.loading,l3);
- ok('L3 place line from the index',/By the sea/.test(l3.place||''),l3.place);
+ ok('L3 v2 (Nathalie 21 Nov): title on top, photo with the memory beside it, columns below',l3.v2&&l3.geo&&l3.geo.titleAbove&&l3.geo.memBeside&&l3.geo.colsBelow&&l3.geo.mw===400,l3.geo);
+ ok('L3 v2: no kicker, place, source, numbers or image credit',!l3.kick&&!l3.place&&!l3.src&&l3.dash===0&&!l3.credit,l3);
+ ok('L3 v2: dish + Pip on the corner of the Note to self, not at the photo',l3.comboOnNote&&!l3.comboAtPhoto,l3);
  ok('L3 photo labelled Edited, no stamp (review 15 Nov)',l3.photoPill==='edited'&&!l3.stamp,l3);
- ok('no Filed-under list, credit stays',l3.tags===0&&/Image:/.test(l3.credit||''),l3);
+ ok('no Filed-under list',l3.tags===0,l3.tags);
  ok('L3 pager and More-with row',/^Lemon · \d+ of 8$/.test(l3.pos||'')&&l3.more===21,l3);
  ok('no AI pill inside a button',l3.nested===0,l3.nested);
  // pill opens the card and never navigates
@@ -61,9 +65,9 @@ const BASE=process.env.BASE||'http://localhost:8790';
  const cold=await sh(()=>Object.keys(window.AOT.REC).filter(k=>!window.AOT.done.has(k)&&/acquacotta|glogg|eggnog|potato|apfel/.test(k)===false)[5]);
  await p.route('**/recipe/'+cold+'*',async r=>{await new Promise(z=>setTimeout(z,1200));r.continue();});
  await sh(c=>location.hash='recipe/'+c,cold);await p.waitForTimeout(400);
- const ld=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),sd=f.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),img:!!f.querySelector('img.main'),ph:!!f.querySelector('.main.ph'),h:Math.round(f.getBoundingClientRect().height),side:sd?getComputedStyle(sd).visibility:'none'};});
+ const ld=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),sd=R.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),img:!!f.querySelector('img.main'),ph:!!f.querySelector('.main.ph'),h:Math.round(f.getBoundingClientRect().height),side:sd?getComputedStyle(sd).visibility:'none'};});
  await p.waitForTimeout(2500);
- const lt=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),m=f.querySelector('img.main'),sd=f.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),main:m&&m.classList.contains('ok')&&getComputedStyle(m).opacity,side:sd&&sd.classList.contains('ok')&&getComputedStyle(sd).visibility,h:Math.round(f.getBoundingClientRect().height)};});
+ const lt=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),m=f.querySelector('img.main'),sd=R.querySelector('.side');return {loading:!!R.querySelector('.rp.is-loading'),main:m&&m.classList.contains('ok')&&getComputedStyle(m).opacity,side:sd&&sd.classList.contains('ok')&&getComputedStyle(sd).visibility,h:Math.round(f.getBoundingClientRect().height)};});
  await p.unroute('**/recipe/'+cold+'*');await sh(()=>document.documentElement.classList.remove('theme-night'));
  ok('recipe loading: picture place kept, no cut-out, no disc',!!cold&&ld.loading&&!ld.img&&ld.ph&&ld.h>=400&&ld.side==='none',ld);
  ok('recipe loaded: picture and Pip fade in, same height (no jump)',!lt.loading&&lt.main==='1'&&lt.side==='visible'&&Math.abs(lt.h-ld.h)<=2,{cold,ld,lt});

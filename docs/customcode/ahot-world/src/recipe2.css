@@ -1,0 +1,45 @@
+/* Cosmos recipe page v2 (Nathalie's edit 21 Nov; Figma 886:3591 huge day, 893:3912 huge night, 893:3782 phone day, 893:4043 phone night; v0.1.9).
+   Desktop values are the huge frame's content divided by 1.33 (content 1280 wide). */
+.rpv2{max-width:1280px}
+.rpv2 .rp-title{font-family:var(--serif);font-weight:400;font-size:64px;line-height:66px;letter-spacing:-1.5px;margin:30px 0 0 -.12em;max-width:none;text-wrap:balance}
+.rpv2>.rp-note{margin:16px 0 0}
+.rpv2 .rp-top{display:grid;grid-template-columns:400px minmax(0,720px);column-gap:84px;align-items:start;margin-top:59px}
+.rpv2 .rp-top.solo{grid-template-columns:400px}
+.rpv2 .rp-media{grid-column:1;grid-row:1;justify-self:start;width:400px;margin:0}
+.rpv2 .rp-media .side.pip{left:-24px;bottom:-40px}
+.rpv2 .rp-top .mem{grid-column:2;max-width:720px;margin:-3px 0 0}
+.rpv2 .mem h2{font-size:44px;line-height:48px;letter-spacing:-1px;margin:12px 0 20px -.06em}
+.rpv2 .mem .body{font-size:20px;line-height:32px}
+.rpv2 .rp-cols{margin-top:103px}
+.rpv2 .rp-cols.b{margin-top:96px}
+.rpv2 .oven{margin:14px 0 0;max-width:none}
+.rpv2 .note h3{font-family:Corinthia,'Libre Bodoni',cursive;font-style:normal;font-weight:400;font-size:37px;line-height:34px;margin:0 0 14px}
+.rpv2 .more{margin-top:150px}
+/* Note to self with the dish + Pip on its top right corner; the picture is not tilted with the card */
+.notew{position:relative}
+.notew .side{position:absolute;isolation:isolate;z-index:3}
+.notew .side img{display:block;width:100%;height:auto}
+.notew .side::before{content:"";position:absolute;left:50%;top:50%;width:80%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff4d5;opacity:var(--disc-on);z-index:-1}
+.notew .side.combo{width:133px;right:14px;top:-40px}
+.notew .side{opacity:0;visibility:hidden;transition:opacity .35s ease,visibility 0s linear .35s}
+.notew .side.ok{opacity:1;visibility:visible;transition:opacity .35s ease}
+@media (max-width:1100px){ .rpv2 .rp-top{column-gap:56px} }
+@media (max-width:900px){
+  .rpv2 .rp-title{font-size:48px;line-height:52px;letter-spacing:-1px;margin-top:12px}
+  .rpv2 .rp-top,.rpv2 .rp-top.solo{grid-template-columns:minmax(0,1fr);margin-top:28px}
+  .rpv2 .rp-media{width:min(100%,420px);margin:0}
+  .rpv2 .rp-media .side.pip{left:0;bottom:-75px}
+  .rpv2 .rp-top .mem{grid-column:1;grid-row:2;margin-top:56px}
+  .rpv2 .rp-media:has(.side.pip)+.mem{margin-top:120px}
+  .rpv2 .rp-cols{margin-top:72px}
+  .rpv2 .rp-cols.b{margin-top:60px}
+  .notew.has-combo{margin-top:50px}
+  .rpv2 .more{margin-top:88px}
+  .notew .side.combo{width:150px;right:-6px;top:-66px}
+}
+@media (max-width:640px){
+  .rpv2 .rp-title{font-size:44px;line-height:48px}
+  .rpv2 .rp-media{width:100%}
+  .notew .side.combo{width:160px;right:-8px;top:-70px}
+}
+@media (prefers-reduced-motion:reduce){ .notew .side{transition:none} }

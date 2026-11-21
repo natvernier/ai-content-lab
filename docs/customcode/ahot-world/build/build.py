@@ -5,7 +5,7 @@ import json, os, re, subprocess, sys
 ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 ver = sys.argv[1] if len(sys.argv) > 1 else '0.0.0-dev'
 rd = lambda p: open(os.path.join(ROOT, p), encoding='utf-8').read()
-css = rd('src/world.css') + '\n' + rd('src/extra.css') + '\n' + rd('src/card.css')
+css = rd('src/world.css') + '\n' + rd('src/extra.css') + '\n' + rd('src/card.css') + '\n' + rd('src/recipe2.css')
 css = re.sub(r'/\*.*?\*/', '', css, flags=re.S)
 css = re.sub(r'\s+', ' ', css).replace(' {', '{').replace('{ ', '{').replace('; ', ';').replace(' }', '}').strip()
 html = re.sub(r'>\s+<', '><', rd('src/world.html').strip())

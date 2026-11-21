@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 68 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 70 checks, incl. the main site's real site-wide code
 ```
 
-Current release (21 Nov 2026): v0.1.8, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6b021514b5fe8f7c747c5219_aot-world-0.1.8.js`, registered script `aotworld` 0.1.8 (SRI sha384), on the World page (`/world`), footer; published to staging only. Previous: v0.1.7 (asset 6afba3490297774b771309f2).
+Current release (21 Nov 2026): v0.1.9, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6b021f540494a791dfbd6eba_aot-world-0.1.9.js`, registered script `aotworld` 0.1.9 (SRI sha384), on the World page (`/world`), footer; published to staging only (live runs v0.1.8). Previous: v0.1.8 (asset 6b021514b5fe8f7c747c5219), v0.1.7 (asset 6afba3490297774b771309f2).
+
+v0.1.9 (Nathalie's Figma edit, 21 Nov; 886:3591 huge, 893:3782 phone, night 893:3912 / 893:4043; source `src/recipe2.css` + `buildRecipe()`): the Cosmos recipe page: title across the top; the photo with the memory beside it; ingredients | method; Note to self (Corinthia heading) with the dish + Pip on its corner (without a note it stays at the photo) | pairs with; More with …, pager. Kicker, place, source, the numbers and the image credit are no longer shown. Phones: title, photo, memory, ingredients, method, note, pairs with. Recipes without a photo keep the illustration with Pip. 70 checks.
 
 v0.1.8 (Nathalie, 21 Nov): in List mode the recipe opens as one ruled index card (Figma 883:3419 desktop, 888:3351 phone, night 888:3523 / 888:3638; source `src/card.css` + `buildCard()` in `src/world.js`). Card head: "Lemon · 02 of 08", title, the photo (or the illustration) as a tilted polaroid with the AI label; no kicker, place, source or numbers (Nathalie's edit). Ruled body under a limone line, every line 32 px: ingredients to tick off (kept while browsing, not stored), method, pairing (linked recipes as text lines), Note to self in Corinthia. Below: the memory and the image credit, all recipes of the ingredient as a numbered list (this one marked), previous / next. The polaroid border stays paper at night. Switching Cosmos ↔ List on a recipe redraws it in place. Cosmos keeps the open page as before. 68 checks.
 
