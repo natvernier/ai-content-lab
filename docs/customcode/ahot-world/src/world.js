@@ -334,6 +334,7 @@ function showRecipe(r){
   rp.scrollTop=0;
 }
 function buildRecipe(r,x,refill){
+  if(S.mode==='sorted')return buildCard(r,x,refill);
   const st=refill?rp.scrollTop:0;
   const w=r.w,L=w.rec,i=L.indexOf(r),loading=!x,err=x&&x.error;x=x&&!err?x:{};
   const t=(x.time||'').split(' '),big=t.shift(),rest=t.join(' ');
@@ -389,6 +390,65 @@ function buildRecipe(r,x,refill){
   if(refill)rp.scrollTop=st;
   if(!loading&&!err&&L.length>1&&i>=0)prefetch([L[(i+1)%L.length].s,L[(i-1+L.length)%L.length].s]);
 }
+/* ---------- List mode: the recipe as one ruled index card (Figma 883:3419 desktop, 888:3351 phone, night 888:3523 / 888:3638; v0.1.8) ----------
+   Nathalie's edit (21 Nov): the card head shows only "Lemon · 02 of 08", the title and the polaroid (no kicker, place, source or numbers).
+   Ingredients can be ticked off (kept while browsing, not stored); method and pairing sit on the 32 px rules; Note to self in Corinthia.
+   Below the card: the memory, then all recipes of the ingredient as a numbered list (this one marked), then previous / next. */
+const TICK=new Map(),pad2=n=>String(n).padStart(2,'0');
+function cardIng(h,slug){
+  const d=D0.createElement('div');d.innerHTML=h||'';const on=TICK.get(slug)||new Set();let k=0;const out=[];
+  for(const n of [...d.children]){
+    if(/^H[1-6]$/.test(n.tagName)){if(n.textContent.trim())out.push('<h3 class="rc-grp">'+n.innerHTML+'</h3>');}
+    else if(n.tagName==='UL'||n.tagName==='OL')out.push('<ul class="rc-ing">'+[...n.children].filter(li=>li.tagName==='LI'&&li.textContent.trim()).map(li=>{const i=k++;
+      return '<li><label><input type="checkbox" data-tick="'+i+'"'+(on.has(i)?' checked':'')+'><span>'+li.innerHTML+'</span></label></li>';}).join('')+'</ul>');
+    else if(n.textContent.trim())out.push('<p class="rc-p">'+n.innerHTML+'</p>');
+  }
+  return out.join('');
+}
+function buildCard(r,x,refill){
+  const st=refill?rp.scrollTop:0;
+  const w=r.w,L=w.rec,i=L.indexOf(r),loading=!x,err=x&&x.error;x=x&&!err?x:{};
+  const img=loading?'':(x.img||r.img||''),edited=!!x.photo;
+  const pos=esc(w.n)+(i>=0?' · '+pad2(i+1)+' of '+pad2(L.length):'');
+  const pol=img?'<figure class="rc-pol"><span class="ph"><img class="main" src="'+esc(img)+'" alt="">'+aiPill(edited?'edited':'generated','tr')+'</span></figure>':(loading?'<figure class="rc-pol"><span class="ph"></span></figure>':'');
+  const noteLine=loading?'':(err?'<p class="rp-note">This recipe could not be loaded right now.<button data-retry="'+esc(r.s)+'">Try again</button></p>':'');
+  const lab=t=>'<h2 class="rc-lab">'+t+'</h2>';
+  const plain=h=>{const d=D0.createElement('div');d.innerHTML=h||'';return d.textContent.trim().toLowerCase();};
+  /* pairing text is hidden when it only repeats the name of the linked recipe (as on the Cosmos page); links are text lines on the rules */
+  const pairs=x.pairs||[];
+  const pairTxt=pairs.map(p=>p.link&&REC[p.link]&&plain(p.text)===REC[p.link].n.trim().toLowerCase()?'':p.text).join('');
+  const links=pairs.filter(p=>p.link&&REC[p.link]).map(p=>{const y=REC[p.link];return '<button class="rc-plink" data-rec="'+esc(y.s)+'"><span>'+p.kind+'</span>'+esc(y.n)+' →</button>';}).join('');
+  /* three blocks: ingredients and pairing on the left, method on the right; in one column (tablet, phone) the order is ingredients, method, pairing (Figma 888:3351) */
+  const pairH=(pairTxt||links)?'<div class="rc-sp">'+lab('Pairs with')+(pairTxt?'<div class="rc-txt">'+pairTxt+'</div>':'')+links+'</div>':'';
+  const ingH=(x.ingredients||x.oven)?'<div class="rc-i">'+(x.ingredients?lab('Ingredients')+cardIng(x.ingredients,r.s):'')+(x.oven?'<p class="rc-p">Oven: '+esc(x.oven)+'</p>':'')+'</div>':'';
+  const metH=x.method?'<div class="rc-m">'+lab('Method')+'<ol class="rc-steps">'+steps(x.method)+'</ol></div>':'';
+  const noteH=x.note?'<div class="rc-notes">'+lab(x.planned?'The plan':'Note to self')+'<div class="rc-hand">'+x.note+'</div></div>':'';
+  const body=(loading||err)?'':((ingH||metH||pairH)?'<div class="rc-cols'+(metH&&(ingH||pairH)?'':' one')+'">'+ingH+metH+pairH+'</div>':'')+noteH;
+  const pl=x.playlist;
+  const memH=(x.memHead||x.memBody)?'<section class="mem"><div class="k">A memory</div>'+(x.memHead?'<h2>'+esc(x.memHead)+'</h2>':'')+(x.memBody?'<div class="body">'+x.memBody+'</div>':'')+(pl?'<a class="play" href="'+esc(pl.link)+'" target="_blank" rel="noopener"><i>▶</i><span><em>'+esc(pl.intro||'')+'</em><small>'+esc(pl.name||'Playlist')+(/deezer/i.test(pl.link)?' · Deezer':'')+' ↗</small></span></a>':'')+'</section>':'';
+  const cred=x.credit?'<p class="credit rc-credit">Image: '+esc(x.credit)+'</p>':'';
+  let moreH='',pagerH='';
+  if(L.length>1&&i>=0){
+    moreH='<section class="rc-more">'+lab('More with '+esc(w.n))+'<ol>'+L.map((y,k)=>{const cur=y===r,n=y.i!=null?y.i:'';
+      const inner='<span class="rc-n">'+pad2(k+1)+'</span><span class="rc-t">'+esc(y.n)+'</span><span class="rc-c"><span class="lg">'+(cur?'this recipe':(n!==''?plural(n,'ingredient','ingredients'):''))+'</span><span class="sh">'+n+'</span></span>';
+      return '<li>'+(cur?'<span class="rcrow cur" aria-current="page">'+inner+'</span>':'<button class="rcrow" data-rec="'+esc(y.s)+'">'+inner+'</button>')+'</li>';}).join('')+'</ol></section>';
+    const prev=L[(i-1+L.length)%L.length],next=L[(i+1)%L.length];
+    pagerH='<nav class="pager">'+(L.length===2?'<span class="none" aria-hidden="true"></span>':'<button data-rec="'+esc(prev.s)+'"><span>← Previous</span><b>'+esc(prev.n)+'</b></button>')+'<span class="pos">'+pos+'</span><button data-rec="'+esc(next.s)+'"><span>Next</span><b>'+esc(next.n)+' →</b></button></nav>';
+  }
+  rp.innerHTML='<article class="rp rc'+(loading?' is-loading':'')+'"><div class="rc-card"><header class="rc-head'+(pol?'':' nopol')+'"><p class="rc-pos">'+pos+'</p><h1>'+esc(x.name||r.n)+'</h1>'+noteLine+pol+'</header>'+
+    '<div class="rc-body">'+body+'</div></div>'+memH+cred+moreH+pagerH+
+    '<p class="rp-foot">2026 © A Hat of Thyme · <a href="/impressum">Impressum</a> · <a href="/privacy">Privacy</a> · <a href="/how-i-use-ai">How I use AI</a></p></article>';
+  /* the photo fades in once loaded; a broken picture takes the polaroid away */
+  const m=rp.querySelector('.rc-pol img.main');
+  if(m){const show=()=>{if(m.complete&&m.naturalWidth)m.classList.add('ok');};m.addEventListener('load',show);m.addEventListener('error',()=>{const f=m.closest('.rc-pol');if(f)f.hidden=true;});show();}
+  if(refill)rp.scrollTop=st;
+  if(!loading&&!err&&L.length>1&&i>=0)prefetch([L[(i+1)%L.length].s,L[(i-1+L.length)%L.length].s]);
+}
+rp.addEventListener('change',e=>{
+  const c=e.target.closest('[data-tick]');if(!c||!S.r)return;
+  let s=TICK.get(S.r.s);if(!s){s=new Set();TICK.set(S.r.s,s);}
+  if(c.checked)s.add(+c.dataset.tick);else s.delete(+c.dataset.tick);
+});
 rp.addEventListener('click',e=>{
   const b=e.target.closest('[data-rec],[data-dir],[data-retry]');if(!b)return;
   if(b.dataset.rec){location.hash='recipe/'+b.dataset.rec;return;}
@@ -453,7 +513,10 @@ wswBtn.addEventListener('click',()=>{const on=wswMenu.hidden;wswOpen(on);if(on){
 wswMenu.addEventListener('click',e=>{
   const a=e.target.closest('a');if(!a)return;
   /* the recipe page is the same page in Cosmos and List: switching keeps it and only changes where "back" leads */
-  if(S.level==='recipe'&&a.dataset.w!=='classic'){e.preventDefault();S.mode=a.dataset.w==='list'?'sorted':'world';wswSync();wswOpen(false);wswBtn.focus();return;}
+  if(S.level==='recipe'&&a.dataset.w!=='classic'){e.preventDefault();const was=S.mode;S.mode=a.dataset.w==='list'?'sorted':'world';wswSync();wswOpen(false);
+    /* v0.1.8: List shows the recipe as an index card, Cosmos as the open page, so switching redraws it in place */
+    if(S.mode!==was&&S.r){if(done.has(S.r.s)){buildRecipe(S.r,done.get(S.r.s));rp.scrollTop=0;}else showRecipe(S.r);}
+    wswBtn.focus();return;}
   wswOpen(false);
 });
 wsw.addEventListener('keydown',e=>{

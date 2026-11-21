@@ -127,6 +127,41 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await p.click('#wswBtn');await p.mouse.click(700,760);await p.waitForTimeout(150);
  const outside=await SW();
  ok('switch: Escape and a click outside close the menu',!esc.open&&!outside.open&&outside.hash==='#lemon',{esc:esc.open,outside:outside.open,hash:outside.hash});
+ // List mode: the recipe as an index card (Figma B, Nathalie's edit 21 Nov, v0.1.8)
+ await sh(()=>location.hash='lemon-list');await p.waitForTimeout(500);
+ await sh(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await p.waitForTimeout(1300);
+ const CARD=()=>sh(()=>{const R=document.getElementById('aot-world').shadowRoot,g=s=>R.querySelector(s),t=s=>(g(s)||{textContent:''}).textContent.trim();
+   const body=g('.rc-body');const bt=body?body.getBoundingClientRect().top+2:0;
+   const off=[...R.querySelectorAll('.rc-body .rc-lab,.rc-body .rc-grp,.rc-body .rc-ing li,.rc-body .rc-steps li,.rc-body .rc-txt,.rc-body .rc-hand p')].map(e=>Math.round(e.getBoundingClientRect().top-bt)%32);
+   return {card:!!g('.rc'),cosmos:!!g('.rp-media'),pos:t('.rc-pos'),h1:t('.rc h1'),kick:!!g('.rc .kick,.rc .place,.rc .src,.rc .dash'),pol:!!g('.rc-pol img.main'),pill:(g('.rc-pol .ai')||{dataset:{}}).dataset.ai,
+     ticks:R.querySelectorAll('.rc-ing input[type=checkbox]').length,grps:[...R.querySelectorAll('.rc-grp')].map(e=>e.textContent.trim()),steps:R.querySelectorAll('.rc-steps li').length,pair:t('.rc-txt'),
+     notes:R.querySelectorAll('.rc-hand p').length,hand:g('.rc-hand')?getComputedStyle(g('.rc-hand')).fontFamily:'',mem:t('.rc .mem h2'),credit:t('.rc-credit'),
+     rows:R.querySelectorAll('.rc-more li').length,cur:t('.rcrow.cur .rc-t'),curC:t('.rcrow.cur .rc-c .lg'),pager:t('.rc .pager .pos'),prev:t('.rc .pager button:first-child b'),next:t('.rc .pager button:last-child b'),
+     off,bg:g('.rc-card')?getComputedStyle(g('.rc-card')).backgroundColor:'',paper:g('.rc-pol')?getComputedStyle(g('.rc-pol')).backgroundColor:''};});
+ let cd=await CARD();
+ ok('List: the recipe opens as an index card (not the Cosmos page)',cd.card&&!cd.cosmos,cd);
+ ok('List card head: "Lemon · 02 of 08", title, polaroid photo labelled Edited; no kicker, place, source or numbers',cd.pos==='Lemon · 02 of 08'&&cd.h1==='Lemon & Thyme Vin de Citron'&&!cd.kick&&cd.pol&&cd.pill==='edited',cd);
+ ok('List card body: 4 ingredients to tick in 2 groups, 5 steps, pairing, 2 notes in Corinthia',cd.ticks===4&&cd.grps.length===2&&cd.steps===5&&/Goat cheese/.test(cd.pair)&&cd.notes===2&&/Corinthia/.test(cd.hand),cd);
+ ok('List card: every ruled line sits on the 32 px grid',cd.off.length>10&&cd.off.every(v=>v===0),cd.off);
+ ok('List: memory and credit below the card; all 8 Lemon recipes listed, this one marked',/sea/i.test(cd.mem)&&/Image:/.test(cd.credit)&&cd.rows===8&&cd.cur==='Lemon & Thyme Vin de Citron'&&cd.curC==='this recipe',cd);
+ ok('List pager: Previous Citron pressé · Lemon · 02 of 08 · Next Lemon Layer Cake',cd.pager==='Lemon · 02 of 08'&&cd.prev==='Citron pressé'&&/Lemon Layer Cake/.test(cd.next),cd);
+ await p.click('.rc-ing input[data-tick="1"]');await p.waitForTimeout(100);
+ await sh(()=>location.hash='recipe/citron-presse');await p.waitForTimeout(1300);
+ const pl2=await sh(()=>({links:[...document.getElementById('aot-world').shadowRoot.querySelectorAll('.rc-plink')].map(b=>b.textContent)}));
+ ok('List card: a linked pairing is a text line on the rules (Citron pressé → Moules marinières)',pl2.links.some(x=>/Moules/i.test(x)),pl2);
+ await sh(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await p.waitForTimeout(900);
+ const tk=await sh(()=>[...document.getElementById('aot-world').shadowRoot.querySelectorAll('.rc-ing input')].map(i=>i.checked));
+ ok('List card: a ticked ingredient stays ticked while browsing',tk[1]===true&&tk.filter(Boolean).length===1,tk);
+ await p.click('#wswBtn');await p.click('#wswCosmos');await p.waitForTimeout(300);
+ cd=await CARD();
+ ok('switch on the card: Cosmos redraws the recipe as the open page',!cd.card&&cd.cosmos,{card:cd.card,cosmos:cd.cosmos});
+ await p.click('#wswBtn');await p.click('#wswList');await p.waitForTimeout(300);
+ cd=await CARD();
+ ok('… and List draws the card again',cd.card&&!cd.cosmos,{card:cd.card,cosmos:cd.cosmos});
+ await sh(()=>document.documentElement.classList.add('theme-night'));await p.waitForTimeout(100);
+ cd=await CARD();
+ ok('List card at night: dark card, polaroid border stays paper',cd.bg==='rgb(30, 24, 18)'&&cd.paper==='rgb(243, 235, 217)',{bg:cd.bg,paper:cd.paper});
+ await sh(()=>document.documentElement.classList.remove('theme-night'));
  ok('no errors from /world',errs.length===0,errs.slice(0,3));
  await c.close();
  // entering from the Classic switch: ?view=list opens the List view at the same place, else one level up
@@ -178,7 +213,12 @@ const BASE=process.env.BASE||'http://localhost:8790';
  await q.touchscreen.tap(rw.x,rw.y);await q.waitForTimeout(900);
  const lh=await q.evaluate(()=>location.hash);
  ok('phone list: one tap on the name opens the recipe',/^#recipe\//.test(lh),lh);
+ const pc=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot,g=s=>R.querySelector(s);const c=g('.rc-card'),pol=g('.rc-pol');if(!c)return {card:false};const cr=c.getBoundingClientRect(),pr=pol?pol.getBoundingClientRect():null;
+   return {card:true,left:Math.round(cr.left),right:Math.round(innerWidth-cr.right),polCentre:pr?Math.round(pr.left+pr.width/2-(cr.left+cr.width/2)):null,polStatic:pol?getComputedStyle(pol).position:'',cols:getComputedStyle(g('.rc-cols')).gridTemplateColumns.split(' ').length,sh:g('.rc-c .sh')?getComputedStyle(g('.rc-c .sh')).display:''};});
+ ok('phone List card: 12 px margins, polaroid centred under the title, one column, counts as numbers',pc.card&&pc.left===12&&pc.right===12&&Math.abs(pc.polCentre)<=4&&pc.polStatic==='relative'&&pc.cols===1&&pc.sh==='inline',pc);
  // phone: More with … has left and right arrows that move the row
+ // (Cosmos page: the More-with row; List mode shows the index card since v0.1.8)
+ await q.evaluate(()=>location.hash='lemon');await q.waitForTimeout(700);
  await q.evaluate(()=>location.hash='recipe/lemon-and-thyme-vin-de-citron');await q.waitForTimeout(1300);
  await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;R.querySelector('.more').scrollIntoView({block:'center'});});await q.waitForTimeout(400);
  const s0=await q.evaluate(()=>{const R=document.getElementById('aot-world').shadowRoot;const a=[...R.querySelectorAll('.more .arr')].map(b=>b.getBoundingClientRect().width);return {arrows:a,sl:R.querySelector('.more .track').scrollLeft};});

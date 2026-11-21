@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 56 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 68 checks, incl. the main site's real site-wide code
 ```
 
-Current release (17 Nov 2026): v0.1.7, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6afba3490297774b771309f2_aot-world-0.1.7.js`, registered script `aotworld` 0.1.7 (SRI sha384), on the World page (the start page), footer; published to staging only.
+Current release (21 Nov 2026): v0.1.8, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6b021514b5fe8f7c747c5219_aot-world-0.1.8.js`, registered script `aotworld` 0.1.8 (SRI sha384), on the World page (`/world`), footer; published to staging only. Previous: v0.1.7 (asset 6afba3490297774b771309f2).
+
+v0.1.8 (Nathalie, 21 Nov): in List mode the recipe opens as one ruled index card (Figma 883:3419 desktop, 888:3351 phone, night 888:3523 / 888:3638; source `src/card.css` + `buildCard()` in `src/world.js`). Card head: "Lemon · 02 of 08", title, the photo (or the illustration) as a tilted polaroid with the AI label; no kicker, place, source or numbers (Nathalie's edit). Ruled body under a limone line, every line 32 px: ingredients to tick off (kept while browsing, not stored), method, pairing (linked recipes as text lines), Note to self in Corinthia. Below: the memory and the image credit, all recipes of the ingredient as a numbered list (this one marked), previous / next. The polaroid border stays paper at night. Switching Cosmos ↔ List on a recipe redraws it in place. Cosmos keeps the open page as before. 68 checks.
 
 v0.1.7 (Nathalie's review, 17 Nov): recipe page of an ingredient with few recipes: "More with …" shows the other recipes once when they fit (no copies, no arrows; endless only when the cards overflow); with two recipes the pager shows only "Next" (Previous would be the same recipe).
 
