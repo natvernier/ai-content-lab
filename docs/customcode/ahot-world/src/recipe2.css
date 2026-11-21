@@ -1,16 +1,26 @@
 /* Cosmos recipe page v2 (Nathalie's edit 21 Nov; Figma 886:3591 huge day, 893:3912 huge night, 893:3782 phone day, 893:4043 phone night; v0.1.9).
+   v0.1.10: picture first (photo as a circle, else the dish cut-out on the night disc), then the headline; no story and no soundtrack: picture in the middle (Figma 897:3603…3744).
    Desktop values are the huge frame's content divided by 1.33 (content 1280 wide). */
 .rpv2{max-width:1280px}
-.rpv2 .rp-title{font-family:var(--serif);font-weight:400;font-size:64px;line-height:66px;letter-spacing:-1.5px;margin:30px 0 0 -.12em;max-width:none;text-wrap:balance}
+.rpv2 .rp-title{font-family:var(--serif);font-weight:400;font-size:64px;line-height:66px;letter-spacing:-1.5px;margin:48px 0 0 -.12em;max-width:none;text-wrap:balance}
 .rpv2>.rp-note{margin:16px 0 0}
-.rpv2 .rp-top{display:grid;grid-template-columns:400px minmax(0,720px);column-gap:84px;align-items:start;margin-top:59px}
-.rpv2 .rp-top.solo{grid-template-columns:400px}
+.rpv2 .rp-top{display:grid;grid-template-columns:400px minmax(0,720px);column-gap:84px;align-items:center;margin-top:30px}
+.rpv2 .rp-top.solo{grid-template-columns:minmax(0,1fr);justify-items:center}
 .rpv2 .rp-media{grid-column:1;grid-row:1;justify-self:start;width:400px;margin:0}
 .rpv2 .rp-media .side.pip{left:-24px;bottom:-40px}
+.rpv2 .rp-top.solo .rp-media{justify-self:center}
+.rpv2 .rp-top.solo .rp-media .side.pip{left:-152px;bottom:-20px}
+.rpv2 .rp-media .side.combo{width:160px;left:auto;right:-40px;bottom:-30px}
+.rpv2 .rp-media .main.ph{aspect-ratio:1;border-radius:50%}
+.rpv2 .rp-media.is-photo .main.circ{display:block;width:100%;aspect-ratio:1;object-fit:cover;border-radius:50%;box-shadow:0 10px 30px rgba(22,6,1,.12)}
+.rpv2 .rp-media.is-cut .main.cut{position:relative;z-index:1;display:block;width:100%;aspect-ratio:1;object-fit:contain;border-radius:0;box-shadow:none}
+.rpv2 .rp-media .disc{position:absolute;left:50%;top:50%;z-index:0;width:80%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:#fff4d5;opacity:0;transition:opacity .35s ease}
+.rpv2 .rp-media .main.cut.ok+.disc{opacity:var(--disc-on)}
+.ai.ne{left:calc(80.5% - 14px);top:calc(19.5% - 10px)}
 .rpv2 .rp-top .mem{grid-column:2;max-width:720px;margin:-3px 0 0}
 .rpv2 .mem h2{font-size:44px;line-height:48px;letter-spacing:-1px;margin:12px 0 20px -.06em}
 .rpv2 .mem .body{font-size:20px;line-height:32px}
-.rpv2 .rp-cols{margin-top:103px}
+.rpv2 .rp-cols{margin-top:90px}
 .rpv2 .rp-cols.b{margin-top:96px}
 .rpv2 .oven{margin:14px 0 0;max-width:none}
 .rpv2 .note h3{font-family:Corinthia,'Libre Bodoni',cursive;font-style:normal;font-weight:400;font-size:37px;line-height:34px;margin:0 0 14px}
@@ -25,12 +35,14 @@
 .notew .side.ok{opacity:1;visibility:visible;transition:opacity .35s ease}
 @media (max-width:1100px){ .rpv2 .rp-top{column-gap:56px} }
 @media (max-width:900px){
-  .rpv2 .rp-title{font-size:48px;line-height:52px;letter-spacing:-1px;margin-top:12px}
-  .rpv2 .rp-top,.rpv2 .rp-top.solo{grid-template-columns:minmax(0,1fr);margin-top:28px}
-  .rpv2 .rp-media{width:min(100%,420px);margin:0}
-  .rpv2 .rp-media .side.pip{left:0;bottom:-75px}
-  .rpv2 .rp-top .mem{grid-column:1;grid-row:2;margin-top:56px}
-  .rpv2 .rp-media:has(.side.pip)+.mem{margin-top:120px}
+  .rpv2 .rp-title{font-size:48px;line-height:52px;letter-spacing:-1px;margin-top:48px}
+  .rpv2 .rp-top,.rpv2 .rp-top.solo{grid-template-columns:minmax(0,1fr);justify-items:center;margin-top:12px}
+  .rpv2 .rp-media{width:min(320px,100%);margin:0;justify-self:center}
+  .rpv2 .rp-media.is-cut{width:260px}
+  .rpv2 .rp-media .side.pip,.rpv2 .rp-top.solo .rp-media .side.pip{width:130px;left:max(calc(138px - 50vw),-110px);bottom:-30px}
+  .rpv2 .rp-top .mem{grid-column:1;grid-row:2;justify-self:stretch;margin-top:48px}
+  .rpv2 .rp-media:has(.side)+.mem{margin-top:80px}
+  .rpv2 .rp-top:has(.side.pip)+.rp-title{margin-top:78px}
   .rpv2 .rp-cols{margin-top:72px}
   .rpv2 .rp-cols.b{margin-top:60px}
   .notew.has-combo{margin-top:50px}
@@ -39,7 +51,6 @@
 }
 @media (max-width:640px){
   .rpv2 .rp-title{font-size:44px;line-height:48px}
-  .rpv2 .rp-media{width:100%}
   .notew .side.combo{width:160px;right:-8px;top:-70px}
 }
 @media (prefers-reduced-motion:reduce){ .notew .side{transition:none} }

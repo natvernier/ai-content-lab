@@ -338,7 +338,10 @@ function buildRecipe(r,x,refill){
   const st=refill?rp.scrollTop:0;
   const w=r.w,L=w.rec,i=L.indexOf(r),loading=!x,err=x&&x.error;x=x&&!err?x:{};
   /* while the page text loads, the picture place is kept empty (no cut-out first, then the real picture) */
-  const mainImg=loading?'':(x.img||r.img||''),edited=!!x.photo;
+  /* v0.1.10 (Nathalie, 21 Nov; Figma 886:3591, 897:3603): a photo is shown as a circle; without a photo the dish cut-out (Freisteller)
+     stands free, on the cream disc at night like every other cut-out. Only on the Cosmos recipe page. */
+  const isPhoto=!loading&&!!x.photo,cutSrc=!loading&&!x.photo?(r.img||x.img||''):'';
+  const mediaH=loading?'<span class="main ph"></span>':isPhoto?'<img class="main circ" src="'+esc(x.photo)+'" alt="">'+aiPill('edited','ne'):cutSrc?'<img class="main cut" src="'+esc(cutSrc)+'" alt=""><span class="disc" aria-hidden="true"></span>'+aiPill('generated','tr'):'';
   /* v0.1.9 (Nathalie's edit, Figma 886:3591): the dish + Pip sits on the corner of the Note to self; without a note it stays at the photo */
   const combo=x.photo&&r.cb?'<span class="side combo"><img src="'+esc(r.cb)+'" alt="">'+aiPill('generated','tl')+'</span>':'';
   const onNote=!!(combo&&x.note);
@@ -352,7 +355,8 @@ function buildRecipe(r,x,refill){
   const pairH=(pairTxt||cards)?'<div class="pair"><div class="lab"><span>Pairs with</span><span></span></div>'+(pairTxt?'<div class="txt">'+pairTxt+'</div>':'')+(cards?'<div class="cards">'+cards+'</div>':'')+'</div>':'<div></div>';
   const noteH=x.note?'<div class="notew'+(onNote?' has-combo':'')+'"><div class="note"><h3>'+(x.planned?'The plan':'Note to self')+'</h3>'+x.note+'</div>'+(onNote?combo:'')+'</div>':'<div></div>';
   const pl=x.playlist;
-  const memH=(x.memHead||x.memBody)?'<section class="mem"><div class="k">A memory</div>'+(x.memHead?'<h2>'+esc(x.memHead)+'</h2>':'')+(x.memBody?'<div class="body">'+x.memBody+'</div>':'')+(pl?'<a class="play" href="'+esc(pl.link)+'" target="_blank" rel="noopener"><i>▶</i><span><em>'+esc(pl.intro||'')+'</em><small>'+esc(pl.name||'Playlist')+(/deezer/i.test(pl.link)?' · Deezer':'')+' ↗</small></span></a>':'')+'</section>':'';
+  const story=x.memHead||x.memBody;
+  const memH=(story||pl)?'<section class="mem">'+(story?'<div class="k">A memory</div>':'')+(x.memHead?'<h2>'+esc(x.memHead)+'</h2>':'')+(x.memBody?'<div class="body">'+x.memBody+'</div>':'')+(pl?'<a class="play" href="'+esc(pl.link)+'" target="_blank" rel="noopener"><i>▶</i><span><em>'+esc(pl.intro||'')+'</em><small>'+esc(pl.name||'Playlist')+(/deezer/i.test(pl.link)?' · Deezer':'')+' ↗</small></span></a>':'')+'</section>':'';
   let moreH='',pagerH='';
   if(L.length>1&&i>=0){
     const seq=[];for(let k=1;k<L.length;k++)seq.push(L[(i+k)%L.length]);
@@ -366,8 +370,10 @@ function buildRecipe(r,x,refill){
   /* v0.1.9, Nathalie's edit (21 Nov, Figma 886:3591 huge, 893:3782 phone): title across the top; the photo with the memory beside it;
      ingredients | method; Note to self (dish + Pip on its corner) | pairs with; then More with … and the pager.
      Kicker, place, source, the numbers and the image credit are no longer shown (her edit). */
-  rp.innerHTML='<article class="rp rpv2'+(loading?' is-loading':'')+'"><h1 class="rp-title">'+esc(x.name||r.n)+'</h1>'+noteLine+
-    '<section class="rp-top'+(memH?'':' solo')+'"><figure class="rp-media">'+(mainImg?'<img class="main" src="'+esc(mainImg)+'" alt="">'+aiPill(edited?'edited':'generated','tr'):(loading?'<span class="main ph"></span>':''))+side+'</figure>'+memH+'</section>'+
+  /* order (Nathalie, 21 Nov): first the picture with the story and soundtrack beside it, then the headline; with neither, the picture sits in the middle */
+  rp.innerHTML='<article class="rp rpv2'+(loading?' is-loading':'')+'">'+
+    '<section class="rp-top'+(memH||loading?'':' solo')+'"><figure class="rp-media'+(isPhoto?' is-photo':cutSrc?' is-cut':'')+'">'+mediaH+side+'</figure>'+memH+'</section>'+
+    '<h1 class="rp-title">'+esc(x.name||r.n)+'</h1>'+noteLine+
     '<section class="rp-cols"><div><div class="lab"><span>Ingredients</span><span>'+(r.i!=null?r.i:'')+'</span></div><div class="ing-list">'+(x.ingredients||'')+'</div>'+(x.oven?'<p class="oven">Oven: '+esc(x.oven)+'</p>':'')+'</div>'+(x.method?'<div><div class="lab"><span>Method</span><span></span></div><ol class="steps">'+steps(x.method)+'</ol></div>':'<div></div>')+'</section>'+
     '<section class="rp-cols b">'+noteH+pairH+'</section>'+
     moreH+pagerH+'<p class="rp-foot">2026 © A Hat of Thyme · <a href="/impressum">Impressum</a> · <a href="/privacy">Privacy</a> · <a href="/how-i-use-ai">How I use AI</a></p></article>';

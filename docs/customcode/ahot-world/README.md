@@ -69,10 +69,12 @@ From the index instead of the page (not shown on the main recipe page or cheaper
 ```sh
 python3 build/build.py 0.1.0                      # dist/aot-world.js + .min.js, prints sizes
 python3 test/make_mock.py recipes.json cms_rest.json site_code_pages.json   # local stand-in from a read-only CMS export (not in the repo)
-python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 70 checks, incl. the main site's real site-wide code
+python3 -m http.server 8790 -d test/mock & node test/smoke.js              # 73 checks, incl. the main site's real site-wide code
 ```
 
 Current release (21 Nov 2026): v0.1.9, `https://cdn.prod.website-files.com/6abd72766c3c81fe4fab265c/6b021f540494a791dfbd6eba_aot-world-0.1.9.js`, registered script `aotworld` 0.1.9 (SRI sha384), on the World page (`/world`), footer; published to staging only (live runs v0.1.8). Previous: v0.1.8 (asset 6b021514b5fe8f7c747c5219), v0.1.7 (asset 6afba3490297774b771309f2).
+
+v0.1.10 (prepared 21 Nov, not released yet; waiting for Nathalie's Figma OK of 886:3591 and 897:3603…3744): Cosmos recipe page: a photo is shown as a circle (AI label on its edge); without a photo the dish cut-out stands free, on the cream disc at night; the picture comes first, with the story and soundtrack beside it, then the headline; with neither story nor soundtrack the picture sits in the middle of the screen; a soundtrack without a story now shows too. The List index card is unchanged. 73 checks.
 
 v0.1.9 (Nathalie's Figma edit, 21 Nov; 886:3591 huge, 893:3782 phone, night 893:3912 / 893:4043; source `src/recipe2.css` + `buildRecipe()`): the Cosmos recipe page: title across the top; the photo with the memory beside it; ingredients | method; Note to self (Corinthia heading) with the dish + Pip on its corner (without a note it stays at the photo) | pairs with; More with …, pager. Kicker, place, source, the numbers and the image credit are no longer shown. Phones: title, photo, memory, ingredients, method, note, pairs with. Recipes without a photo keep the illustration with Pip. 70 checks.
 

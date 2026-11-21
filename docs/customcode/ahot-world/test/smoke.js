@@ -38,10 +38,12 @@ const BASE=process.env.BASE||'http://localhost:8790';
  const l3=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;const q=s=>R.querySelector(s);return {h1:q('.rp h1')&&q('.rp h1').textContent,kick:q('.kick')&&q('.kick').textContent,place:q('.place')&&q('.place').textContent,src:q('.src b')&&q('.src b').textContent,
    steps:R.querySelectorAll('.steps li').length,ing:!!(q('.ing-list')&&q('.ing-list').textContent.trim()),photoPill:q('.rp-media > .ai')&&q('.rp-media > .ai').dataset.ai,stamp:q('.stamp')&&q('.stamp').textContent,pos:q('.pager .pos')&&q('.pager .pos').textContent,
    more:R.querySelectorAll('.mcard').length,nested:R.querySelectorAll('button .ai').length,credit:q('.credit')&&q('.credit').textContent,tags:R.querySelectorAll('.pills span').length,loading:!!q('.rp.is-loading'),
-   dash:R.querySelectorAll('.rp .dash > div').length,v2:!!q('.rpv2'),geo:(()=>{const b=e=>e?e.getBoundingClientRect():null,t=b(q('.rp-title')),m=b(q('.rp-media')),me=b(q('.rp-top .mem')),co=b(q('.rp-cols'));return t&&m&&me&&co?{titleAbove:t.bottom<=m.top,memBeside:me.left>=m.right+40&&Math.abs(me.top-m.top)<12,colsBelow:co.top>=m.bottom+60,mw:Math.round(m.width)}:null;})(),
+   dash:R.querySelectorAll('.rp .dash > div').length,v2:!!q('.rpv2'),geo:(()=>{const b=e=>e?e.getBoundingClientRect():null,t=b(q('.rp-title')),m=b(q('.rp-media')),me=b(q('.rp-top .mem')),co=b(q('.rp-cols'));return t&&m&&me&&co?{imageFirst:m.bottom<=t.top,memBeside:me.left>=m.right+40&&me.top<m.bottom&&me.bottom>m.top,colsBelow:co.top>=t.bottom+60,mw:Math.round(m.width)}:null;})(),
+   circle:(()=>{const i=q('.rp-media img.main.circ');if(!i)return null;const c=getComputedStyle(i);return {r:c.borderRadius,w:Math.round(i.getBoundingClientRect().width),h:Math.round(i.getBoundingClientRect().height)};})(),
    comboOnNote:!!q('.notew.has-combo .side.combo'),comboAtPhoto:!!q('.rp-media .side')};});
  ok('L3 reads the recipe page',l3.h1==='Lemon & Thyme Vin de Citron'&&l3.steps>=3&&l3.ing&&!l3.loading,l3);
- ok('L3 v2 (Nathalie 21 Nov): title on top, photo with the memory beside it, columns below',l3.v2&&l3.geo&&l3.geo.titleAbove&&l3.geo.memBeside&&l3.geo.colsBelow&&l3.geo.mw===400,l3.geo);
+ ok('L3 (Nathalie 21 Nov): picture first with the memory beside it, then the headline, columns below',l3.v2&&l3.geo&&l3.geo.imageFirst&&l3.geo.memBeside&&l3.geo.colsBelow&&l3.geo.mw===400,l3.geo);
+ ok('L3: the photo is a circle (400 × 400)',l3.circle&&l3.circle.r==='50%'&&l3.circle.w===400&&l3.circle.h===400,l3.circle);
  ok('L3 v2: no kicker, place, source, numbers or image credit',!l3.kick&&!l3.place&&!l3.src&&l3.dash===0&&!l3.credit,l3);
  ok('L3 v2: dish + Pip on the corner of the Note to self, not at the photo',l3.comboOnNote&&!l3.comboAtPhoto,l3);
  ok('L3 photo labelled Edited, no stamp (review 15 Nov)',l3.photoPill==='edited'&&!l3.stamp,l3);
@@ -58,6 +60,14 @@ const BASE=process.env.BASE||'http://localhost:8790';
  const pr=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot;return {cards:[...R.querySelectorAll('.plink b')].map(x=>x.textContent),txt:(R.querySelector('.pair .txt')||{textContent:''}).textContent,img:R.querySelector('.rp-media > .ai')&&R.querySelector('.rp-media > .ai').dataset.ai,pip:!!R.querySelector('.side.pip .ai.below')};});
  ok('pairing card links Moules marinières',pr.cards.some(x=>/Moules/i.test(x)),pr);
  ok('no-photo recipe: illustration Generated, Pip labelled below',pr.img==='generated'&&pr.pip,pr);
+ const ct=await sh(()=>{const R=document.getElementById('aot-world').shadowRoot,f=R.querySelector('.rp-media'),i=f.querySelector('img.main'),t=R.querySelector('.rp-title'),top=R.querySelector('.rp-top');const fr=f.getBoundingClientRect(),tr=top.getBoundingClientRect();
+   return {cut:!!(i&&i.classList.contains('cut')),src:i&&i.getAttribute('src')===window.AOT.REC['citron-presse'].img,solo:top.classList.contains('solo'),centre:Math.round(fr.left+fr.width/2-(tr.left+tr.width/2)),below:t.getBoundingClientRect().top>=fr.bottom};});
+ ok('no photo, no story: the dish cut-out in the middle, headline below',ct.cut&&ct.src&&ct.solo&&Math.abs(ct.centre)<=2&&ct.below,ct);
+ await sh(()=>document.documentElement.classList.add('theme-night'));await p.waitForTimeout(450);
+ const dn=await sh(()=>{const d=document.getElementById('aot-world').shadowRoot.querySelector('.rp-media .disc');return d?getComputedStyle(d).opacity:'none';});
+ await sh(()=>document.documentElement.classList.remove('theme-night'));await p.waitForTimeout(400);
+ const dd=await sh(()=>{const d=document.getElementById('aot-world').shadowRoot.querySelector('.rp-media .disc');return d?getComputedStyle(d).opacity:'none';});
+ ok('the cut-out stands on the cream disc at night only',dn==='1'&&dd==='0',{night:dn,day:dd});
  const pw=await sh(()=>{const e=document.getElementById('aot-world').shadowRoot.querySelector('.side.pip');return e?Math.round(e.getBoundingClientRect().width):0;});
  ok('Pip twice the original size on the recipe page (192 px, half of v0.1.2)',pw===192,pw);
  // nothing half-built: while the page loads, no cut-out and no night disc; then picture and Pip fade in together (review 17 Nov)
